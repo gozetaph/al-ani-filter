@@ -221,7 +221,7 @@ export default function AdminDashboardPage() {
                 <th className="p-3">الزبون</th>
                 <th className="p-3">المحافظة</th>
                 <th className="p-3">المواد</th>
-                <th className="p-3">المبلغ الإجمالي (COD)</th>
+                <th className="p-3">المبلغ الإجمالي</th>
                 <th className="p-3">الحالة</th>
               </tr>
             </thead>

@@ -61,7 +61,7 @@ export default function AdminOrdersPage() {
           <h3 className="font-bold text-sm text-slate-900">
             الطلبيات النشطة ({orders.length} طلبية)
           </h3>
-          <span className="text-xs text-slate-400">الدفع نقداً عند الاستلام (COD)</span>
+          <span className="text-xs text-slate-400">الدفع نقداً عند الاستلام</span>
         </div>
 
         <div className="overflow-x-auto">
@@ -72,7 +72,7 @@ export default function AdminOrdersPage() {
                 <th className="p-3.5">الزبون والهاتف</th>
                 <th className="p-3.5">المحافظة والعنوان</th>
                 <th className="p-3.5">المواد المطلوبة</th>
-                <th className="p-3.5">المطلوب نقداً (COD)</th>
+                <th className="p-3.5">المطلوب نقداً</th>
                 <th className="p-3.5">حالة الطلب</th>
                 <th className="p-3.5 text-center">إجراءات الشحن</th>
               </tr>
@@ -221,7 +221,7 @@ export default function AdminOrdersPage() {
 
               <div className="bg-amber-50 border-2 border-amber-400 p-4 rounded-xl text-center">
                 <span className="text-[11px] font-bold text-amber-900 uppercase block">
-                  المبلغ المطلوب تحصيله نقداً من الزبون (COD)
+                  المبلغ المطلوب تحصيله نقداً من الزبون
                 </span>
                 <p className="text-2xl sm:text-3xl font-black text-amber-700 mt-0.5">
                   {formatIQD(selectedWaybill.total_amount)}

@@ -189,7 +189,7 @@ export default function StorefrontPage() {
           </p>
 
           <div className="pt-2 flex items-center justify-center gap-6 text-xs text-slate-500 font-medium">
-            <span>• دفع عند الاستلام (COD)</span>
+            <span>• دفع عند الاستلام</span>
             <span>• ضمان 12 شهر</span>
             <span>• فحص قبل الدفع</span>
           </div>
@@ -437,7 +437,7 @@ export default function StorefrontPage() {
                   <span className="font-semibold text-[#004bb5]">{formatIQD(deliveryFee)}</span>
                 </div>
                 <div className="border-t border-slate-200 pt-1.5 flex justify-between items-baseline font-extrabold text-sm text-slate-900">
-                  <span>المبلغ المطلوب نقداً (COD):</span>
+                  <span>المبلغ المطلوب نقداً:</span>
                   <span className="text-[#004bb5] text-base">{formatIQD(orderTotal)}</span>
                 </div>
               </div>
@@ -484,7 +484,7 @@ export default function StorefrontPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">طريقة الدفع:</span>
-                <span className="font-bold text-emerald-700">الدفع نقداً عند الباب (COD)</span>
+                <span className="font-bold text-emerald-700">الدفع نقداً عند الاستلام</span>
               </div>
             </div>
 
