@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "لوحة التحكم | العاني للفلتر",
-  description: "إدارة المخزون والمبيعات والشحن لشركة العاني للفلتر",
+  description: "إدارة المخزون والمبيعات والشحن - محل العاني للفلتر",
 };
 
 export default function AdminLayout({

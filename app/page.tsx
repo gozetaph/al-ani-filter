@@ -149,8 +149,8 @@ export default function StorefrontPage() {
               <span className="font-bold text-base sm:text-lg text-slate-900 tracking-tight block leading-tight">
                 العاني للفلتر
               </span>
-              <span className="text-[11px] text-slate-500 font-mono block">
-                alanifilter.com • أنظمة تنقية المياه
+              <span className="text-[11px] text-slate-500 block">
+                AL ANI Filter • بيع وصيانة فلاتر ومنظومات المياه
               </span>
             </div>
           </div>
@@ -510,8 +510,8 @@ export default function StorefrontPage() {
       )}
 
       {/* FOOTER */}
-      <footer className="bg-white border-t border-slate-200 py-6 mt-12 text-center text-xs text-slate-400">
-        <p>جميع الحقوق محفوظة © {new Date().getFullYear()} شركة العاني للفلتر (AL ANI Filter) • العراق</p>
+      <footer className="bg-white border-t border-slate-200 py-6 mt-12 text-center text-xs text-slate-500">
+        <p>محل العاني للفلتر (AL ANI Filter) • بيع وتجهيز فلاتر ومنظومات المياه • العراق</p>
       </footer>
 
     </div>

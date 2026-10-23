@@ -230,7 +230,7 @@ export default function AdminOrdersPage() {
               </div>
 
               <div className="text-[10px] text-slate-400 text-center border-t border-slate-200 pt-2">
-                شكراً لتعاملكم مع العاني للفلتر • يرجى عدم فتح الطرد إلا بحضور مندوب شركة التوصيل
+                شكراً لتعاملكم مع محل العاني للفلتر • يرجى عدم فتح الطرد إلا بحضور مندوب شركة التوصيل
               </div>
             </div>
 
