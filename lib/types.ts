@@ -1,14 +1,14 @@
 export interface Product {
   id: string;
   title: string;
-  slug: string;
+  slug?: string;
   description: string;
-  category: 'systems' | 'cartridges' | 'parts';
+  category?: string;
+  badge?: string;
   price: number;
   stock_quantity: number;
   image_url: string;
-  badge?: string;
-  is_active: boolean;
+  is_active?: boolean;
   created_at?: string;
 }
 
@@ -33,11 +33,11 @@ export interface Order {
   phone: string;
   governorate: string;
   detailed_address: string;
-  payment_method: 'COD' | 'ONLINE';
+  payment_method: "COD" | "ONLINE";
   subtotal: number;
   shipping_fee: number;
   total_amount: number;
-  status: 'pending' | 'confirmed' | 'dispatched' | 'delivered' | 'cancelled';
+  status: "pending" | "confirmed" | "dispatched" | "delivered" | "cancelled";
   notes?: string;
   created_at?: string;
   items?: OrderItem[];
