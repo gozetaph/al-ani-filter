@@ -200,13 +200,11 @@ export default function StorefrontPage() {
       <main className="flex-1 max-w-6xl mx-auto px-4 py-10 w-full">
         <div className="mb-6 flex items-center justify-between border-b border-slate-200 pb-3">
           <h2 className="text-lg sm:text-xl font-bold text-slate-900">المنتجات المتوفرة</h2>
-          <span className="text-xs text-slate-500">{products.length} مواد متاحة</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {products.map((prod) => {
             const isOutOfStock = prod.stock_quantity <= 0;
-            const isLowStock = prod.stock_quantity <= 3 && prod.stock_quantity > 0;
 
             return (
               <div
@@ -223,11 +221,6 @@ export default function StorefrontPage() {
                       height={200}
                       className="h-44 w-auto object-contain"
                     />
-                    {isLowStock && (
-                      <span className="absolute bottom-2 right-2 bg-amber-50 text-amber-800 border border-amber-200 text-[10px] font-bold px-2 py-0.5 rounded-md">
-                        متبقي {prod.stock_quantity} فقط
-                      </span>
-                    )}
                   </div>
 
                   <h3 className="font-bold text-sm sm:text-base text-slate-900 leading-snug mb-1">
