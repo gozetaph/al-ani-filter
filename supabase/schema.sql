@@ -59,6 +59,7 @@ create table if not exists public.products (
   id uuid default gen_random_uuid() primary key,
   title text not null,
   slug text unique not null,
+  type text default 'منظومات R.O' not null,
   description text,
   price integer not null, -- Price in IQD
   stock_quantity integer default 0 not null,
@@ -68,10 +69,11 @@ create table if not exists public.products (
 );
 
 -- Seed Initial Products
-insert into public.products (title, slug, description, price, stock_quantity, image_url) values
+insert into public.products (title, slug, type, description, price, stock_quantity, image_url) values
   (
     'منظومة تحلية مياه 7 مراحل R.O',
     'ro-system-7-stage',
+    'منظومات R.O',
     'نظام التناضح العكسي المتكامل مع خزان ضغط 12 لتر، صنبور ستانلس ومضخة كورية صامتة مع كفالة سنة كاملة.',
     185000,
     12,
@@ -80,6 +82,7 @@ insert into public.products (title, slug, description, price, stock_quantity, im
   (
     'طقم شمعات 3 مراحل أولى Filter Max',
     'filter-max-3-stage-set',
+    'شمعات تبديل',
     'مرحلة أولى بولي بروبلين 5 مايكرون + كربون نشط حبيبي + كربون صلب لإزالة الشوائب والرائحة والكلور.',
     15000,
     45,
@@ -88,6 +91,7 @@ insert into public.products (title, slug, description, price, stock_quantity, im
   (
     'ممبرين تحلية تايواني Vontron 75GPD',
     'vontron-ro-membrane-75gpd',
+    'الممبرين والمضخات',
     'غشاء التناضح العكسي عالي الدقة لعزل الأملاح الذائبة والمعادن الثقيلة بنسبة تصل إلى 98%.',
     25000,
     6,
@@ -96,6 +100,7 @@ insert into public.products (title, slug, description, price, stock_quantity, im
   (
     'مضخة ماء كورية للمنظومات المنزلية 24V',
     'ro-booster-pump-24v',
+    'الممبرين والمضخات',
     'مضخة ضغط قوية صامتة ومحول كهربائي أصلي تتحمل ضغط الاستخدام المستمر في العراق.',
     35000,
     18,
@@ -104,6 +109,7 @@ insert into public.products (title, slug, description, price, stock_quantity, im
   (
     'جهاز فحص نسبة الأملاح الرقمي TDS Meter',
     'digital-tds-meter',
+    'أجهزة وملحقات',
     'لقياس نقاوة المياه والأملاح الذائبة في ثوانٍ معدودة بدقة متناهية وشاشة رقمية واضحة.',
     18000,
     9,
