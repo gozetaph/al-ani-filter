@@ -123,30 +123,51 @@ export default function AdminOrdersPage() {
                   </td>
 
                   <td className="p-3.5 text-center">
-                    <div className="inline-flex items-center gap-1.5">
+                    <div className="inline-flex items-center gap-1.5 flex-wrap justify-center">
                       <button
                         onClick={() => setSelectedWaybill(ord)}
-                        className="bg-slate-900 hover:bg-black text-white text-[11px] font-semibold px-3 py-1.5 rounded-lg shadow-xs transition"
+                        className="bg-slate-900 hover:bg-black text-white text-[11px] font-semibold px-2.5 py-1.5 rounded-lg shadow-xs transition"
                       >
-                        🖨️ بوليصة AWB
+                        🖨️ AWB
                       </button>
 
+                      {/* 1. Notify Customer on WhatsApp */}
+                      <a
+                        href={`https://wa.me/${ord.phone.replace(/[^0-9]/g, "").replace(/^0/, "964")}?text=${encodeURIComponent(
+                          `مرحباً ${ord.customer_name}،\n` +
+                          `طردك رقم [${ord.id}] من محل العاني للفلتر تم تسليمه للمندوب وهو في الطريق إليك 🚗\n` +
+                          `📍 الوجهة: ${ord.governorate}\n` +
+                          `💵 المبلغ المطلوب نقداً عند الاستلام: ${formatIQD(ord.total_amount)}\n` +
+                          `شكراً لاختيارك محل العاني للفلتر!`
+                        )}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-semibold px-2.5 py-1.5 rounded-lg shadow-xs transition"
+                      >
+                        إشعار الزبون 💬
+                      </a>
+
+                      {/* 2. Dispatch to Delivery Driver */}
                       <a
                         href={`https://wa.me/?text=${encodeURIComponent(
-                          `*طلب توصيل - العاني للفلتر*\n` +
-                          `رقم الطلب: #${ord.id}\n` +
-                          `اسم الزبون: ${ord.customer_name}\n` +
-                          `الهاتف: ${ord.phone}\n` +
-                          `المحافظة: ${ord.governorate}\n` +
-                          `العنوان: ${ord.detailed_address}\n` +
-                          `المواد: ${ord.notes}\n` +
-                          `*المبلغ المطلوب تحصيله (COD): ${formatIQD(ord.total_amount)}*`
+                          `🚚 إرسال طرد جديد - محل العاني للفلتر\n` +
+                          `───────────────────────\n` +
+                          `📦 كود الطرد: ${ord.id}\n` +
+                          `👤 المستلم: ${ord.customer_name}\n` +
+                          `📱 هاتف الزبون: ${ord.phone}\n` +
+                          `📍 المحافظة: ${ord.governorate}\n` +
+                          `🏠 العنوان بالتفصيل: ${ord.detailed_address}\n` +
+                          `📋 محتويات الطرد: ${ord.notes}\n` +
+                          `───────────────────────\n` +
+                          `💵 المبلغ المطلوب تحصيله نقداً: ${formatIQD(ord.total_amount)}\n` +
+                          `───────────────────────\n` +
+                          `⚠️ ملاحظة للمندوب: يرجى فحص الطرد مع الزبون عند الباب قبل استلام المبلغ.`
                         )}`}
                         target="_blank"
                         rel="noreferrer"
                         className="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-semibold px-2.5 py-1.5 rounded-lg shadow-xs transition"
                       >
-                        💬 واتساب
+                        للسائق 🚗
                       </a>
                     </div>
                   </td>
