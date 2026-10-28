@@ -4,6 +4,7 @@ export interface Product {
   slug?: string;
   description: string;
   category?: string;
+  type?: string;
   badge?: string;
   price: number;
   stock_quantity: number;

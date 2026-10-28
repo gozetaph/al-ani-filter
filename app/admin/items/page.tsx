@@ -12,8 +12,9 @@ export default function AdminItemsPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
-  // Form State: Name, Description, Price, Stock, Picture ("this is it")
+  // Form State: Name, Type, Description, Price, Stock, Picture
   const [name, setName] = useState("");
+  const [type, setType] = useState("منظومات R.O");
   const [desc, setDesc] = useState("");
   const [price, setPrice] = useState(15000);
   const [stock, setStock] = useState(10);
@@ -77,6 +78,8 @@ export default function AdminItemsPage() {
       title: name,
       slug: "item-" + Date.now(),
       description: desc,
+      type: type,
+      category: type,
       price: Number(price),
       stock_quantity: Number(stock),
       image_url: finalImageUrl,
@@ -91,6 +94,7 @@ export default function AdminItemsPage() {
           title: newItem.title,
           slug: newItem.slug,
           description: newItem.description,
+          type: newItem.type,
           price: newItem.price,
           stock_quantity: newItem.stock_quantity,
           image_url: newItem.image_url,
@@ -107,6 +111,7 @@ export default function AdminItemsPage() {
 
     // Reset Form
     setName("");
+    setType("منظومات R.O");
     setDesc("");
     setPrice(15000);
     setStock(10);
@@ -123,6 +128,18 @@ export default function AdminItemsPage() {
     );
   };
 
+  const deleteItem = async (id: string) => {
+    if (!confirm("هل أنت متأكد من حذف هذه المادة نهائياً من المتجر والمخزن؟")) return;
+
+    try {
+      await supabase.from("products").delete().eq("id", id);
+    } catch (err) {
+      console.error("Delete DB error:", err);
+    }
+
+    setItems((prev) => prev.filter((i) => i.id !== id));
+  };
+
   return (
     <div className="space-y-6">
       
@@ -133,7 +150,7 @@ export default function AdminItemsPage() {
             إدارة المواد والمنتجات
           </h1>
           <p className="text-xs text-slate-500 mt-0.5">
-            عرض المواد المتوفرة وتحديث المخزون وإضافة بضاعة جديدة
+            عرض المواد المتوفرة، تصنيفها، وتحديث المخزون وإضافة بضاعة جديدة
           </p>
         </div>
 
@@ -159,10 +176,11 @@ export default function AdminItemsPage() {
               <tr>
                 <th className="p-3.5">صورة المادة</th>
                 <th className="p-3.5">اسم المادة</th>
-                <th className="p-3.5">الوصف</th>
+                <th className="p-3.5">النوع / التصنيف</th>
                 <th className="p-3.5">السعر (IQD)</th>
                 <th className="p-3.5">المتوفر بالمخزن</th>
-                <th className="p-3.5 text-center">تعديل الكمية</th>
+                <th className="p-3.5 text-center">الكمية</th>
+                <th className="p-3.5 text-center">إجراءات</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-slate-700">
@@ -181,9 +199,14 @@ export default function AdminItemsPage() {
                   </td>
                   <td className="p-3.5 font-bold text-slate-900 text-xs sm:text-sm">
                     {item.title}
+                    <span className="block text-[11px] text-slate-400 font-normal line-clamp-1 mt-0.5">
+                      {item.description}
+                    </span>
                   </td>
-                  <td className="p-3.5 text-slate-500 text-xs max-w-sm line-clamp-2">
-                    {item.description}
+                  <td className="p-3.5">
+                    <span className="bg-blue-50 text-[#004bb5] font-bold text-[11px] px-2.5 py-1 rounded-md border border-blue-200/80">
+                      {item.type || item.category || "عام"}
+                    </span>
                   </td>
                   <td className="p-3.5 font-extrabold text-[#004bb5] text-xs sm:text-sm">
                     {formatIQD(item.price)}
@@ -221,6 +244,14 @@ export default function AdminItemsPage() {
                       </button>
                     </div>
                   </td>
+                  <td className="p-3.5 text-center">
+                    <button
+                      onClick={() => deleteItem(item.id)}
+                      className="text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-xs font-bold px-3 py-1.5 rounded-lg transition"
+                    >
+                      حذف
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -228,7 +259,7 @@ export default function AdminItemsPage() {
         </div>
       </div>
 
-      {/* ADD ITEM MODAL ("Name, Description, Picture, Price, Stock - This is it") */}
+      {/* ADD ITEM MODAL */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden">
@@ -243,97 +274,113 @@ export default function AdminItemsPage() {
               </button>
             </div>
 
-            <form onSubmit={handleAddItem} className="p-5 space-y-3.5 text-xs">
-              {/* 1. Name */}
+            <form onSubmit={handleAddItem} className="p-5 space-y-4 text-xs">
+              
               <div>
-                <label className="block font-bold text-slate-800 mb-1">اسم المادة *</label>
+                <label className="block font-bold text-slate-700 mb-1">اسم المادة *</label>
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="مثال: شمعة كربون نشط تايوانية أصلية"
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-[#004bb5] focus:outline-none"
+                  placeholder="مثال: فلتر 7 مراحل تايواني أصلي"
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs focus:bg-white transition"
                 />
               </div>
 
-              {/* 2. Description */}
               <div>
-                <label className="block font-bold text-slate-800 mb-1">وصف المادة *</label>
-                <textarea
-                  required
-                  rows={3}
-                  value={desc}
-                  onChange={(e) => setDesc(e.target.value)}
-                  placeholder="اكتب مواصفات المادة، كفاءة الترشيح، والضمان..."
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-[#004bb5] focus:outline-none"
-                />
-              </div>
-
-              {/* Price and Stock */}
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block font-bold text-slate-800 mb-1">السعر (د.ع) *</label>
-                  <input
-                    type="number"
-                    required
-                    min={0}
-                    value={price}
-                    onChange={(e) => setPrice(Number(e.target.value))}
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-[#004bb5] focus:outline-none font-mono"
-                  />
-                </div>
-                <div>
-                  <label className="block font-bold text-slate-800 mb-1">الكمية بالمخزن *</label>
-                  <input
-                    type="number"
-                    required
-                    min={1}
-                    value={stock}
-                    onChange={(e) => setStock(Number(e.target.value))}
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-[#004bb5] focus:outline-none font-mono"
-                  />
-                </div>
-              </div>
-
-              {/* 3. Picture Upload */}
-              <div>
-                <label className="block font-bold text-slate-800 mb-1">صورة المادة (رفع ملف أو رابط) *</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) {
-                      setImageFile(e.target.files[0]);
-                    }
-                  }}
-                  className="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-[#004bb5] hover:file:bg-blue-100 mb-2"
-                />
+                <label className="block font-bold text-slate-700 mb-1">النوع / التصنيف *</label>
                 <input
                   type="text"
-                  value={imageUrl}
-                  onChange={(e) => setImageUrl(e.target.value)}
-                  placeholder="أو ضع رابط صورة جاهز: /products/ro-system.jpg"
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2 text-[11px] text-slate-500 font-mono"
+                  required
+                  value={type}
+                  onChange={(e) => setType(e.target.value)}
+                  placeholder="مثال: منظومات R.O أو شمعات تبديل"
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs focus:bg-white transition"
+                />
+                <span className="text-[10px] text-slate-400 mt-1 block">
+                  أي تصنيف تكتبه هنا سيظهر تلقائياً كزر فلترة في واجهة المتجر.
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">السعر بالدينار (IQD) *</label>
+                  <input
+                    type="number"
+                    required
+                    value={price}
+                    onChange={(e) => setPrice(Number(e.target.value))}
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs font-mono font-bold focus:bg-white transition"
+                  />
+                </div>
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">الكمية بالمخزن *</label>
+                  <input
+                    type="number"
+                    required
+                    value={stock}
+                    onChange={(e) => setStock(Number(e.target.value))}
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs font-mono font-bold focus:bg-white transition"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">وصف المادة</label>
+                <textarea
+                  rows={2}
+                  value={desc}
+                  onChange={(e) => setDesc(e.target.value)}
+                  placeholder="المواصفات، الكفالة، وأماكن التركيب..."
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs focus:bg-white transition"
                 />
               </div>
 
-              <div className="pt-2 flex gap-2">
-                <button
-                  type="submit"
-                  disabled={isUploading}
-                  className="flex-1 min-h-[44px] bg-[#004bb5] hover:bg-[#00388a] disabled:opacity-60 text-white font-bold rounded-xl text-xs shadow-xs transition"
-                >
-                  {isUploading ? "جاري الحفظ ورفع الصورة..." : "حفظ المادة في المخزن"}
-                </button>
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">صورة المادة</label>
+                <div className="space-y-2">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+                    className="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-[#004bb5] hover:file:bg-blue-100"
+                  />
+                  
+                  <div className="text-[11px] text-slate-400">
+                    أو اختر صورة جاهزة من المنتجات المرفوعة:
+                  </div>
+                  <select
+                    value={imageUrl}
+                    onChange={(e) => setImageUrl(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2 text-xs"
+                  >
+                    <option value="/products/ro-system.jpg">منظومة R.O 7 مراحل</option>
+                    <option value="/products/cartridges.png">شمعات Filter Max</option>
+                    <option value="/products/membrane.png">غشاء ممبرين 75G</option>
+                    <option value="/products/pump.png">مضخة ماء 24V</option>
+                    <option value="/products/tds-meter.png">جهاز قياس TDS</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-slate-200 flex items-center justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="px-4 py-2.5 border border-slate-300 rounded-xl text-slate-600 hover:bg-slate-100"
+                  className="px-4 py-2 rounded-xl text-slate-600 hover:bg-slate-100 font-semibold"
                 >
                   إلغاء
                 </button>
+                <button
+                  type="submit"
+                  disabled={isUploading}
+                  className="bg-[#004bb5] hover:bg-[#00388a] text-white px-5 py-2 rounded-xl font-bold shadow-xs transition"
+                >
+                  {isUploading ? "جاري الإضافة والرفع..." : "حفظ المادة"}
+                </button>
               </div>
+
             </form>
 
           </div>
