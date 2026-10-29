@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <rect width="400" height="400" rx="24" fill="#f8fafc"/>
+  <g transform="translate(100, 50)">
+    <rect x="20" y="20" width="160" height="260" rx="18" fill="#0f172a" stroke="#38bdf8" stroke-width="4"/>
+    <circle cx="100" cy="50" r="16" fill="none" stroke="#38bdf8" stroke-width="3"/>
+    <path d="M35 80 H165 M35 100 H165 M35 220 H165 M35 240 H165" stroke="#1e293b" stroke-width="4"/>
+    <rect x="35" y="120" width="130" height="75" rx="8" fill="#004bb5"/>
+    <text x="100" y="150" fill="#ffffff" font-size="20" font-weight="900" font-family="system-ui, sans-serif" text-anchor="middle">ASAS</text>
+    <text x="100" y="170" fill="#bae6fd" font-size="11" font-weight="700" font-family="system-ui, monospace" text-anchor="middle">HY-620 • HYDRAULIC</text>
+    <text x="100" y="185" fill="#e0f2fe" font-size="9" font-family="system-ui, sans-serif" text-anchor="middle">HIGH PRESSURE 420 BAR</text>
+  </g>
+</svg>

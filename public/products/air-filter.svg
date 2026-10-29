@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <rect width="400" height="400" rx="24" fill="#f8fafc"/>
+  <defs>
+    <linearGradient id="airPleat" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="50%" stop-color="#d97706"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(80, 80)">
+    <rect x="0" y="0" width="240" height="240" rx="20" fill="#ea580c" stroke="#c2410c" stroke-width="6"/>
+    <rect x="18" y="18" width="204" height="204" rx="10" fill="#78350f"/>
+    <path d="M26 30 L40 210 L54 30 L68 210 L82 30 L96 210 L110 30 L124 210 L138 30 L152 210 L166 30 L180 210 L194 30 L208 210 L214 30" fill="none" stroke="#fbbf24" stroke-width="7" stroke-linejoin="round"/>
+    <rect x="18" y="110" width="204" height="16" fill="#ea580c" opacity="0.9"/>
+    <text x="120" y="122" fill="#ffffff" font-size="10" font-weight="900" font-family="system-ui, sans-serif" text-anchor="middle">ASAS HF-845 HEAVY DUTY AIR</text>
+  </g>
+</svg>
