@@ -13,6 +13,7 @@ export default function StorefrontPage() {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [activeCategory, setActiveCategory] = useState("الكل");
+  const [searchQuery, setSearchQuery] = useState("");
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
   const [orderConfirmed, setOrderConfirmed] = useState<{ id: string; total: number; gov: string; waUrl: string } | null>(null);
 
@@ -68,9 +69,21 @@ export default function StorefrontPage() {
 
   const categories = ["الكل", ...Array.from(new Set(products.map((p) => p.type || p.category || "أخرى")))];
 
-  const filteredProducts = activeCategory === "الكل" 
-    ? products 
-    : products.filter((p) => (p.type || p.category) === activeCategory);
+  const filteredProducts = products.filter((prod) => {
+    const matchesCategory =
+      activeCategory === "الكل" ||
+      (prod.type || prod.category) === activeCategory;
+
+    const query = searchQuery.trim().toLowerCase();
+    const matchesSearch =
+      !query ||
+      prod.title.toLowerCase().includes(query) ||
+      (prod.description && prod.description.toLowerCase().includes(query)) ||
+      (prod.type && prod.type.toLowerCase().includes(query)) ||
+      (prod.slug && prod.slug.toLowerCase().includes(query));
+
+    return matchesCategory && matchesSearch;
+  });
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartSubtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
@@ -340,12 +353,71 @@ export default function StorefrontPage() {
       <section id="catalogSection" className="max-w-7xl mx-auto px-4 sm:px-8 py-8 w-full">
         
         <div className="space-y-4 mb-8">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-black text-zinc-900">المواد والقطع المتوفرة</h2>
-            <p className="text-xs text-zinc-500 mt-0.5">اختر المادة وأضفها للسلة للدفع عند الاستلام</p>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+            <div>
+              <h2 className="text-xl sm:text-2xl font-black text-zinc-900">المواد والقطع المتوفرة</h2>
+              <p className="text-xs text-zinc-500 mt-0.5">اختر الفلتر المناسب أو ابحث برقم الكود وموديل المحرك</p>
+            </div>
+            <div className="text-xs text-zinc-500 font-medium">
+              النتائج المتوفرة: <span className="font-mono font-bold text-[#004bb5]">{filteredProducts.length}</span> من <span className="font-mono">{products.length}</span>
+            </div>
           </div>
 
-          {/* Dynamic Category Pills */}
+          {/* Search Bar & Dropdown Filter Row */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full pt-1">
+            
+            {/* 1. Search Bar */}
+            <div className="relative flex-1">
+              <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-zinc-400">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="ابحث برقم القطعة (مثل SP-102)، اسم الفلتر، أو نوع المحرك..."
+                className="w-full amazing-glass-pill pr-10 pl-10 py-3 rounded-2xl text-xs sm:text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#004bb5]/40 transition"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-xs font-bold text-zinc-400 hover:text-zinc-700 transition cursor-pointer"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+
+            {/* 2. Dropdown Filter Menu */}
+            <div className="relative shrink-0 sm:w-60">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+              <select
+                value={activeCategory}
+                onChange={(e) => {
+                  triggerHaptic("light");
+                  setActiveCategory(e.target.value);
+                }}
+                className="w-full amazing-glass-pill pr-4 pl-10 py-3 rounded-2xl text-xs sm:text-sm font-bold text-zinc-800 bg-white/60 focus:outline-none focus:ring-2 focus:ring-[#004bb5]/40 appearance-none cursor-pointer transition shadow-2xs"
+              >
+                <option value="الكل" className="bg-white text-zinc-800">تصفية حسب: كافة الأصناف (الكل)</option>
+                {categories.filter(c => c !== "الكل").map((cat) => (
+                  <option key={cat} value={cat} className="bg-white text-zinc-800">
+                    تصفية: {cat}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+          </div>
+
+          {/* Quick Category Pills Row */}
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
             {categories.map((cat) => {
               const isActive = cat === activeCategory;
@@ -356,7 +428,7 @@ export default function StorefrontPage() {
                     triggerHaptic("light");
                     setActiveCategory(cat);
                   }}
-                  className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                     isActive ? "amazing-glass-pill-active" : "amazing-glass-pill text-zinc-800"
                   }`}
                 >
@@ -364,12 +436,49 @@ export default function StorefrontPage() {
                 </button>
               );
             })}
+            
+            {(activeCategory !== "الكل" || searchQuery !== "") && (
+              <button
+                onClick={() => {
+                  triggerHaptic("light");
+                  setActiveCategory("الكل");
+                  setSearchQuery("");
+                }}
+                className="text-[11px] font-bold text-rose-600 hover:text-rose-700 px-2 py-1 rounded-lg transition whitespace-nowrap cursor-pointer flex items-center gap-1"
+              >
+                <span>إعادة ضبط ↺</span>
+              </button>
+            )}
           </div>
         </div>
 
-        {/* Responsive Grid: 2 Columns on Mobile, 4 Columns on Laptop */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-          {filteredProducts.map((prod) => (
+        {/* Empty State when no products match */}
+        {filteredProducts.length === 0 ? (
+          <div className="amazing-glass-card rounded-3xl p-10 text-center flex flex-col items-center justify-center my-6 max-w-md mx-auto space-y-3">
+            <div className="w-14 h-14 rounded-2xl bg-[#004bb5]/10 text-[#004bb5] flex items-center justify-center text-2xl font-bold">
+              🔍
+            </div>
+            <h3 className="font-bold text-base text-zinc-900">
+              لم يتم العثور على فلاتر مطابقة
+            </h3>
+            <p className="text-xs text-zinc-500 leading-relaxed max-w-xs">
+              جرّب كتابة رقم قطعة OEM آخر أو اختر صنفاً مختلفاً من قائمة الفلاتر
+            </p>
+            <button
+              onClick={() => {
+                triggerHaptic("light");
+                setSearchQuery("");
+                setActiveCategory("الكل");
+              }}
+              className="mt-2 px-6 py-2.5 rounded-full bg-[#004bb5] text-white text-xs font-bold shadow-md hover:bg-[#003685] transition cursor-pointer"
+            >
+              عرض كافة الفلاتر المتوفرة
+            </button>
+          </div>
+        ) : (
+          /* Responsive Grid: 2 Columns on Mobile, 4 Columns on Laptop */
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+            {filteredProducts.map((prod) => (
             <div 
               key={prod.id} 
               className="amazing-glass-card rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 flex flex-col justify-between group cursor-pointer"
@@ -413,7 +522,8 @@ export default function StorefrontPage() {
               </div>
             </div>
           ))}
-        </div>
+          </div>
+        )}
 
       </section>
 
