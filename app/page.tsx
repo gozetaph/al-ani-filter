@@ -286,7 +286,7 @@ export default function StorefrontPage() {
             </h1>
 
             <p className="text-sm sm:text-base text-zinc-600 leading-relaxed max-w-xl font-normal">
-              وكالة فلاتر أساس ASAŞ وفلاتر معتمدة (دهن، هواء، كاز ديزل، سبيتر وهايدروليك). مطابقة دقيقة حسب رقم القطعة OEM ونوع الآلية، مع معاينة الطرد عند الباب والتوصيل لكافة المحافظات والدفع نقداً عند الاستلام.
+              وكالة فلاتر أساس (ASAS) وفلاتر معتمدة (دهن، هواء، كاز ديزل، سبيتر وهايدروليك). مطابقة دقيقة حسب رقم القطعة OEM ونوع الآلية، مع معاينة الطرد عند الباب والتوصيل لكافة المحافظات والدفع نقداً عند الاستلام.
             </p>
 
             <div className="pt-2 flex flex-wrap items-center gap-3">
@@ -326,7 +326,7 @@ export default function StorefrontPage() {
               <div className="h-64 sm:h-72 w-full flex items-center justify-center p-2">
                 <Image 
                   src="/products/oil-filter.svg" 
-                  alt="فلتر دهن محرك أصلي ASAŞ" 
+                  alt="فلتر دهن محرك أصلي أساس ASAS" 
                   width={340} 
                   height={340} 
                   className="h-full w-auto object-contain drop-shadow-md"
@@ -336,7 +336,7 @@ export default function StorefrontPage() {
 
               <div className="w-full mt-4 pt-4 border-t border-zinc-100 flex items-center justify-between">
                 <div>
-                  <span className="text-xs font-bold text-zinc-900 block">فلتر دهن محرك أصلي ASAŞ</span>
+                  <span className="text-xs font-bold text-zinc-900 block">فلتر دهن محرك أصلي أساس ASAS</span>
                   <span className="text-[11px] text-zinc-500">صمام مانع للرجوع • ترشيح OEM</span>
                 </div>
                 <span className="text-sm font-extrabold text-[#004bb5] font-mono">12,000 د.ع</span>
@@ -417,39 +417,26 @@ export default function StorefrontPage() {
 
           </div>
 
-          {/* Quick Category Pills Row */}
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-            {categories.map((cat) => {
-              const isActive = cat === activeCategory;
-              return (
-                <button
-                  key={cat}
-                  onClick={() => {
-                    triggerHaptic("light");
-                    setActiveCategory(cat);
-                  }}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
-                    isActive ? "amazing-glass-pill-active" : "amazing-glass-pill text-zinc-800"
-                  }`}
-                >
-                  {cat}
-                </button>
-              );
-            })}
-            
-            {(activeCategory !== "الكل" || searchQuery !== "") && (
+          {/* Active Filter Reset Pill (when searching or filtered) */}
+          {(activeCategory !== "الكل" || searchQuery !== "") && (
+            <div className="flex items-center gap-2 pt-0.5">
+              <span className="text-xs text-zinc-500 font-medium">التصفية النشطة:</span>
+              <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-[#004bb5]/10 text-[#004bb5]">
+                {activeCategory !== "الكل" ? activeCategory : `بحث: "${searchQuery}"`}
+              </span>
               <button
+                type="button"
                 onClick={() => {
                   triggerHaptic("light");
                   setActiveCategory("الكل");
                   setSearchQuery("");
                 }}
-                className="text-[11px] font-bold text-rose-600 hover:text-rose-700 px-2 py-1 rounded-lg transition whitespace-nowrap cursor-pointer flex items-center gap-1"
+                className="text-xs font-bold text-rose-600 hover:text-rose-700 px-2 py-1 rounded-lg transition cursor-pointer flex items-center gap-1 bg-rose-50 hover:bg-rose-100"
               >
-                <span>إعادة ضبط ↺</span>
+                <span>إلغاء التصفية ✕</span>
               </button>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
         {/* Empty State when no products match */}
@@ -541,12 +528,12 @@ export default function StorefrontPage() {
             {
               id: 1,
               q: "كيف أتأكد أن الفلتر يطابق سيارتي أو مولدتي أو آليتي؟",
-              a: "يمكنك الاعتماد على رقم القطعة OEM أو رقم كود فلتر أساس ASAŞ، كما يقوم فريقنا بمراجعة الطلب والمطابقة الدقيقة قبل تسليم الشحنة لشركة التوصيل.",
+              a: "يمكنك الاعتماد على رقم القطعة OEM أو رقم كود فلتر أساس ASAS، كما يقوم فريقنا بمراجعة الطلب والمطابقة الدقيقة قبل تسليم الشحنة لشركة التوصيل.",
             },
             {
               id: 2,
               q: "هل الفلاتر أصلية ومعتمدة؟",
-              a: "نعم، نوفر فلاتر أساس ASAŞ التركية الأصلية وماركات عالمية معتمدة مطابقة لمواصفات المصنع الأصلية مع كفاءة ترشيح وحماية تامة للمحرك ونظام الوقود.",
+              a: "نعم، نوفر فلاتر أساس (ASAS) التركية الأصلية وماركات عالمية معتمدة مطابقة لمواصفات المصنع الأصلية مع كفاءة ترشيح وحماية تامة للمحرك ونظام الوقود.",
             },
             {
               id: 3,
@@ -587,66 +574,71 @@ export default function StorefrontPage() {
       {/* 6. CLEAN SHOP FOOTER                                       */}
       {/* ========================================================== */}
       <footer className="mt-auto border-t border-black/[0.06] bg-white py-12 px-4 sm:px-8">
-        <div className="max-w-7xl mx-auto space-y-8">
+        <div className="max-w-7xl mx-auto space-y-6">
           
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-black/[0.06]">
+          {/* Main Footer Glass Card */}
+          <div className="w-full amazing-glass-card rounded-3xl p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-xs">
+            
             {/* Shop Brand & Bio */}
-            <div className="space-y-2 text-center md:text-right">
-              <div className="flex items-center justify-center md:justify-start gap-3" dir="ltr">
-                <Image src="/logo_a_blue_trans.png" alt="A" width={26} height={26} className="h-7 w-auto object-contain" />
-                <span className="font-black text-base text-zinc-900">محل العاني للفلتر</span>
+            <div className="space-y-2 text-center lg:text-right">
+              <div className="flex items-center justify-center lg:justify-start gap-3" dir="ltr">
+                <Image src="/logo_a_blue_trans.png" alt="A" width={32} height={32} className="h-8 w-auto object-contain" />
+                <span className="font-black text-lg text-zinc-900">محل العاني للفلتر</span>
               </div>
-              <p className="text-xs text-zinc-500 max-w-sm">
-                بغداد، العراق • فلاتر أصلية للسيارات والمولدات والمعدات الثقيلة والشاحنات. توصيل لكافة المحافظات والدفع نقداً عند الاستلام.
+              <p className="text-xs text-zinc-500 max-w-md leading-relaxed">
+                بغداد، العراق • وكالة فلاتر أساس معتمدة لكافة أنواع المحركات، الشاحنات، المولدات، والمعدات الثقيلة.
               </p>
             </div>
 
-            {/* Contact Phone Numbers (Strictly in Footer) */}
-            <div className="flex flex-col sm:flex-row items-center gap-3">
+            {/* High-End Dual Contact Buttons (Pic 2 Redesign) */}
+            <div className="flex flex-col sm:flex-row items-center gap-3.5 w-full lg:w-auto">
+              
+              {/* Primary / WhatsApp Button */}
               <a 
                 href="https://wa.me/9647901526221" 
                 target="_blank"
                 rel="noopener noreferrer"
-                className="amazing-glass-card hover:border-[#004bb5]/40 px-4 py-2.5 rounded-2xl flex items-center gap-3 transition group cursor-pointer"
+                className="amazing-glass-pill hover:border-emerald-500/50 hover:bg-emerald-50/20 px-5 py-3.5 rounded-2xl flex items-center gap-3.5 transition-all duration-200 group cursor-pointer shadow-2xs w-full sm:w-auto justify-between sm:justify-start"
                 dir="ltr"
               >
-                <div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-sm font-bold group-hover:bg-emerald-500 group-hover:text-white transition">
-                  📞
+                <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform shrink-0">
+                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.072.376-.044.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086.159.058 1.011.477 1.184.564.173.087.289.13.332.202.043.072.043.419-.101.824z"/>
+                  </svg>
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] text-zinc-400 block font-semibold">الرقم الأساسي / واتساب</span>
-                  <span className="text-xs font-mono font-bold text-zinc-800 tracking-wide">+964 790 152 6221</span>
+                  <span className="text-[10px] text-emerald-600 font-bold block leading-tight">الرقم الأساسي • واتساب</span>
+                  <span className="text-sm font-mono font-black text-zinc-900 tracking-wide block mt-0.5">+964 790 152 6221</span>
                 </div>
               </a>
 
+              {/* Secondary / Direct Call Button */}
               <a 
                 href="tel:+9647710077880" 
-                className="amazing-glass-card hover:border-[#004bb5]/40 px-4 py-2.5 rounded-2xl flex items-center gap-3 transition group cursor-pointer"
+                className="amazing-glass-pill hover:border-[#004bb5]/50 hover:bg-blue-50/20 px-5 py-3.5 rounded-2xl flex items-center gap-3.5 transition-all duration-200 group cursor-pointer shadow-2xs w-full sm:w-auto justify-between sm:justify-start"
                 dir="ltr"
               >
-                <div className="w-8 h-8 rounded-xl bg-blue-500/10 text-[#004bb5] flex items-center justify-center text-sm font-bold group-hover:bg-[#004bb5] group-hover:text-white transition">
-                  📞
+                <div className="w-10 h-10 rounded-xl bg-[#004bb5] text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform shrink-0">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] text-zinc-400 block font-semibold">الرقم الثاني / اتصال</span>
-                  <span className="text-xs font-mono font-bold text-zinc-800 tracking-wide">+964 771 007 7880</span>
+                  <span className="text-[10px] text-[#004bb5] font-bold block leading-tight">الرقم الثاني • اتصال مباشر</span>
+                  <span className="text-sm font-mono font-black text-zinc-900 tracking-wide block mt-0.5">+964 771 007 7880</span>
                 </div>
               </a>
+
             </div>
+
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
-            <div className="flex items-center gap-4">
-              <span>🚚 شحن سريع لـ 18 محافظة عراقية</span>
-              <span>•</span>
-              <span>💵 فحص الطرد قبل الدفع نقداً</span>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <Link href="/admin" className="text-zinc-400 hover:text-zinc-800 transition text-[11px] font-semibold flex items-center gap-1">
-                <span>⚙️ لوحة الإدارة</span>
-              </Link>
-            </div>
+          {/* Bottom Bar: Admin Portal Link Only (Pic 1 Removed) */}
+          <div className="flex items-center justify-between text-xs text-zinc-400 px-2">
+            <span>© {new Date().getFullYear()} محل العاني للفلتر • جميع الحقوق محفوظة</span>
+            <Link href="/admin" className="text-zinc-400 hover:text-[#004bb5] transition text-xs font-semibold flex items-center gap-1.5 cursor-pointer">
+              <span>⚙️ لوحة الإدارة</span>
+            </Link>
           </div>
 
         </div>
