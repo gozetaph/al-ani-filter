@@ -1,7 +1,7 @@
 [
   {
     "id": "asas-1",
-    "title": "فلتر فلاتر دهن (زيت) أصلي أساس SP 001",
+    "title": "فلتر دهن (زيت) أصلي أساس SP 001",
     "slug": "asas-sp-001",
     "description": "فلتر فلاتر دهن (زيت) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 85 مم • القطر الخارجي: 76 مم • التسنين: 3/4\"-16 UNF متوافق مع محركات وآليات: Toyota Hilux، Toyota Land Cruiser، Mitsubishi Pajero مطابق لأرقام المصنع: Mann W 68/3 - Toyota 90915-10001 - Fleetguard LF3644",
     "category": "oil",
@@ -25,12 +25,58 @@
     "specs": {
       "height": 85,
       "outer": 76,
-      "thread": "3/4\"-16 UNF"
-    }
+      "thread": "3/4\"-16 UNF",
+      "height_display": "85 مم",
+      "outer_display": "76 مم"
+    },
+    "clean_type": "فلتر دهن (زيت)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 001"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (زيت)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "85 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "76 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "3/4\"-16 UNF"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Toyota Hilux, Toyota Land Cruiser, Mitsubishi Pajero"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann W 68/3, Toyota 90915-10001, Fleetguard LF3644"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (زيت) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-2",
-    "title": "فلتر فلاتر دهن (زيت) أصلي أساس SP 002 HT",
+    "title": "فلتر دهن (زيت) أصلي أساس SP 002 HT",
     "slug": "asas-sp-002-ht",
     "description": "فلتر فلاتر دهن (زيت) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 75 مم • القطر الخارجي: 68 مم • التسنين: M20x1.5 متوافق مع محركات وآليات: Nissan Patrol، Subaru Forester، Renault Duster مطابق لأرقام المصنع: Mann W 67/1 - Nissan 15208-65F00",
     "category": "oil",
@@ -53,12 +99,58 @@
     "specs": {
       "height": 75,
       "outer": 68,
-      "thread": "M20x1.5"
-    }
+      "thread": "M20x1.5",
+      "height_display": "75 مم",
+      "outer_display": "68 مم"
+    },
+    "clean_type": "فلتر دهن (زيت)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 002 HT"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (زيت)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "75 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "68 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "M20x1.5"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Nissan Patrol, Subaru Forester, Renault Duster"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann W 67/1, Nissan 15208-65F00"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (زيت) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-3",
-    "title": "فلتر فلاتر دهن (زيت) أصلي أساس SP 004",
+    "title": "فلتر دهن (زيت) أصلي أساس SP 004",
     "slug": "asas-sp-004",
     "description": "فلتر فلاتر دهن (زيت) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 138 مم • القطر الخارجي: 93 مم • التسنين: 3/4\"-16 UNF متوافق مع محركات وآليات: Toyota Land Cruiser V8 Diesel، Toyota Coaster، Lexus LX570 مطابق لأرقام المصنع: Mann W 940/25 - Toyota 90915-30002",
     "category": "oil",
@@ -81,12 +173,58 @@
     "specs": {
       "height": 138,
       "outer": 93,
-      "thread": "3/4\"-16 UNF"
-    }
+      "thread": "3/4\"-16 UNF",
+      "height_display": "138 مم",
+      "outer_display": "93 مم"
+    },
+    "clean_type": "فلتر دهن (زيت)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 004"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (زيت)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "138 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "93 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "3/4\"-16 UNF"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Toyota Land Cruiser V8 Diesel, Toyota Coaster, Lexus LX570"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann W 940/25, Toyota 90915-30002"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (زيت) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-4",
-    "title": "فلتر فلاتر دهن (زيت) أصلي أساس SP 005",
+    "title": "فلتر دهن (زيت) أصلي أساس SP 005",
     "slug": "asas-sp-005",
     "description": "فلتر فلاتر دهن (زيت) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 142 مم • القطر الخارجي: 93 مم • التسنين: M22x1.5 متوافق مع محركات وآليات: Ford F-150، Chevrolet Tahoe، GMC Yukon مطابق لأرقام المصنع: Mann W 920/45 - Baldwin B1441",
     "category": "oil",
@@ -109,12 +247,58 @@
     "specs": {
       "height": 142,
       "outer": 93,
-      "thread": "M22x1.5"
-    }
+      "thread": "M22x1.5",
+      "height_display": "142 مم",
+      "outer_display": "93 مم"
+    },
+    "clean_type": "فلتر دهن (زيت)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 005"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (زيت)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "142 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "93 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "M22x1.5"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Ford F-150, Chevrolet Tahoe, GMC Yukon"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann W 920/45, Baldwin B1441"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (زيت) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-5",
-    "title": "فلتر فلاتر دهن (زيت) أصلي أساس SP 009",
+    "title": "فلتر دهن (زيت) أصلي أساس SP 009",
     "slug": "asas-sp-009",
     "description": "فلتر فلاتر دهن (زيت) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 90 مم • القطر الخارجي: 76 مم • التسنين: M20x1.5 متوافق مع محركات وآليات: Hyundai Santa Fe، Kia Sorento، Hyundai Tucson مطابق لأرقام المصنع: Mann W 811/80 - Hyundai 26300-35505",
     "category": "oil",
@@ -137,12 +321,58 @@
     "specs": {
       "height": 90,
       "outer": 76,
-      "thread": "M20x1.5"
-    }
+      "thread": "M20x1.5",
+      "height_display": "90 مم",
+      "outer_display": "76 مم"
+    },
+    "clean_type": "فلتر دهن (زيت)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 009"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (زيت)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "90 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "76 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "M20x1.5"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Hyundai Santa Fe, Kia Sorento, Hyundai Tucson"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann W 811/80, Hyundai 26300-35505"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (زيت) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-6",
-    "title": "فلتر فلاتر دهن (زيت) أصلي أساس SP 010",
+    "title": "فلتر دهن (زيت) أصلي أساس SP 010",
     "slug": "asas-sp-010",
     "description": "فلتر فلاتر دهن (زيت) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 100 مم • القطر الخارجي: 80 مم • التسنين: 3/4\"-16 UNF متوافق مع محركات وآليات: Isuzu D-Max، Toyota Hiace Diesel مطابق لأرقام المصنع: Mann W 818/8 - Isuzu 8-94430983-0",
     "category": "oil",
@@ -164,12 +394,58 @@
     "specs": {
       "height": 100,
       "outer": 80,
-      "thread": "3/4\"-16 UNF"
-    }
+      "thread": "3/4\"-16 UNF",
+      "height_display": "100 مم",
+      "outer_display": "80 مم"
+    },
+    "clean_type": "فلتر دهن (زيت)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 010"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (زيت)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "100 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "80 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "3/4\"-16 UNF"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Isuzu D-Max, Toyota Hiace Diesel"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann W 818/8, Isuzu 8-94430983-0"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (زيت) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-7",
-    "title": "فلتر فلاتر دهن (زيت) أصلي أساس SP 016",
+    "title": "فلتر دهن (زيت) أصلي أساس SP 016",
     "slug": "asas-sp-016",
     "description": "فلتر فلاتر دهن (زيت) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 175 مم • القطر الخارجي: 93 مم • التسنين: 1\"-12 UNF متوافق مع محركات وآليات: Cummins 6BT 5.9L، Perkins 1104C، JCB 3CX مطابق لأرقام المصنع: Fleetguard LF16015 - Mann W 950/38 - Donaldson P558615",
     "category": "oil",
@@ -193,12 +469,58 @@
     "specs": {
       "height": 175,
       "outer": 93,
-      "thread": "1\"-12 UNF"
-    }
+      "thread": "1\"-12 UNF",
+      "height_display": "175 مم",
+      "outer_display": "93 مم"
+    },
+    "clean_type": "فلتر دهن (زيت)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 016"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (زيت)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "175 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "93 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "1\"-12 UNF"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Cummins 6BT 5.9L, Perkins 1104C, JCB 3CX"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Fleetguard LF16015, Mann W 950/38, Donaldson P558615"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (زيت) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-8",
-    "title": "فلتر فلاتر دهن (زيت) أصلي أساس SP 022",
+    "title": "فلتر دهن (زيت) أصلي أساس SP 022",
     "slug": "asas-sp-022",
     "description": "فلتر فلاتر دهن (زيت) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 210 مم • القطر الخارجي: 108 مم • التسنين: 1 1/8\"-16 UN متوافق مع محركات وآليات: Mercedes Actros MP2/MP3، Mercedes Axor، MAN TGA مطابق لأرقام المصنع: Mann W 11 102/36 - Mercedes A0001802909",
     "category": "oil",
@@ -221,12 +543,58 @@
     "specs": {
       "height": 210,
       "outer": 108,
-      "thread": "1 1/8\"-16 UN"
-    }
+      "thread": "1 1/8\"-16 UN",
+      "height_display": "210 مم",
+      "outer_display": "108 مم"
+    },
+    "clean_type": "فلتر دهن (زيت)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 022"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (زيت)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "210 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "108 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "1 1/8\"-16 UN"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Mercedes Actros MP2/MP3, Mercedes Axor, MAN TGA"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann W 11 102/36, Mercedes A0001802909"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (زيت) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-9",
-    "title": "فلتر فلاتر دهن (زيت) أصلي أساس SP 102",
+    "title": "فلتر دهن (زيت) أصلي أساس SP 102",
     "slug": "asas-sp-102",
     "description": "فلتر فلاتر دهن (زيت) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 120 مم • القطر الخارجي: 76 مم • التسنين: M20x1.5 متوافق مع محركات وآليات: Honda Accord، Honda CR-V، Kia Sportage مطابق لأرقام المصنع: Mann W 712/75 - Honda 15400-PLM-A01",
     "category": "oil",
@@ -249,12 +617,58 @@
     "specs": {
       "height": 120,
       "outer": 76,
-      "thread": "M20x1.5"
-    }
+      "thread": "M20x1.5",
+      "height_display": "120 مم",
+      "outer_display": "76 مم"
+    },
+    "clean_type": "فلتر دهن (زيت)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 102"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (زيت)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "120 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "76 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "M20x1.5"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Honda Accord, Honda CR-V, Kia Sportage"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann W 712/75, Honda 15400-PLM-A01"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (زيت) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-10",
-    "title": "فلتر فلاتر دهن (زيت) أصلي أساس SP 140",
+    "title": "فلتر دهن (زيت) أصلي أساس SP 140",
     "slug": "asas-sp-140",
     "description": "فلتر فلاتر دهن (زيت) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 148 مم • القطر الخارجي: 86 مم • التسنين: 3/4\"-16 UNF متوافق مع محركات وآليات: Volkswagen Amarok، Audi Q7 Diesel مطابق لأرقام المصنع: Mann W 840/2 - VW 03L 115 562",
     "category": "oil",
@@ -276,12 +690,58 @@
     "specs": {
       "height": 148,
       "outer": 86,
-      "thread": "3/4\"-16 UNF"
-    }
+      "thread": "3/4\"-16 UNF",
+      "height_display": "148 مم",
+      "outer_display": "86 مم"
+    },
+    "clean_type": "فلتر دهن (زيت)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 140"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (زيت)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "148 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "86 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "3/4\"-16 UNF"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Volkswagen Amarok, Audi Q7 Diesel"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann W 840/2, VW 03L 115 562"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (زيت) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-11",
-    "title": "فلتر فلاتر دهن (زيت) أصلي أساس SP 210",
+    "title": "فلتر دهن (زيت) أصلي أساس SP 210",
     "slug": "asas-sp-210",
     "description": "فلتر فلاتر دهن (زيت) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 260 مم • القطر الخارجي: 118 مم • التسنين: 1 1/8\"-16 UN متوافق مع محركات وآليات: Scania R420، Scania G440، Scania P380 مطابق لأرقام المصنع: Scania 1782025 - Donaldson P550428 - Fleetguard LF3973",
     "category": "oil",
@@ -305,12 +765,58 @@
     "specs": {
       "height": 260,
       "outer": 118,
-      "thread": "1 1/8\"-16 UN"
-    }
+      "thread": "1 1/8\"-16 UN",
+      "height_display": "260 مم",
+      "outer_display": "118 مم"
+    },
+    "clean_type": "فلتر دهن (زيت)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 210"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (زيت)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "260 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "118 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "1 1/8\"-16 UN"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Scania R420, Scania G440, Scania P380"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Scania 1782025, Donaldson P550428, Fleetguard LF3973"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (زيت) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-12",
-    "title": "فلتر فلاتر دهن (زيت) أصلي أساس SP 300",
+    "title": "فلتر دهن (زيت) أصلي أساس SP 300",
     "slug": "asas-sp-300",
     "description": "فلتر فلاتر دهن (زيت) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 285 مم • القطر الخارجي: 120 مم • التسنين: 1 3/8\"-16 UN متوافق مع محركات وآليات: Volvo FH12، Volvo FH16، Volvo FM9 مطابق لأرقام المصنع: Volvo 21707133 - Mann W 11 102 - Fleetguard LF3654",
     "category": "oil",
@@ -334,12 +840,58 @@
     "specs": {
       "height": 285,
       "outer": 120,
-      "thread": "1 3/8\"-16 UN"
-    }
+      "thread": "1 3/8\"-16 UN",
+      "height_display": "285 مم",
+      "outer_display": "120 مم"
+    },
+    "clean_type": "فلتر دهن (زيت)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 300"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (زيت)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "285 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "120 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "1 3/8\"-16 UN"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Volvo FH12, Volvo FH16, Volvo FM9"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Volvo 21707133, Mann W 11 102, Fleetguard LF3654"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (زيت) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-13",
-    "title": "فلتر فلاتر دهن (زيت) أصلي أساس SP 410",
+    "title": "فلتر دهن (زيت) أصلي أساس SP 410",
     "slug": "asas-sp-410",
     "description": "فلتر فلاتر دهن (زيت) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 195 مم • القطر الخارجي: 108 مم • التسنين: 1\"-16 UN متوافق مع محركات وآليات: Caterpillar CAT 320D، CAT 428F، Perkins 1000 Series مطابق لأرقام المصنع: CAT 1R-0716 - Donaldson P554005",
     "category": "oil",
@@ -362,12 +914,58 @@
     "specs": {
       "height": 195,
       "outer": 108,
-      "thread": "1\"-16 UN"
-    }
+      "thread": "1\"-16 UN",
+      "height_display": "195 مم",
+      "outer_display": "108 مم"
+    },
+    "clean_type": "فلتر دهن (زيت)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 410"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (زيت)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "195 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "108 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "1\"-16 UN"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Caterpillar CAT 320D, CAT 428F, Perkins 1000 Series"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "CAT 1R-0716, Donaldson P554005"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (زيت) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-14",
-    "title": "فلتر فلاتر دهن (حشوة) أصلي أساس AS 1",
+    "title": "فلتر دهن (حشوة) أصلي أساس AS 1",
     "slug": "asas-as-1",
     "description": "فلتر فلاتر دهن (حشوة) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 115 مم • القطر الخارجي: 65 مم • القطر الداخلي: 31 مم متوافق مع محركات وآليات: Mercedes E-Class W211، Mercedes C-Class W204، Mercedes ML350 مطابق لأرقام المصنع: Mann HU 718/5 x - Mercedes A2721800009",
     "category": "oil",
@@ -390,12 +988,59 @@
     "specs": {
       "height": 115,
       "outer": 65,
-      "inner": 31
-    }
+      "inner": 31,
+      "height_display": "115 مم",
+      "outer_display": "65 مم",
+      "inner_display": "31 مم"
+    },
+    "clean_type": "فلتر دهن (حشوة)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "AS 1"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (حشوة)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "115 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "65 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "31 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Mercedes E-Class W211, Mercedes C-Class W204, Mercedes ML350"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann HU 718/5 x, Mercedes A2721800009"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (حشوة) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-15",
-    "title": "فلتر فلاتر دهن (حشوة) أصلي أساس AS 2",
+    "title": "فلتر دهن (حشوة) أصلي أساس AS 2",
     "slug": "asas-as-2",
     "description": "فلتر فلاتر دهن (حشوة) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 141 مم • القطر الخارجي: 72 مم • القطر الداخلي: 31 مم متوافق مع محركات وآليات: BMW 5 Series E60، BMW 3 Series E90، BMW X5 E70 مطابق لأرقام المصنع: Mann HU 816 x - BMW 11 42 7 566 327",
     "category": "oil",
@@ -418,12 +1063,59 @@
     "specs": {
       "height": 141,
       "outer": 72,
-      "inner": 31
-    }
+      "inner": 31,
+      "height_display": "141 مم",
+      "outer_display": "72 مم",
+      "inner_display": "31 مم"
+    },
+    "clean_type": "فلتر دهن (حشوة)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "AS 2"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (حشوة)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "141 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "72 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "31 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "BMW 5 Series E60, BMW 3 Series E90, BMW X5 E70"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann HU 816 x, BMW 11 42 7 566 327"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (حشوة) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-16",
-    "title": "فلتر فلاتر دهن (حشوة) أصلي أساس AS 3",
+    "title": "فلتر دهن (حشوة) أصلي أساس AS 3",
     "slug": "asas-as-3",
     "description": "فلتر فلاتر دهن (حشوة) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 102 مم • القطر الخارجي: 64 مم • القطر الداخلي: 29 مم متوافق مع محركات وآليات: Toyota Camry، Toyota RAV4، Toyota Avalon مطابق لأرقام المصنع: Mann HU 6006 z - Toyota 04152-YZZA1",
     "category": "oil",
@@ -446,12 +1138,59 @@
     "specs": {
       "height": 102,
       "outer": 64,
-      "inner": 29
-    }
+      "inner": 29,
+      "height_display": "102 مم",
+      "outer_display": "64 مم",
+      "inner_display": "29 مم"
+    },
+    "clean_type": "فلتر دهن (حشوة)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "AS 3"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (حشوة)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "102 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "64 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "29 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Toyota Camry, Toyota RAV4, Toyota Avalon"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann HU 6006 z, Toyota 04152-YZZA1"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (حشوة) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-17",
-    "title": "فلتر فلاتر دهن (حشوة) أصلي أساس AS 3 X",
+    "title": "فلتر دهن (حشوة) أصلي أساس AS 3 X",
     "slug": "asas-as-3-x",
     "description": "فلتر فلاتر دهن (حشوة) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 118 مم • القطر الخارجي: 70 مم • القطر الداخلي: 28 مم متوافق مع محركات وآليات: Toyota Land Cruiser V6 4.0L، Toyota Prado V6، Lexus RX350 مطابق لأرقام المصنع: Mann HU 7019 z - Toyota 04152-YZZA8",
     "category": "oil",
@@ -474,12 +1213,59 @@
     "specs": {
       "height": 118,
       "outer": 70,
-      "inner": 28
-    }
+      "inner": 28,
+      "height_display": "118 مم",
+      "outer_display": "70 مم",
+      "inner_display": "28 مم"
+    },
+    "clean_type": "فلتر دهن (حشوة)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "AS 3 X"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (حشوة)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "118 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "70 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "28 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Toyota Land Cruiser V6 4.0L, Toyota Prado V6, Lexus RX350"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann HU 7019 z, Toyota 04152-YZZA8"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (حشوة) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-18",
-    "title": "فلتر فلاتر دهن (حشوة) أصلي أساس AS 4 H",
+    "title": "فلتر دهن (حشوة) أصلي أساس AS 4 H",
     "slug": "asas-as-4-h",
     "description": "فلتر فلاتر دهن (حشوة) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 155 مم • القطر الخارجي: 83 مم • القطر الداخلي: 38 مم متوافق مع محركات وآليات: Mercedes Sprinter 315 CDI، Mercedes Vito CDI مطابق لأرقام المصنع: Mann HU 821 x - Mercedes A6511800109",
     "category": "oil",
@@ -501,12 +1287,59 @@
     "specs": {
       "height": 155,
       "outer": 83,
-      "inner": 38
-    }
+      "inner": 38,
+      "height_display": "155 مم",
+      "outer_display": "83 مم",
+      "inner_display": "38 مم"
+    },
+    "clean_type": "فلتر دهن (حشوة)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "AS 4 H"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (حشوة)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "155 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "83 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "38 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Mercedes Sprinter 315 CDI, Mercedes Vito CDI"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann HU 821 x, Mercedes A6511800109"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (حشوة) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-19",
-    "title": "فلتر فلاتر دهن (حشوة) أصلي أساس AS 5",
+    "title": "فلتر دهن (حشوة) أصلي أساس AS 5",
     "slug": "asas-as-5",
     "description": "فلتر فلاتر دهن (حشوة) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 86 مم • القطر الخارجي: 65 مم • القطر الداخلي: 24 مم متوافق مع محركات وآليات: Hyundai Elantra، Kia Cerato، Hyundai Accent مطابق لأرقام المصنع: Mann HU 7027 z - Hyundai 26350-2M000",
     "category": "oil",
@@ -529,12 +1362,59 @@
     "specs": {
       "height": 86,
       "outer": 65,
-      "inner": 24
-    }
+      "inner": 24,
+      "height_display": "86 مم",
+      "outer_display": "65 مم",
+      "inner_display": "24 مم"
+    },
+    "clean_type": "فلتر دهن (حشوة)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "AS 5"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (حشوة)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "86 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "65 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "24 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Hyundai Elantra, Kia Cerato, Hyundai Accent"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann HU 7027 z, Hyundai 26350-2M000"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (حشوة) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-20",
-    "title": "فلتر فلاتر دهن (حشوة) أصلي أساس AS 10",
+    "title": "فلتر دهن (حشوة) أصلي أساس AS 10",
     "slug": "asas-as-10",
     "description": "فلتر فلاتر دهن (حشوة) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 200 مم • القطر الخارجي: 95 مم • القطر الداخلي: 45 مم متوافق مع محركات وآليات: Mercedes Actros MP4 OM471، Mercedes Antos مطابق لأرقام المصنع: Mann HU 10 008 z - Mercedes A4711800009",
     "category": "oil",
@@ -556,12 +1436,59 @@
     "specs": {
       "height": 200,
       "outer": 95,
-      "inner": 45
-    }
+      "inner": 45,
+      "height_display": "200 مم",
+      "outer_display": "95 مم",
+      "inner_display": "45 مم"
+    },
+    "clean_type": "فلتر دهن (حشوة)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "AS 10"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (حشوة)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "200 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "95 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "45 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Mercedes Actros MP4 OM471, Mercedes Antos"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann HU 10 008 z, Mercedes A4711800009"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (حشوة) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-21",
-    "title": "فلتر فلاتر دهن (حشوة) أصلي أساس AS 12",
+    "title": "فلتر دهن (حشوة) أصلي أساس AS 12",
     "slug": "asas-as-12",
     "description": "فلتر فلاتر دهن (حشوة) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 245 مم • القطر الخارجي: 112 مم • القطر الداخلي: 54 مم متوافق مع محركات وآليات: MAN TGX D20/D26، MAN TGS Euro 5 مطابق لأرقام المصنع: Mann HU 12 110 x - MAN 51.05504-0105",
     "category": "oil",
@@ -583,12 +1510,59 @@
     "specs": {
       "height": 245,
       "outer": 112,
-      "inner": 54
-    }
+      "inner": 54,
+      "height_display": "245 مم",
+      "outer_display": "112 مم",
+      "inner_display": "54 مم"
+    },
+    "clean_type": "فلتر دهن (حشوة)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "AS 12"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (حشوة)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "245 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "112 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "54 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "MAN TGX D20/D26, MAN TGS Euro 5"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann HU 12 110 x, MAN 51.05504-0105"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (حشوة) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-22",
-    "title": "فلتر فلاتر دهن (حشوة) أصلي أساس AS 20",
+    "title": "فلتر دهن (حشوة) أصلي أساس AS 20",
     "slug": "asas-as-20",
     "description": "فلتر فلاتر دهن (حشوة) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 170 مم • القطر الخارجي: 88 مم • القطر الداخلي: 41 مم متوافق مع محركات وآليات: Scania P/G/R Series DC13 Engine مطابق لأرقام المصنع: Mann HU 947/2 x - Scania 2022275",
     "category": "oil",
@@ -609,12 +1583,59 @@
     "specs": {
       "height": 170,
       "outer": 88,
-      "inner": 41
-    }
+      "inner": 41,
+      "height_display": "170 مم",
+      "outer_display": "88 مم",
+      "inner_display": "41 مم"
+    },
+    "clean_type": "فلتر دهن (حشوة)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "AS 20"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (حشوة)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "170 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "88 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "41 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Scania P/G/R Series DC13 Engine"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann HU 947/2 x, Scania 2022275"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (حشوة) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-23",
-    "title": "فلتر فلاتر دهن (حشوة) أصلي أساس AS 35",
+    "title": "فلتر دهن (حشوة) أصلي أساس AS 35",
     "slug": "asas-as-35",
     "description": "فلتر فلاتر دهن (حشوة) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 260 مم • القطر الخارجي: 105 مم • القطر الداخلي: 48 مم متوافق مع محركات وآليات: Volvo FH13 D13C، Renault Trucks Magnum DXi مطابق لأرقام المصنع: Mann HU 11 001 x - Volvo 21707134",
     "category": "oil",
@@ -636,12 +1657,59 @@
     "specs": {
       "height": 260,
       "outer": 105,
-      "inner": 48
-    }
+      "inner": 48,
+      "height_display": "260 مم",
+      "outer_display": "105 مم",
+      "inner_display": "48 مم"
+    },
+    "clean_type": "فلتر دهن (حشوة)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "AS 35"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر دهن (حشوة)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "260 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "105 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "48 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Volvo FH13 D13C, Renault Trucks Magnum DXi"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann HU 11 001 x, Volvo 21707134"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر دهن (حشوة) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-24",
-    "title": "فلتر فلاتر هواء أصلي أساس HF 001",
+    "title": "فلتر هواء أصلي أساس HF 001",
     "slug": "asas-hf-001",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 210 مم • القطر الخارجي: 150 مم • القطر الداخلي: 88 مم متوافق مع محركات وآليات: Isuzu NPR 4.3L، Mitsubishi Canter Diesel مطابق لأرقام المصنع: Mann C 15 124/1 - Isuzu 8-94156052-0",
     "category": "air",
@@ -663,12 +1731,59 @@
     "specs": {
       "height": 210,
       "outer": 150,
-      "inner": 88
-    }
+      "inner": 88,
+      "height_display": "210 مم",
+      "outer_display": "150 مم",
+      "inner_display": "88 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 001"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "210 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "150 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "88 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Isuzu NPR 4.3L, Mitsubishi Canter Diesel"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann C 15 124/1, Isuzu 8-94156052-0"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-25",
-    "title": "فلتر فلاتر هواء أصلي أساس HF 003",
+    "title": "فلتر هواء أصلي أساس HF 003",
     "slug": "asas-hf-003",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 250 مم • القطر الخارجي: 165 مم • القطر الداخلي: 92 مم متوافق مع محركات وآليات: Toyota Land Cruiser HZJ79 Pick-up، Toyota Coaster 1HZ مطابق لأرقام المصنع: Mann C 17 225/3 - Toyota 17801-68020",
     "category": "air",
@@ -690,12 +1805,59 @@
     "specs": {
       "height": 250,
       "outer": 165,
-      "inner": 92
-    }
+      "inner": 92,
+      "height_display": "250 مم",
+      "outer_display": "165 مم",
+      "inner_display": "92 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 003"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "250 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "165 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "92 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Toyota Land Cruiser HZJ79 Pick-up, Toyota Coaster 1HZ"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann C 17 225/3, Toyota 17801-68020"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-26",
-    "title": "فلتر فلاتر هواء أصلي أساس HF 003 A",
+    "title": "فلتر هواء أصلي أساس HF 003 A",
     "slug": "asas-hf-003-a",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 280 مم • القطر الخارجي: 165 مم • القطر الداخلي: 92 مم متوافق مع محركات وآليات: Toyota Land Cruiser V8 4.5L Diesel، Lexus LX450d مطابق لأرقام المصنع: Mann C 24 015 - Toyota 17801-51020",
     "category": "air",
@@ -717,12 +1879,59 @@
     "specs": {
       "height": 280,
       "outer": 165,
-      "inner": 92
-    }
+      "inner": 92,
+      "height_display": "280 مم",
+      "outer_display": "165 مم",
+      "inner_display": "92 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 003 A"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "280 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "165 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "92 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Toyota Land Cruiser V8 4.5L Diesel, Lexus LX450d"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann C 24 015, Toyota 17801-51020"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-27",
-    "title": "فلتر فلاتر هواء أصلي أساس HF 003 S",
+    "title": "فلتر هواء أصلي أساس HF 003 S",
     "slug": "asas-hf-003-s",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 190 مم • القطر الخارجي: 140 مم • القطر الداخلي: 78 مم متوافق مع محركات وآليات: Toyota Hilux Revo 2.4L/2.8L Diesel، Toyota Fortuner Diesel مطابق لأرقام المصنع: Mann C 18 010 - Toyota 17801-0L040",
     "category": "air",
@@ -744,12 +1953,59 @@
     "specs": {
       "height": 190,
       "outer": 140,
-      "inner": 78
-    }
+      "inner": 78,
+      "height_display": "190 مم",
+      "outer_display": "140 مم",
+      "inner_display": "78 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 003 S"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "190 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "140 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "78 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Toyota Hilux Revo 2.4L/2.8L Diesel, Toyota Fortuner Diesel"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann C 18 010, Toyota 17801-0L040"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-28",
-    "title": "فلتر فلاتر هواء أصلي أساس HF 010",
+    "title": "فلتر هواء أصلي أساس HF 010",
     "slug": "asas-hf-010",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 320 مم • القطر الخارجي: 180 مم • القطر الداخلي: 105 مم متوافق مع محركات وآليات: Hyundai HD72 Truck، Hyundai HD65 مطابق لأرقام المصنع: Mann C 19 360 - Hyundai 28130-45040",
     "category": "air",
@@ -771,12 +2027,59 @@
     "specs": {
       "height": 320,
       "outer": 180,
-      "inner": 105
-    }
+      "inner": 105,
+      "height_display": "320 مم",
+      "outer_display": "180 مم",
+      "inner_display": "105 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 010"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "320 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "180 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "105 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Hyundai HD72 Truck, Hyundai HD65"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann C 19 360, Hyundai 28130-45040"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-29",
-    "title": "فلتر فلاتر هواء أصلي أساس HF 020",
+    "title": "فلتر هواء أصلي أساس HF 020",
     "slug": "asas-hf-020",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 380 مم • القطر الخارجي: 210 مم • القطر الداخلي: 120 مم متوافق مع محركات وآليات: Hino 300 Series، Hino 500 Dutro مطابق لأرقام المصنع: Donaldson P828889 - Hino 17801-3380",
     "category": "air",
@@ -798,12 +2101,59 @@
     "specs": {
       "height": 380,
       "outer": 210,
-      "inner": 120
-    }
+      "inner": 120,
+      "height_display": "380 مم",
+      "outer_display": "210 مم",
+      "inner_display": "120 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 020"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "380 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "210 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "120 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Hino 300 Series, Hino 500 Dutro"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Donaldson P828889, Hino 17801-3380"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-30",
-    "title": "فلتر فلاتر هواء أصلي أساس HF 8000",
+    "title": "فلتر هواء أصلي أساس HF 8000",
     "slug": "asas-hf-8000",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 420 مم • القطر الخارجي: 240 مم • القطر الداخلي: 140 مم متوافق مع محركات وآليات: Mercedes Actros MP2/MP3 1840/1844، Mercedes Axor 1840 مطابق لأرقام المصنع: Mann C 27 1250 - Mercedes A0040943504",
     "category": "air",
@@ -825,12 +2175,59 @@
     "specs": {
       "height": 420,
       "outer": 240,
-      "inner": 140
-    }
+      "inner": 140,
+      "height_display": "420 مم",
+      "outer_display": "240 مم",
+      "inner_display": "140 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 8000"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "420 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "240 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "140 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Mercedes Actros MP2/MP3 1840/1844, Mercedes Axor 1840"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann C 27 1250, Mercedes A0040943504"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-31",
-    "title": "فلتر فلاتر هواء أصلي أساس HF 8001",
+    "title": "فلتر هواء أصلي أساس HF 8001",
     "slug": "asas-hf-8001",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 480 مم • القطر الخارجي: 280 مم • القطر الداخلي: 170 مم متوافق مع محركات وآليات: Scania R420/R440/R480 Euro 3/4/5، Scania G420 مطابق لأرقام المصنع: Mann C 30 1530 - Scania 1485592",
     "category": "air",
@@ -852,12 +2249,59 @@
     "specs": {
       "height": 480,
       "outer": 280,
-      "inner": 170
-    }
+      "inner": 170,
+      "height_display": "480 مم",
+      "outer_display": "280 مم",
+      "inner_display": "170 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 8001"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "480 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "280 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "170 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Scania R420/R440/R480 Euro 3/4/5, Scania G420"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann C 30 1530, Scania 1485592"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-32",
-    "title": "فلتر فلاتر هواء أصلي أساس HF 8002",
+    "title": "فلتر هواء أصلي أساس HF 8002",
     "slug": "asas-hf-8002",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 510 مم • القطر الخارجي: 300 مم • القطر الداخلي: 190 مم متوافق مع محركات وآليات: Volvo FH12، Volvo FH16، Volvo FM12 مطابق لأرقام المصنع: Mann C 33 1630 - Volvo 21834210",
     "category": "air",
@@ -880,12 +2324,59 @@
     "specs": {
       "height": 510,
       "outer": 300,
-      "inner": 190
-    }
+      "inner": 190,
+      "height_display": "510 مم",
+      "outer_display": "300 مم",
+      "inner_display": "190 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 8002"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "510 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "300 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "190 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Volvo FH12, Volvo FH16, Volvo FM12"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann C 33 1630, Volvo 21834210"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-33",
-    "title": "فلتر فلاتر هواء أصلي أساس HF 8003",
+    "title": "فلتر هواء أصلي أساس HF 8003",
     "slug": "asas-hf-8003",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 460 مم • القطر الخارجي: 260 مم • القطر الداخلي: 150 مم متوافق مع محركات وآليات: MAN TGA 18.440، MAN TGX 18.480 مطابق لأرقام المصنع: Mann C 27 1320/1 - MAN 81.08405-0016",
     "category": "air",
@@ -907,12 +2398,59 @@
     "specs": {
       "height": 460,
       "outer": 260,
-      "inner": 150
-    }
+      "inner": 150,
+      "height_display": "460 مم",
+      "outer_display": "260 مم",
+      "inner_display": "150 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 8003"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "460 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "260 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "150 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "MAN TGA 18.440, MAN TGX 18.480"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann C 27 1320/1, MAN 81.08405-0016"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-34",
-    "title": "فلتر فلاتر هواء أصلي أساس HF 8010",
+    "title": "فلتر هواء أصلي أساس HF 8010",
     "slug": "asas-hf-8010",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 540 مم • القطر الخارجي: 310 مم • القطر الداخلي: 185 مم متوافق مع محركات وآليات: Perkins 2000 Generator 250kVA، FG Wilson Generator مطابق لأرقام المصنع: Fleetguard AF25624 - Perkins 26510342",
     "category": "air",
@@ -934,12 +2472,59 @@
     "specs": {
       "height": 540,
       "outer": 310,
-      "inner": 185
-    }
+      "inner": 185,
+      "height_display": "540 مم",
+      "outer_display": "310 مم",
+      "inner_display": "185 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 8010"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "540 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "310 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "185 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Perkins 2000 Generator 250kVA, FG Wilson Generator"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Fleetguard AF25624, Perkins 26510342"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-35",
-    "title": "فلتر فلاتر هواء أصلي أساس HF 8020",
+    "title": "فلتر هواء أصلي أساس HF 8020",
     "slug": "asas-hf-8020",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 600 مم • القطر الخارجي: 350 مم • القطر الداخلي: 210 مم متوافق مع محركات وآليات: Caterpillar CAT 3406 / C15 Generator، CAT 330D Excavator مطابق لأرقام المصنع: CAT 110-6326 - Donaldson P532501",
     "category": "air",
@@ -961,12 +2546,59 @@
     "specs": {
       "height": 600,
       "outer": 350,
-      "inner": 210
-    }
+      "inner": 210,
+      "height_display": "600 مم",
+      "outer_display": "350 مم",
+      "inner_display": "210 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 8020"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "600 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "350 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "210 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Caterpillar CAT 3406 / C15 Generator, CAT 330D Excavator"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "CAT 110-6326, Donaldson P532501"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-36",
-    "title": "فلتر فلاتر هواء أصلي أساس HF 500",
+    "title": "فلتر هواء أصلي أساس HF 500",
     "slug": "asas-hf-500",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 42 مم • القطر الخارجي: 292 مم • القطر الداخلي: 200 مم متوافق مع محركات وآليات: Toyota Camry 2.5L 2012-2022، Toyota Avalon 2.5L مطابق لأرقام المصنع: Mann C 29 017 - Toyota 17801-0V020",
     "category": "air",
@@ -988,12 +2620,59 @@
     "specs": {
       "height": 42,
       "outer": 292,
-      "inner": 200
-    }
+      "inner": 200,
+      "height_display": "42 مم",
+      "outer_display": "292 مم",
+      "inner_display": "200 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 500"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "42 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "292 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "200 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Toyota Camry 2.5L 2012-2022, Toyota Avalon 2.5L"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann C 29 017, Toyota 17801-0V020"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-37",
-    "title": "فلتر فلاتر هواء أصلي أساس HF 510",
+    "title": "فلتر هواء أصلي أساس HF 510",
     "slug": "asas-hf-510",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 53 مم • القطر الخارجي: 240 مم • القطر الداخلي: 160 مم متوافق مع محركات وآليات: Hyundai Sonata 2.4L، Kia Optima 2.4L مطابق لأرقام المصنع: Mann C 24 012 - Hyundai 28113-2T000",
     "category": "air",
@@ -1015,12 +2694,59 @@
     "specs": {
       "height": 53,
       "outer": 240,
-      "inner": 160
-    }
+      "inner": 160,
+      "height_display": "53 مم",
+      "outer_display": "240 مم",
+      "inner_display": "160 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 510"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "53 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "240 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "160 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Hyundai Sonata 2.4L, Kia Optima 2.4L"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann C 24 012, Hyundai 28113-2T000"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-38",
-    "title": "فلتر فلاتر هواء أصلي أساس HF 520",
+    "title": "فلتر هواء أصلي أساس HF 520",
     "slug": "asas-hf-520",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 48 مم • القطر الخارجي: 260 مم • القطر الداخلي: 185 مم متوافق مع محركات وآليات: Toyota Corolla 1.6L/1.8L، Toyota Yaris مطابق لأرقام المصنع: Mann C 26 003 - Toyota 17801-21050",
     "category": "air",
@@ -1042,12 +2768,59 @@
     "specs": {
       "height": 48,
       "outer": 260,
-      "inner": 185
-    }
+      "inner": 185,
+      "height_display": "48 مم",
+      "outer_display": "260 مم",
+      "inner_display": "185 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 520"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "48 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "260 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "185 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Toyota Corolla 1.6L/1.8L, Toyota Yaris"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann C 26 003, Toyota 17801-21050"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-39",
-    "title": "فلتر فلاتر هواء أصلي أساس HF 530",
+    "title": "فلتر هواء أصلي أساس HF 530",
     "slug": "asas-hf-530",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 58 مم • القطر الخارجي: 318 مم • القطر الداخلي: 194 مم متوافق مع محركات وآليات: Toyota Land Cruiser Prado 2.7L/4.0L، Toyota FJ Cruiser مطابق لأرقام المصنع: Mann C 32 003 - Toyota 17801-38030",
     "category": "air",
@@ -1069,12 +2842,59 @@
     "specs": {
       "height": 58,
       "outer": 318,
-      "inner": 194
-    }
+      "inner": 194,
+      "height_display": "58 مم",
+      "outer_display": "318 مم",
+      "inner_display": "194 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 530"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "58 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "318 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "194 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Toyota Land Cruiser Prado 2.7L/4.0L, Toyota FJ Cruiser"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann C 32 003, Toyota 17801-38030"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-40",
-    "title": "فلتر فلاتر هواء أصلي أساس HF 540",
+    "title": "فلتر هواء أصلي أساس HF 540",
     "slug": "asas-hf-540",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 45 مم • القطر الخارجي: 355 مم • القطر الداخلي: 135 مم متوافق مع محركات وآليات: Mercedes E350 W212، Mercedes S350 W221 مطابق لأرقام المصنع: Mann C 3698/3-2 - Mercedes A2760940004",
     "category": "air",
@@ -1096,12 +2916,59 @@
     "specs": {
       "height": 45,
       "outer": 355,
-      "inner": 135
-    }
+      "inner": 135,
+      "height_display": "45 مم",
+      "outer_display": "355 مم",
+      "inner_display": "135 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 540"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "45 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "355 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "135 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Mercedes E350 W212, Mercedes S350 W221"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann C 3698/3-2, Mercedes A2760940004"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-41",
-    "title": "فلتر فلاتر هواء أصلي أساس HF 600",
+    "title": "فلتر هواء أصلي أساس HF 600",
     "slug": "asas-hf-600",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 50 مم • القطر الخارجي: 275 مم • القطر الداخلي: 180 مم متوافق مع محركات وآليات: Chevrolet Tahoe 5.3L، GMC Sierra 5.3L/6.2L مطابق لأرقام المصنع: Mann C 28 014 - ACDelco A3181C",
     "category": "air",
@@ -1123,12 +2990,59 @@
     "specs": {
       "height": 50,
       "outer": 275,
-      "inner": 180
-    }
+      "inner": 180,
+      "height_display": "50 مم",
+      "outer_display": "275 مم",
+      "inner_display": "180 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 600"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "50 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "275 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "180 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Chevrolet Tahoe 5.3L, GMC Sierra 5.3L/6.2L"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann C 28 014, ACDelco A3181C"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-42",
-    "title": "فلتر فلاتر هواء أصلي أساس HF 610",
+    "title": "فلتر هواء أصلي أساس HF 610",
     "slug": "asas-hf-610",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 40 مم • القطر الخارجي: 295 مم • القطر الداخلي: 235 مم متوافق مع محركات وآليات: Ford Explorer 3.5L، Ford Taurus 3.5L مطابق لأرقام المصنع: Mann C 30 005 - Motorcraft FA-1884",
     "category": "air",
@@ -1150,12 +3064,59 @@
     "specs": {
       "height": 40,
       "outer": 295,
-      "inner": 235
-    }
+      "inner": 235,
+      "height_display": "40 مم",
+      "outer_display": "295 مم",
+      "inner_display": "235 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 610"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "40 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "295 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "235 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Ford Explorer 3.5L, Ford Taurus 3.5L"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann C 30 005, Motorcraft FA-1884"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-43",
-    "title": "فلتر فلاتر هواء أصلي أساس SP 1442",
+    "title": "فلتر هواء أصلي أساس SP 1442",
     "slug": "asas-sp-1442",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 165 مم • القطر الخارجي: 136 مم • التسنين: M39x1.5 متوافق مع محركات وآليات: Iveco Stralis، Iveco Eurotrakker، Renault Premium مطابق لأرقام المصنع: Mann TB 1374/1 x - Iveco 2992261",
     "category": "air",
@@ -1178,12 +3139,58 @@
     "specs": {
       "height": 165,
       "outer": 136,
-      "thread": "M39x1.5"
-    }
+      "thread": "M39x1.5",
+      "height_display": "165 مم",
+      "outer_display": "136 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 1442"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "165 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "136 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "M39x1.5"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Iveco Stralis, Iveco Eurotrakker, Renault Premium"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann TB 1374/1 x, Iveco 2992261"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-44",
-    "title": "فلتر فلاتر هواء أصلي أساس SP 1450",
+    "title": "فلتر هواء أصلي أساس SP 1450",
     "slug": "asas-sp-1450",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 165 مم • القطر الخارجي: 140 مم • التسنين: M39x1.5 متوافق مع محركات وآليات: Mercedes Actros MP1/MP2/MP3، Mercedes Axor، Mercedes Atego مطابق لأرقام المصنع: Mann TB 1374/3 x - Mercedes A0004290897 - Wabco 4324102227",
     "category": "air",
@@ -1207,12 +3214,58 @@
     "specs": {
       "height": 165,
       "outer": 140,
-      "thread": "M39x1.5"
-    }
+      "thread": "M39x1.5",
+      "height_display": "165 مم",
+      "outer_display": "140 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 1450"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "165 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "140 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "M39x1.5"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Mercedes Actros MP1/MP2/MP3, Mercedes Axor, Mercedes Atego"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann TB 1374/3 x, Mercedes A0004290897, Wabco 4324102227"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-45",
-    "title": "فلتر فلاتر هواء أصلي أساس SP 1451",
+    "title": "فلتر هواء أصلي أساس SP 1451",
     "slug": "asas-sp-1451",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 175 مم • القطر الخارجي: 140 مم • التسنين: M39x1.5 متوافق مع محركات وآليات: MAN TGA/TGX/TGS Euro 3/4/5، MAN F2000 مطابق لأرقام المصنع: Mann TB 1374/7 x - MAN 81.52102-0015",
     "category": "air",
@@ -1234,12 +3287,58 @@
     "specs": {
       "height": 175,
       "outer": 140,
-      "thread": "M39x1.5"
-    }
+      "thread": "M39x1.5",
+      "height_display": "175 مم",
+      "outer_display": "140 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 1451"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "175 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "140 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "M39x1.5"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "MAN TGA/TGX/TGS Euro 3/4/5, MAN F2000"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann TB 1374/7 x, MAN 81.52102-0015"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-46",
-    "title": "فلتر فلاتر هواء أصلي أساس SP 1452",
+    "title": "فلتر هواء أصلي أساس SP 1452",
     "slug": "asas-sp-1452",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 165 مم • القطر الخارجي: 140 مم • التسنين: G 1 1/4\" متوافق مع محركات وآليات: Scania 4 Series 124، Scania R Series (Early) مطابق لأرقام المصنع: Mann TB 1394/1 x - Scania 1384549",
     "category": "air",
@@ -1261,12 +3360,58 @@
     "specs": {
       "height": 165,
       "outer": 140,
-      "thread": "G 1 1/4\""
-    }
+      "thread": "G 1 1/4\"",
+      "height_display": "165 مم",
+      "outer_display": "140 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 1452"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "165 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "140 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "G 1 1/4\""
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Scania 4 Series 124, Scania R Series (Early)"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann TB 1394/1 x, Scania 1384549"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-47",
-    "title": "فلتر فلاتر هواء أصلي أساس SP 1453",
+    "title": "فلتر هواء أصلي أساس SP 1453",
     "slug": "asas-sp-1453",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 165 مم • القطر الخارجي: 140 مم • التسنين: M39x1.5 Coalescing متوافق مع محركات وآليات: Mercedes Actros MP4 Euro 5/6، Mercedes Antos مطابق لأرقام المصنع: Mann TB 1374/13 x - Mercedes A0004293795",
     "category": "air",
@@ -1288,12 +3433,58 @@
     "specs": {
       "height": 165,
       "outer": 140,
-      "thread": "M39x1.5 Coalescing"
-    }
+      "thread": "M39x1.5 Coalescing",
+      "height_display": "165 مم",
+      "outer_display": "140 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 1453"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "165 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "140 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "M39x1.5 Coalescing"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Mercedes Actros MP4 Euro 5/6, Mercedes Antos"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann TB 1374/13 x, Mercedes A0004293795"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-48",
-    "title": "فلتر فلاتر هواء أصلي أساس SP 1454",
+    "title": "فلتر هواء أصلي أساس SP 1454",
     "slug": "asas-sp-1454",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 175 مم • القطر الخارجي: 140 مم • التسنين: M39x1.5 متوافق مع محركات وآليات: Volvo FH12/FH13 Version 2/3، Volvo FM9 مطابق لأرقام المصنع: Mann TB 1374/8 x - Volvo 20557234",
     "category": "air",
@@ -1315,12 +3506,58 @@
     "specs": {
       "height": 175,
       "outer": 140,
-      "thread": "M39x1.5"
-    }
+      "thread": "M39x1.5",
+      "height_display": "175 مم",
+      "outer_display": "140 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 1454"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "175 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "140 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "M39x1.5"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Volvo FH12/FH13 Version 2/3, Volvo FM9"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann TB 1374/8 x, Volvo 20557234"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-49",
-    "title": "فلتر فلاتر هواء أصلي أساس SP 1455",
+    "title": "فلتر هواء أصلي أساس SP 1455",
     "slug": "asas-sp-1455",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 165 مم • القطر الخارجي: 140 مم • التسنين: M39x1.5 Left Thread متوافق مع محركات وآليات: DAF XF 95، DAF XF 105، DAF CF 85 مطابق لأرقام المصنع: Mann TB 1374/4 x - DAF 1391510",
     "category": "air",
@@ -1343,12 +3580,58 @@
     "specs": {
       "height": 165,
       "outer": 140,
-      "thread": "M39x1.5 Left Thread"
-    }
+      "thread": "M39x1.5 Left Thread",
+      "height_display": "165 مم",
+      "outer_display": "140 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 1455"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "165 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "140 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "M39x1.5 Left Thread"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "DAF XF 95, DAF XF 105, DAF CF 85"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann TB 1374/4 x, DAF 1391510"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-50",
-    "title": "فلتر فلاتر هواء أصلي أساس SP 1456",
+    "title": "فلتر هواء أصلي أساس SP 1456",
     "slug": "asas-sp-1456",
     "description": "فلتر فلاتر هواء أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 165 مم • القطر الخارجي: 136 مم • التسنين: 1 1/4\"-11 BSP متوافق مع محركات وآليات: Renault Magnum 480 DXi، Renault Kerax مطابق لأرقام المصنع: Mann TB 1394/3 x - Renault 5001826800",
     "category": "air",
@@ -1370,12 +3653,58 @@
     "specs": {
       "height": 165,
       "outer": 136,
-      "thread": "1 1/4\"-11 BSP"
-    }
+      "thread": "1 1/4\"-11 BSP",
+      "height_display": "165 مم",
+      "outer_display": "136 مم"
+    },
+    "clean_type": "فلتر هواء",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 1456"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر هواء"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "165 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "136 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "1 1/4\"-11 BSP"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Renault Magnum 480 DXi, Renault Kerax"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann TB 1394/3 x, Renault 5001826800"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر هواء أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-51",
-    "title": "فلتر فلاتر وقود (ديزل) أصلي أساس SP 009 M",
+    "title": "فلتر وقود (ديزل) أصلي أساس SP 009 M",
     "slug": "asas-sp-009-m",
     "description": "فلتر فلاتر وقود (ديزل) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 140 مم • القطر الخارجي: 80 مم • التسنين: M16x1.5 متوافق مع محركات وآليات: Toyota Hilux 2KD/1KD Diesel، Toyota Land Cruiser 70 Series Diesel مطابق لأرقام المصنع: Mann WK 828 - Toyota 23390-0L010",
     "category": "fuel",
@@ -1397,12 +3726,58 @@
     "specs": {
       "height": 140,
       "outer": 80,
-      "thread": "M16x1.5"
-    }
+      "thread": "M16x1.5",
+      "height_display": "140 مم",
+      "outer_display": "80 مم"
+    },
+    "clean_type": "فلتر وقود (ديزل)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 009 M"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر وقود (ديزل)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "140 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "80 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "M16x1.5"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Toyota Hilux 2KD/1KD Diesel, Toyota Land Cruiser 70 Series Diesel"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann WK 828, Toyota 23390-0L010"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر وقود (ديزل) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-52",
-    "title": "فلتر فلاتر وقود (ديزل) أصلي أساس SP 010 M",
+    "title": "فلتر وقود (ديزل) أصلي أساس SP 010 M",
     "slug": "asas-sp-010-m",
     "description": "فلتر فلاتر وقود (ديزل) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 145 مم • القطر الخارجي: 86 مم • التسنين: 3/4\"-16 UNF متوافق مع محركات وآليات: Isuzu NPR 4HG1/4HF1، Mitsubishi Canter 4D33 مطابق لأرقام المصنع: Mann WK 842/2 - Isuzu 8-94448984-0",
     "category": "fuel",
@@ -1424,12 +3799,58 @@
     "specs": {
       "height": 145,
       "outer": 86,
-      "thread": "3/4\"-16 UNF"
-    }
+      "thread": "3/4\"-16 UNF",
+      "height_display": "145 مم",
+      "outer_display": "86 مم"
+    },
+    "clean_type": "فلتر وقود (ديزل)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 010 M"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر وقود (ديزل)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "145 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "86 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "3/4\"-16 UNF"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Isuzu NPR 4HG1/4HF1, Mitsubishi Canter 4D33"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann WK 842/2, Isuzu 8-94448984-0"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر وقود (ديزل) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-53",
-    "title": "فلتر فلاتر وقود (ديزل) أصلي أساس SP 016 M",
+    "title": "فلتر وقود (ديزل) أصلي أساس SP 016 M",
     "slug": "asas-sp-016-m",
     "description": "فلتر فلاتر وقود (ديزل) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 175 مم • القطر الخارجي: 93 مم • التسنين: M16x1.5 متوافق مع محركات وآليات: Perkins 1104A/1104C Generator، Massey Ferguson 390 Tractor مطابق لأرقام المصنع: Mann WK 940/5 - Perkins 26560143",
     "category": "fuel",
@@ -1451,12 +3872,58 @@
     "specs": {
       "height": 175,
       "outer": 93,
-      "thread": "M16x1.5"
-    }
+      "thread": "M16x1.5",
+      "height_display": "175 مم",
+      "outer_display": "93 مم"
+    },
+    "clean_type": "فلتر وقود (ديزل)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 016 M"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر وقود (ديزل)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "175 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "93 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "M16x1.5"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Perkins 1104A/1104C Generator, Massey Ferguson 390 Tractor"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann WK 940/5, Perkins 26560143"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر وقود (ديزل) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-54",
-    "title": "فلتر فلاتر وقود (ديزل) أصلي أساس SP 022 M",
+    "title": "فلتر وقود (ديزل) أصلي أساس SP 022 M",
     "slug": "asas-sp-022-m",
     "description": "فلتر فلاتر وقود (ديزل) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 185 مم • القطر الخارجي: 93 مم • التسنين: M20x1.5 متوافق مع محركات وآليات: Cummins 6BT 5.9L Turbo Diesel، Dongfeng DFL Truck مطابق لأرقام المصنع: Fleetguard FF5052 - Donaldson P550440",
     "category": "fuel",
@@ -1478,12 +3945,58 @@
     "specs": {
       "height": 185,
       "outer": 93,
-      "thread": "M20x1.5"
-    }
+      "thread": "M20x1.5",
+      "height_display": "185 مم",
+      "outer_display": "93 مم"
+    },
+    "clean_type": "فلتر وقود (ديزل)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 022 M"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر وقود (ديزل)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "185 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "93 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "M20x1.5"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Cummins 6BT 5.9L Turbo Diesel, Dongfeng DFL Truck"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Fleetguard FF5052, Donaldson P550440"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر وقود (ديزل) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-55",
-    "title": "فلتر فلاتر وقود (ديزل) أصلي أساس SP 028 M",
+    "title": "فلتر وقود (ديزل) أصلي أساس SP 028 M",
     "slug": "asas-sp-028-m",
     "description": "فلتر فلاتر وقود (ديزل) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 140 مم • القطر الخارجي: 93 مم • التسنين: M16x1.5 متوافق مع محركات وآليات: JCB 3CX EcoMAX Engine، JCB 4CX Backhoe مطابق لأرقام المصنع: Mann WK 940/7 - JCB 32/925423",
     "category": "fuel",
@@ -1505,12 +4018,58 @@
     "specs": {
       "height": 140,
       "outer": 93,
-      "thread": "M16x1.5"
-    }
+      "thread": "M16x1.5",
+      "height_display": "140 مم",
+      "outer_display": "93 مم"
+    },
+    "clean_type": "فلتر وقود (ديزل)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 028 M"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر وقود (ديزل)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "140 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "93 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "M16x1.5"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "JCB 3CX EcoMAX Engine, JCB 4CX Backhoe"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann WK 940/7, JCB 32/925423"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر وقود (ديزل) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-56",
-    "title": "فلتر فلاتر وقود (ديزل) أصلي أساس SP 032 M",
+    "title": "فلتر وقود (ديزل) أصلي أساس SP 032 M",
     "slug": "asas-sp-032-m",
     "description": "فلتر فلاتر وقود (ديزل) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 220 مم • القطر الخارجي: 108 مم • التسنين: 1\"-14 UNS متوافق مع محركات وآليات: Caterpillar CAT 320C/320D، CAT 120H Grader مطابق لأرقام المصنع: CAT 1R-0750 - Donaldson P551313 - Fleetguard FF5320",
     "category": "fuel",
@@ -1533,12 +4092,58 @@
     "specs": {
       "height": 220,
       "outer": 108,
-      "thread": "1\"-14 UNS"
-    }
+      "thread": "1\"-14 UNS",
+      "height_display": "220 مم",
+      "outer_display": "108 مم"
+    },
+    "clean_type": "فلتر وقود (ديزل)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 032 M"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر وقود (ديزل)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "220 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "108 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "1\"-14 UNS"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Caterpillar CAT 320C/320D, CAT 120H Grader"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "CAT 1R-0750, Donaldson P551313, Fleetguard FF5320"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر وقود (ديزل) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-57",
-    "title": "فلتر فلاتر وقود (ديزل) أصلي أساس SP 040 M",
+    "title": "فلتر وقود (ديزل) أصلي أساس SP 040 M",
     "slug": "asas-sp-040-m",
     "description": "فلتر فلاتر وقود (ديزل) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 175 مم • القطر الخارجي: 93 مم • التسنين: 1\"-14 UNS Secondary متوافق مع محركات وآليات: Cummins ISDe / ISBe Euro 3/4، Kamaz Cummins Engine مطابق لأرقام المصنع: Fleetguard FF5488 - Donaldson P550881",
     "category": "fuel",
@@ -1560,12 +4165,58 @@
     "specs": {
       "height": 175,
       "outer": 93,
-      "thread": "1\"-14 UNS Secondary"
-    }
+      "thread": "1\"-14 UNS Secondary",
+      "height_display": "175 مم",
+      "outer_display": "93 مم"
+    },
+    "clean_type": "فلتر وقود (ديزل)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 040 M"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر وقود (ديزل)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "175 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "93 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "1\"-14 UNS Secondary"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Cummins ISDe / ISBe Euro 3/4, Kamaz Cummins Engine"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Fleetguard FF5488, Donaldson P550881"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر وقود (ديزل) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-58",
-    "title": "فلتر فلاتر وقود (ديزل) أصلي أساس SP 050 M",
+    "title": "فلتر وقود (ديزل) أصلي أساس SP 050 M",
     "slug": "asas-sp-050-m",
     "description": "فلتر فلاتر وقود (ديزل) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 240 مم • القطر الخارجي: 108 مم • التسنين: M20x1.5 متوافق مع محركات وآليات: Volvo FH12 D12D Secondary Fuel، Volvo FM12 مطابق لأرقام المصنع: Mann WK 1060/1 - Volvo 20976003",
     "category": "fuel",
@@ -1587,12 +4238,58 @@
     "specs": {
       "height": 240,
       "outer": 108,
-      "thread": "M20x1.5"
-    }
+      "thread": "M20x1.5",
+      "height_display": "240 مم",
+      "outer_display": "108 مم"
+    },
+    "clean_type": "فلتر وقود (ديزل)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "SP 050 M"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر وقود (ديزل)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "240 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "108 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "M20x1.5"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Volvo FH12 D12D Secondary Fuel, Volvo FM12"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann WK 1060/1, Volvo 20976003"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر وقود (ديزل) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-59",
-    "title": "فلتر فلاتر وقود (ديزل) أصلي أساس AS 301",
+    "title": "فلتر وقود (ديزل) أصلي أساس AS 301",
     "slug": "asas-as-301",
     "description": "فلتر فلاتر وقود (ديزل) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 155 مم • القطر الخارجي: 84 مم • القطر الداخلي: 19 مم متوافق مع محركات وآليات: Mercedes Actros MP2/MP3 OM501/OM502، Mercedes Axor 1840 مطابق لأرقام المصنع: Mann PU 934/1 x - Mercedes A5410900151",
     "category": "fuel",
@@ -1614,12 +4311,59 @@
     "specs": {
       "height": 155,
       "outer": 84,
-      "inner": 19
-    }
+      "inner": 19,
+      "height_display": "155 مم",
+      "outer_display": "84 مم",
+      "inner_display": "19 مم"
+    },
+    "clean_type": "فلتر وقود (ديزل)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "AS 301"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر وقود (ديزل)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "155 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "84 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "19 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Mercedes Actros MP2/MP3 OM501/OM502, Mercedes Axor 1840"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann PU 934/1 x, Mercedes A5410900151"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر وقود (ديزل) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-60",
-    "title": "فلتر فلاتر وقود (ديزل) أصلي أساس AS 301 A",
+    "title": "فلتر وقود (ديزل) أصلي أساس AS 301 A",
     "slug": "asas-as-301-a",
     "description": "فلتر فلاتر وقود (ديزل) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 180 مم • القطر الخارجي: 84 مم • القطر الداخلي: 19 مم متوافق مع محركات وآليات: Mercedes Actros MP3 V8 OM502LA، Mercedes Travego Bus مطابق لأرقام المصنع: Mann PU 941/1 x - Mercedes A5410920805",
     "category": "fuel",
@@ -1641,12 +4385,59 @@
     "specs": {
       "height": 180,
       "outer": 84,
-      "inner": 19
-    }
+      "inner": 19,
+      "height_display": "180 مم",
+      "outer_display": "84 مم",
+      "inner_display": "19 مم"
+    },
+    "clean_type": "فلتر وقود (ديزل)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "AS 301 A"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر وقود (ديزل)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "180 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "84 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "19 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Mercedes Actros MP3 V8 OM502LA, Mercedes Travego Bus"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann PU 941/1 x, Mercedes A5410920805"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر وقود (ديزل) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-61",
-    "title": "فلتر فلاتر وقود (ديزل) أصلي أساس AS 301 B",
+    "title": "فلتر وقود (ديزل) أصلي أساس AS 301 B",
     "slug": "asas-as-301-b",
     "description": "فلتر فلاتر وقود (ديزل) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 170 مم • القطر الخارجي: 90 مم • القطر الداخلي: 24 مم متوافق مع محركات وآليات: Mercedes Atego 815/1218 OM904LA، Mercedes Axor 2528 مطابق لأرقام المصنع: Mann PU 999/1 x - Mercedes A0004770115",
     "category": "fuel",
@@ -1668,12 +4459,59 @@
     "specs": {
       "height": 170,
       "outer": 90,
-      "inner": 24
-    }
+      "inner": 24,
+      "height_display": "170 مم",
+      "outer_display": "90 مم",
+      "inner_display": "24 مم"
+    },
+    "clean_type": "فلتر وقود (ديزل)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "AS 301 B"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر وقود (ديزل)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "170 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "90 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "24 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Mercedes Atego 815/1218 OM904LA, Mercedes Axor 2528"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann PU 999/1 x, Mercedes A0004770115"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر وقود (ديزل) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-62",
-    "title": "فلتر فلاتر وقود (ديزل) أصلي أساس AS 302",
+    "title": "فلتر وقود (ديزل) أصلي أساس AS 302",
     "slug": "asas-as-302",
     "description": "فلتر فلاتر وقود (ديزل) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 190 مم • القطر الخارجي: 95 مم • القطر الداخلي: 34 مم متوافق مع محركات وآليات: MAN TGA D2866/D2876 Engine، MAN F2000 Euro 2/3 مطابق لأرقام المصنع: Mann PU 1059 x - MAN 51.12503-0052",
     "category": "fuel",
@@ -1695,12 +4533,59 @@
     "specs": {
       "height": 190,
       "outer": 95,
-      "inner": 34
-    }
+      "inner": 34,
+      "height_display": "190 مم",
+      "outer_display": "95 مم",
+      "inner_display": "34 مم"
+    },
+    "clean_type": "فلتر وقود (ديزل)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "AS 302"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر وقود (ديزل)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "190 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "95 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "34 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "MAN TGA D2866/D2876 Engine, MAN F2000 Euro 2/3"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann PU 1059 x, MAN 51.12503-0052"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر وقود (ديزل) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-63",
-    "title": "فلتر فلاتر وقود (ديزل) أصلي أساس AS 303",
+    "title": "فلتر وقود (ديزل) أصلي أساس AS 303",
     "slug": "asas-as-303",
     "description": "فلتر فلاتر وقود (ديزل) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 195 مم • القطر الخارجي: 82 مم • القطر الداخلي: 14 مم متوافق مع محركات وآليات: Scania 4 Series 114/124 DC11/DC12 مطابق لأرقام المصنع: Mann PU 813 x - Scania 1446432",
     "category": "fuel",
@@ -1721,12 +4606,59 @@
     "specs": {
       "height": 195,
       "outer": 82,
-      "inner": 14
-    }
+      "inner": 14,
+      "height_display": "195 مم",
+      "outer_display": "82 مم",
+      "inner_display": "14 مم"
+    },
+    "clean_type": "فلتر وقود (ديزل)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "AS 303"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر وقود (ديزل)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "195 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "82 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "14 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Scania 4 Series 114/124 DC11/DC12"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann PU 813 x, Scania 1446432"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر وقود (ديزل) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-64",
-    "title": "فلتر فلاتر وقود (ديزل) أصلي أساس AS 304",
+    "title": "فلتر وقود (ديزل) أصلي أساس AS 304",
     "slug": "asas-as-304",
     "description": "فلتر فلاتر وقود (ديزل) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 140 مم • القطر الخارجي: 78 مم • القطر الداخلي: 12 مم متوافق مع محركات وآليات: Toyota Land Cruiser 200 Series V8 D-4D، Toyota Hilux Revo مطابق لأرقام المصنع: Mann PU 8008 z - Toyota 23390-51070",
     "category": "fuel",
@@ -1748,12 +4680,59 @@
     "specs": {
       "height": 140,
       "outer": 78,
-      "inner": 12
-    }
+      "inner": 12,
+      "height_display": "140 مم",
+      "outer_display": "78 مم",
+      "inner_display": "12 مم"
+    },
+    "clean_type": "فلتر وقود (ديزل)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "AS 304"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر وقود (ديزل)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "140 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "78 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "12 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Toyota Land Cruiser 200 Series V8 D-4D, Toyota Hilux Revo"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann PU 8008 z, Toyota 23390-51070"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر وقود (ديزل) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-65",
-    "title": "فلتر فلاتر وقود (ديزل) أصلي أساس AS 305",
+    "title": "فلتر وقود (ديزل) أصلي أساس AS 305",
     "slug": "asas-as-305",
     "description": "فلتر فلاتر وقود (ديزل) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 130 مم • القطر الخارجي: 80 مم • القطر الداخلي: 10 مم متوافق مع محركات وآليات: Hyundai Santa Fe 2.2 CRDi، Kia Sorento 2.2 CRDi مطابق لأرقام المصنع: Mann PU 935/2 x - Hyundai 31922-2W000",
     "category": "fuel",
@@ -1775,12 +4754,59 @@
     "specs": {
       "height": 130,
       "outer": 80,
-      "inner": 10
-    }
+      "inner": 10,
+      "height_display": "130 مم",
+      "outer_display": "80 مم",
+      "inner_display": "10 مم"
+    },
+    "clean_type": "فلتر وقود (ديزل)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "AS 305"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر وقود (ديزل)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "130 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "80 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "10 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Hyundai Santa Fe 2.2 CRDi, Kia Sorento 2.2 CRDi"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann PU 935/2 x, Hyundai 31922-2W000"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر وقود (ديزل) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-66",
-    "title": "فلتر فلاتر وقود (ديزل) أصلي أساس AS 310",
+    "title": "فلتر وقود (ديزل) أصلي أساس AS 310",
     "slug": "asas-as-310",
     "description": "فلتر فلاتر وقود (ديزل) أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 235 مم • القطر الخارجي: 102 مم • القطر الداخلي: 45 مم متوافق مع محركات وآليات: Mercedes Actros MP4 OM471 Euro 5/6 Primary مطابق لأرقام المصنع: Mann PU 10 011 z - Mercedes A4710900355",
     "category": "fuel",
@@ -1801,12 +4827,59 @@
     "specs": {
       "height": 235,
       "outer": 102,
-      "inner": 45
-    }
+      "inner": 45,
+      "height_display": "235 مم",
+      "outer_display": "102 مم",
+      "inner_display": "45 مم"
+    },
+    "clean_type": "فلتر وقود (ديزل)",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "AS 310"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر وقود (ديزل)"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "235 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "102 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "45 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Mercedes Actros MP4 OM471 Euro 5/6 Primary"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann PU 10 011 z, Mercedes A4710900355"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر وقود (ديزل) أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-67",
-    "title": "فلتر فلاتر فاصل ماء وسبيتر أصلي أساس HF 3205",
+    "title": "فلتر فاصل ماء وسبيتر أصلي أساس HF 3205",
     "slug": "asas-hf-3205",
     "description": "فلتر فلاتر فاصل ماء وسبيتر أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 210 مم • القطر الخارجي: 108 مم • التسنين: 1\"-14 UNS with Bowl Ring متوافق مع محركات وآليات: Mercedes Actros MP2/MP3 Separator، Iveco Stralis Cursor 10/13 مطابق لأرقام المصنع: Mann WK 1070 x - Mercedes A0004771302",
     "category": "separator",
@@ -1828,12 +4901,58 @@
     "specs": {
       "height": 210,
       "outer": 108,
-      "thread": "1\"-14 UNS with Bowl Ring"
-    }
+      "thread": "1\"-14 UNS with Bowl Ring",
+      "height_display": "210 مم",
+      "outer_display": "108 مم"
+    },
+    "clean_type": "فلتر فاصل ماء وسبيتر",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 3205"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر فاصل ماء وسبيتر"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "210 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "108 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "1\"-14 UNS with Bowl Ring"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Mercedes Actros MP2/MP3 Separator, Iveco Stralis Cursor 10/13"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann WK 1070 x, Mercedes A0004771302"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر فاصل ماء وسبيتر أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-68",
-    "title": "فلتر فلاتر فاصل ماء وسبيتر أصلي أساس HF 3206",
+    "title": "فلتر فاصل ماء وسبيتر أصلي أساس HF 3206",
     "slug": "asas-hf-3206",
     "description": "فلتر فلاتر فاصل ماء وسبيتر أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 260 مم • القطر الخارجي: 108 مم • التسنين: 1\"-14 UNS متوافق مع محركات وآليات: Scania R420/R440 Pre-filter Separator، Scania G400 مطابق لأرقام المصنع: Mann WK 1080/7 x - Scania 1518512",
     "category": "separator",
@@ -1855,12 +4974,58 @@
     "specs": {
       "height": 260,
       "outer": 108,
-      "thread": "1\"-14 UNS"
-    }
+      "thread": "1\"-14 UNS",
+      "height_display": "260 مم",
+      "outer_display": "108 مم"
+    },
+    "clean_type": "فلتر فاصل ماء وسبيتر",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 3206"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر فاصل ماء وسبيتر"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "260 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "108 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "1\"-14 UNS"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Scania R420/R440 Pre-filter Separator, Scania G400"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann WK 1080/7 x, Scania 1518512"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر فاصل ماء وسبيتر أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-69",
-    "title": "فلتر فلاتر فاصل ماء وسبيتر أصلي أساس HF 3210",
+    "title": "فلتر فاصل ماء وسبيتر أصلي أساس HF 3210",
     "slug": "asas-hf-3210",
     "description": "فلتر فلاتر فاصل ماء وسبيتر أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 240 مم • القطر الخارجي: 108 مم • التسنين: 1\"-14 UNS Extended Bowl متوافق مع محركات وآليات: Volvo FH12/FH13 Fuel Water Separator، Renault Trucks DXi مطابق لأرقام المصنع: Mann WK 1080/6 x - Volvo 20788794",
     "category": "separator",
@@ -1882,12 +5047,58 @@
     "specs": {
       "height": 240,
       "outer": 108,
-      "thread": "1\"-14 UNS Extended Bowl"
-    }
+      "thread": "1\"-14 UNS Extended Bowl",
+      "height_display": "240 مم",
+      "outer_display": "108 مم"
+    },
+    "clean_type": "فلتر فاصل ماء وسبيتر",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 3210"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر فاصل ماء وسبيتر"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "240 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "108 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "1\"-14 UNS Extended Bowl"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Volvo FH12/FH13 Fuel Water Separator, Renault Trucks DXi"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann WK 1080/6 x, Volvo 20788794"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر فاصل ماء وسبيتر أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-70",
-    "title": "فلتر فلاتر فاصل ماء وسبيتر أصلي أساس HF 3211/2",
+    "title": "فلتر فاصل ماء وسبيتر أصلي أساس HF 3211/2",
     "slug": "asas-hf-3211-2",
     "description": "فلتر فلاتر فاصل ماء وسبيتر أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 190 مم • القطر الخارجي: 93 مم • التسنين: M22x1.5 متوافق مع محركات وآليات: MAN TGA/TGX Pre-filter Sepator، MAN TGS 33.400 مطابق لأرقام المصنع: Mann WK 940/20 - MAN 51.12501-7288",
     "category": "separator",
@@ -1909,12 +5120,58 @@
     "specs": {
       "height": 190,
       "outer": 93,
-      "thread": "M22x1.5"
-    }
+      "thread": "M22x1.5",
+      "height_display": "190 مم",
+      "outer_display": "93 مم"
+    },
+    "clean_type": "فلتر فاصل ماء وسبيتر",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 3211/2"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر فاصل ماء وسبيتر"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "190 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "93 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "M22x1.5"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "MAN TGA/TGX Pre-filter Sepator, MAN TGS 33.400"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann WK 940/20, MAN 51.12501-7288"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر فاصل ماء وسبيتر أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-71",
-    "title": "فلتر فلاتر فاصل ماء وسبيتر أصلي أساس HF 3215",
+    "title": "فلتر فاصل ماء وسبيتر أصلي أساس HF 3215",
     "slug": "asas-hf-3215",
     "description": "فلتر فلاتر فاصل ماء وسبيتر أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 225 مم • القطر الخارجي: 108 مم • التسنين: 1\"-14 UNS متوافق مع محركات وآليات: Caterpillar CAT 320D Primary Separator، CAT 950H Loader مطابق لأرقام المصنع: CAT 1R-0770 - Donaldson P550880 - Fleetguard FS19820",
     "category": "separator",
@@ -1937,12 +5194,58 @@
     "specs": {
       "height": 225,
       "outer": 108,
-      "thread": "1\"-14 UNS"
-    }
+      "thread": "1\"-14 UNS",
+      "height_display": "225 مم",
+      "outer_display": "108 مم"
+    },
+    "clean_type": "فلتر فاصل ماء وسبيتر",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 3215"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر فاصل ماء وسبيتر"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "225 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "108 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "1\"-14 UNS"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Caterpillar CAT 320D Primary Separator, CAT 950H Loader"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "CAT 1R-0770, Donaldson P550880, Fleetguard FS19820"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر فاصل ماء وسبيتر أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-72",
-    "title": "فلتر فلاتر فاصل ماء وسبيتر أصلي أساس HF 3220",
+    "title": "فلتر فاصل ماء وسبيتر أصلي أساس HF 3220",
     "slug": "asas-hf-3220",
     "description": "فلتر فلاتر فاصل ماء وسبيتر أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 200 مم • القطر الخارجي: 93 مم • التسنين: 1\"-14 UNS with Drain Valve متوافق مع محركات وآليات: Cummins 6CTA 8.3L، Perkins 1106D Generator 150-200kVA مطابق لأرقام المصنع: Fleetguard FS1280 - Donaldson P551329",
     "category": "separator",
@@ -1964,12 +5267,58 @@
     "specs": {
       "height": 200,
       "outer": 93,
-      "thread": "1\"-14 UNS with Drain Valve"
-    }
+      "thread": "1\"-14 UNS with Drain Valve",
+      "height_display": "200 مم",
+      "outer_display": "93 مم"
+    },
+    "clean_type": "فلتر فاصل ماء وسبيتر",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 3220"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر فاصل ماء وسبيتر"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "200 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "93 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "1\"-14 UNS with Drain Valve"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Cummins 6CTA 8.3L, Perkins 1106D Generator 150-200kVA"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Fleetguard FS1280, Donaldson P551329"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر فاصل ماء وسبيتر أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-73",
-    "title": "فلتر فلاتر فاصل ماء وسبيتر أصلي أساس HF 3230",
+    "title": "فلتر فاصل ماء وسبيتر أصلي أساس HF 3230",
     "slug": "asas-hf-3230",
     "description": "فلتر فلاتر فاصل ماء وسبيتر أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 155 مم • القطر الخارجي: 80 مم • التسنين: M14x1.5 متوافق مع محركات وآليات: Toyota Coaster Bus Diesel Separator، Toyota Dyna Truck مطابق لأرقام المصنع: Mann WK 842 - Toyota 23300-54040",
     "category": "separator",
@@ -1991,12 +5340,58 @@
     "specs": {
       "height": 155,
       "outer": 80,
-      "thread": "M14x1.5"
-    }
+      "thread": "M14x1.5",
+      "height_display": "155 مم",
+      "outer_display": "80 مم"
+    },
+    "clean_type": "فلتر فاصل ماء وسبيتر",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "HF 3230"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر فاصل ماء وسبيتر"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "155 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "80 مم"
+      },
+      {
+        "label": "التسنين (Thread Size)",
+        "value": "M14x1.5"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Toyota Coaster Bus Diesel Separator, Toyota Dyna Truck"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann WK 842, Toyota 23300-54040"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر فاصل ماء وسبيتر أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-74",
-    "title": "فلتر فلاتر كابينة ومكيف أصلي أساس ANTI BG 7619",
+    "title": "فلتر كابينة ومكيف أصلي أساس ANTI BG 7619",
     "slug": "asas-anti-bg-7619",
     "description": "فلتر فلاتر كابينة ومكيف أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 30 مم • القطر الخارجي: 215 مم • القطر الداخلي: 195 مم متوافق مع محركات وآليات: Toyota Camry 2007-2017، Toyota Corolla 2008-2019، Toyota RAV4 مطابق لأرقام المصنع: Mann CUK 1919 - Toyota 87139-0N010",
     "category": "cabin",
@@ -2019,12 +5414,59 @@
     "specs": {
       "height": 30,
       "outer": 215,
-      "inner": 195
-    }
+      "inner": 195,
+      "height_display": "30 مم",
+      "outer_display": "215 مم",
+      "inner_display": "195 مم"
+    },
+    "clean_type": "فلتر كابينة ومكيف",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "ANTI BG 7619"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر كابينة ومكيف"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "30 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "215 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "195 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Toyota Camry 2007-2017, Toyota Corolla 2008-2019, Toyota RAV4"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann CUK 1919, Toyota 87139-0N010"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر كابينة ومكيف أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-75",
-    "title": "فلتر فلاتر كابينة ومكيف أصلي أساس ANTI VG 6035",
+    "title": "فلتر كابينة ومكيف أصلي أساس ANTI VG 6035",
     "slug": "asas-anti-vg-6035",
     "description": "فلتر فلاتر كابينة ومكيف أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 34 مم • القطر الخارجي: 288 مم • القطر الداخلي: 215 مم متوافق مع محركات وآليات: Volkswagen Passat، Volkswagen Golf 7، Audi A3 مطابق لأرقام المصنع: Mann CUK 2939 - VW 5Q0 819 653",
     "category": "cabin",
@@ -2047,12 +5489,59 @@
     "specs": {
       "height": 34,
       "outer": 288,
-      "inner": 215
-    }
+      "inner": 215,
+      "height_display": "34 مم",
+      "outer_display": "288 مم",
+      "inner_display": "215 مم"
+    },
+    "clean_type": "فلتر كابينة ومكيف",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "ANTI VG 6035"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر كابينة ومكيف"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "34 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "288 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "215 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Volkswagen Passat, Volkswagen Golf 7, Audi A3"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann CUK 2939, VW 5Q0 819 653"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر كابينة ومكيف أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-76",
-    "title": "فلتر فلاتر كابينة ومكيف أصلي أساس CF 077",
+    "title": "فلتر كابينة ومكيف أصلي أساس CF 077",
     "slug": "asas-cf-077",
     "description": "فلتر فلاتر كابينة ومكيف أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 20 مم • القطر الخارجي: 240 مم • القطر الداخلي: 210 مم متوافق مع محركات وآليات: Hyundai Tucson 2016-2021، Kia Sportage 2016-2021 مطابق لأرقام المصنع: Mann CU 24 013 - Hyundai 97133-D1000",
     "category": "cabin",
@@ -2074,12 +5563,59 @@
     "specs": {
       "height": 20,
       "outer": 240,
-      "inner": 210
-    }
+      "inner": 210,
+      "height_display": "20 مم",
+      "outer_display": "240 مم",
+      "inner_display": "210 مم"
+    },
+    "clean_type": "فلتر كابينة ومكيف",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "CF 077"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر كابينة ومكيف"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "20 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "240 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "210 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Hyundai Tucson 2016-2021, Kia Sportage 2016-2021"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann CU 24 013, Hyundai 97133-D1000"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر كابينة ومكيف أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-77",
-    "title": "فلتر فلاتر كابينة ومكيف أصلي أساس CF 233",
+    "title": "فلتر كابينة ومكيف أصلي أساس CF 233",
     "slug": "asas-cf-233",
     "description": "فلتر فلاتر كابينة ومكيف أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 30 مم • القطر الخارجي: 255 مم • القطر الداخلي: 225 مم متوافق مع محركات وآليات: Hyundai Elantra 2012-2018، Kia Cerato / Forte مطابق لأرقام المصنع: Mann CU 26 003 - Hyundai 97133-2H001",
     "category": "cabin",
@@ -2101,12 +5637,59 @@
     "specs": {
       "height": 30,
       "outer": 255,
-      "inner": 225
-    }
+      "inner": 225,
+      "height_display": "30 مم",
+      "outer_display": "255 مم",
+      "inner_display": "225 مم"
+    },
+    "clean_type": "فلتر كابينة ومكيف",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "CF 233"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر كابينة ومكيف"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "30 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "255 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "225 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Hyundai Elantra 2012-2018, Kia Cerato / Forte"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann CU 26 003, Hyundai 97133-2H001"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر كابينة ومكيف أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-78",
-    "title": "فلتر فلاتر كابينة ومكيف أصلي أساس CF 505",
+    "title": "فلتر كابينة ومكيف أصلي أساس CF 505",
     "slug": "asas-cf-505",
     "description": "فلتر فلاتر كابينة ومكيف أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 35 مم • القطر الخارجي: 430 مم • القطر الداخلي: 115 مم متوافق مع محركات وآليات: Mercedes Actros MP2/MP3 Cabin Filter، Mercedes Axor Cabin مطابق لأرقام المصنع: Mann CU 4469 - Mercedes A0008301218",
     "category": "cabin",
@@ -2128,12 +5711,59 @@
     "specs": {
       "height": 35,
       "outer": 430,
-      "inner": 115
-    }
+      "inner": 115,
+      "height_display": "35 مم",
+      "outer_display": "430 مم",
+      "inner_display": "115 مم"
+    },
+    "clean_type": "فلتر كابينة ومكيف",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "CF 505"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر كابينة ومكيف"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "35 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "430 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "115 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Mercedes Actros MP2/MP3 Cabin Filter, Mercedes Axor Cabin"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann CU 4469, Mercedes A0008301218"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر كابينة ومكيف أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-79",
-    "title": "فلتر فلاتر كابينة ومكيف أصلي أساس CF 560",
+    "title": "فلتر كابينة ومكيف أصلي أساس CF 560",
     "slug": "asas-cf-560",
     "description": "فلتر فلاتر كابينة ومكيف أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 40 مم • القطر الخارجي: 460 مم • القطر الداخلي: 150 مم متوافق مع محركات وآليات: Scania R/G/P Series Cabin Filter مطابق لأرقام المصنع: Mann CU 4795 - Scania 1913500",
     "category": "cabin",
@@ -2154,12 +5784,59 @@
     "specs": {
       "height": 40,
       "outer": 460,
-      "inner": 150
-    }
+      "inner": 150,
+      "height_display": "40 مم",
+      "outer_display": "460 مم",
+      "inner_display": "150 مم"
+    },
+    "clean_type": "فلتر كابينة ومكيف",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "CF 560"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر كابينة ومكيف"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "40 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "460 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "150 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Scania R/G/P Series Cabin Filter"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann CU 4795, Scania 1913500"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر كابينة ومكيف أصلي أساس مطابق لمواصفات المصنع OEM"
   },
   {
     "id": "asas-80",
-    "title": "فلتر فلاتر كابينة ومكيف أصلي أساس CF 571",
+    "title": "فلتر كابينة ومكيف أصلي أساس CF 571",
     "slug": "asas-cf-571",
     "description": "فلتر فلاتر كابينة ومكيف أصلي من ماركة أساس ASAS التركية مطابق تماماً لمواصفات المصنع OEM. المواصفات الفنية: الارتفاع: 32 مم • القطر الخارجي: 415 مم • القطر الداخلي: 190 مم متوافق مع محركات وآليات: Volvo FH12/FH13 Cabin Air Filter، Volvo FM مطابق لأرقام المصنع: Mann CU 4251 - Volvo 21758906",
     "category": "cabin",
@@ -2181,7 +5858,54 @@
     "specs": {
       "height": 32,
       "outer": 415,
-      "inner": 190
-    }
+      "inner": 190,
+      "height_display": "32 مم",
+      "outer_display": "415 مم",
+      "inner_display": "190 مم"
+    },
+    "clean_type": "فلتر كابينة ومكيف",
+    "spec_table": [
+      {
+        "label": "الماركة والمصنع",
+        "value": "أساس ASAS Turkey (وكالة رسمية)"
+      },
+      {
+        "label": "كود القطعة (Part Number)",
+        "value": "CF 571"
+      },
+      {
+        "label": "نوع الفلتر (Category)",
+        "value": "فلتر كابينة ومكيف"
+      },
+      {
+        "label": "الارتفاع (Height)",
+        "value": "32 مم"
+      },
+      {
+        "label": "القطر الخارجي (Outer Ø)",
+        "value": "415 مم"
+      },
+      {
+        "label": "القطر الداخلي (Inner Ø)",
+        "value": "190 مم"
+      },
+      {
+        "label": "الآليات والمحركات المتوافقة",
+        "value": "Volvo FH12/FH13 Cabin Air Filter, Volvo FM"
+      },
+      {
+        "label": "أرقام المطابقة (OEM Cross Ref)",
+        "value": "Mann CU 4251, Volvo 21758906"
+      },
+      {
+        "label": "المعاينة والاستلام",
+        "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"
+      },
+      {
+        "label": "الضمان والجودة",
+        "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"
+      }
+    ],
+    "subtitle": "فلتر كابينة ومكيف أصلي أساس مطابق لمواصفات المصنع OEM"
   }
 ]

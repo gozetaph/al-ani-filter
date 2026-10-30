@@ -17,6 +17,7 @@ export default function HalcyonStorefrontPage() {
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [productQty, setProductQty] = useState(1);
   const [orderConfirmed, setOrderConfirmed] = useState<{ id: string; total: number; gov: string; waUrl: string } | null>(null);
 
   // Live Baghdad Clock
@@ -62,7 +63,18 @@ export default function HalcyonStorefrontPage() {
           .order("created_at", { ascending: false });
 
         if (!error && data && data.length > 0) {
-          setProducts(data);
+          // Merge with mock specs if needed
+          const enriched = data.map((d) => {
+            const mock = initialProducts.find((m) => m.slug === d.slug || m.id === d.id);
+            return {
+              ...d,
+              spec_table: d.spec_table || mock?.spec_table,
+              part_number: d.part_number || mock?.part_number,
+              subtitle: d.subtitle || mock?.subtitle,
+              clean_type: d.clean_type || mock?.clean_type,
+            };
+          });
+          setProducts(enriched);
         }
       } catch {
         // Fallback to local catalog
@@ -90,6 +102,7 @@ export default function HalcyonStorefrontPage() {
     const matchesSearch =
       !query ||
       prod.title.toLowerCase().includes(query) ||
+      (prod.part_number && prod.part_number.toLowerCase().includes(query)) ||
       (prod.description && prod.description.toLowerCase().includes(query)) ||
       (prod.type && prod.type.toLowerCase().includes(query)) ||
       (prod.slug && prod.slug.toLowerCase().includes(query));
@@ -101,17 +114,17 @@ export default function HalcyonStorefrontPage() {
   const cartSubtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   const orderTotal = cartSubtotal + deliveryFee;
 
-  const addToCart = (product: Product) => {
+  const addToCart = (product: Product, quantity = 1) => {
     if (product.stock_quantity <= 0) return;
     triggerHaptic("light");
     setCart((prev) => {
       const existing = prev.find((item) => item.product.id === product.id);
       if (existing) {
         return prev.map((item) =>
-          item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.product.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
         );
       }
-      return [...prev, { product, quantity: 1 }];
+      return [...prev, { product, quantity }];
     });
   };
 
@@ -201,7 +214,7 @@ export default function HalcyonStorefrontPage() {
       <div className="bg-[#111111] text-white text-[11px] sm:text-xs font-mono-code px-4 sm:px-8 py-2 flex items-center justify-between border-b border-neutral-800">
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span>بغداد {baghdadTime || "04:50 AM"} • مفتوح للطلبات</span>
+          <span>بغداد {baghdadTime || "04:55 AM"} • مفتوح للطلبات</span>
           <span className="hidden md:inline text-neutral-400">| شحن لكافة المحافظات 18 والدفع عند الاستلام</span>
         </div>
         <div className="flex items-center gap-4 text-neutral-300">
@@ -218,7 +231,6 @@ export default function HalcyonStorefrontPage() {
         
         {/* Left: Brand Identity */}
         <div className="flex items-center gap-3">
-          {/* Mobile Menu Button */}
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="md:hidden p-1.5 text-neutral-800 hover:text-black focus:outline-none"
@@ -248,7 +260,7 @@ export default function HalcyonStorefrontPage() {
           </Link>
         </div>
 
-        {/* Center: Desktop Nav Links (Halcyon Style) */}
+        {/* Center: Desktop Nav Links */}
         <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-xs font-semibold tracking-normal text-neutral-700">
           <a href="#catalog" className="hover:text-black transition">كتالوج الفلاتر (80)</a>
           <a href="#oem-lookup" className="hover:text-black transition">مطابقة OEM</a>
@@ -259,7 +271,7 @@ export default function HalcyonStorefrontPage() {
           </Link>
         </nav>
 
-        {/* Right: Actions (Cart & Search) */}
+        {/* Right: Actions */}
         <div className="flex items-center gap-2 sm:gap-4">
           <button
             onClick={() => {
@@ -439,10 +451,9 @@ export default function HalcyonStorefrontPage() {
       {/* ========================================================== */}
       <section id="catalog" className="max-w-7xl mx-auto px-4 sm:px-8 py-12 w-full flex-1">
         
-        {/* Controls Bar: Search Input & Category Dropdown */}
+        {/* Controls Bar */}
         <div className="bg-white border border-neutral-200 p-4 sm:p-5 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
           
-          {/* Integrated Search Input */}
           <div className="relative flex-1">
             <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-neutral-400">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -454,7 +465,7 @@ export default function HalcyonStorefrontPage() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="ابحث برقم القطعة (مثل SP 1450 أو HF 8000) أو نوع الآلية (اكتروس، لاندكروزر، بيركنز)..."
+              placeholder="ابحث برقم القطعة (مثل SP 1450 أو CF 233) أو نوع الآلية (اكتروس، لاندكروزر، بيركنز)..."
               className="w-full pr-10 pl-10 py-2.5 text-xs sm:text-sm bg-neutral-50 border border-neutral-200 focus:bg-white focus:border-black focus:outline-none transition rounded-none font-mono-code placeholder:font-sans placeholder:text-neutral-400"
             />
             {searchQuery && (
@@ -467,7 +478,6 @@ export default function HalcyonStorefrontPage() {
             )}
           </div>
 
-          {/* Active Product Count */}
           <div className="shrink-0 font-mono-code text-xs text-neutral-500 flex items-center gap-2">
             <span>النتائج:</span>
             <span className="font-bold text-black">{filteredProducts.length}</span>
@@ -475,7 +485,7 @@ export default function HalcyonStorefrontPage() {
           </div>
         </div>
 
-        {/* Halcyon Horizontal Category Tabs (Scrollable on Mobile) */}
+        {/* Halcyon Horizontal Category Tabs */}
         <div className="border-b border-neutral-200 mb-8 overflow-x-auto no-scrollbar">
           <div className="flex items-center gap-1 sm:gap-2 min-w-max pb-1">
             {categories.map((cat) => {
@@ -501,7 +511,7 @@ export default function HalcyonStorefrontPage() {
         </div>
 
         {/* ========================================================== */}
-        {/* 5. HALCYON PRODUCT GRID (4 Cols Desktop / 2 Cols Mobile)   */}
+        {/* 5. PRODUCT GRID (Halcyon boost-sd Product Cards)           */}
         {/* ========================================================== */}
         {filteredProducts.length === 0 ? (
           <div className="bg-white border border-neutral-200 p-12 text-center space-y-4">
@@ -525,14 +535,20 @@ export default function HalcyonStorefrontPage() {
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
             {filteredProducts.map((product) => {
+              const partNumber = product.part_number || product.title.split(" ").pop() || "ASAS";
+              const cleanType = product.clean_type || product.type?.replace(/^فلاتر\s+/, "فلتر ") || "فلتر أصلي";
+              
               return (
                 <div 
                   key={product.id}
                   className="bg-white border border-neutral-200 group flex flex-col justify-between hover:border-black transition-all duration-300 relative"
                 >
-                  {/* Top Image Container (Pure Studio White Box) */}
+                  {/* Top Image Container */}
                   <div 
-                    onClick={() => setSelectedProduct(product)}
+                    onClick={() => {
+                      setSelectedProduct(product);
+                      setProductQty(1);
+                    }}
                     className="aspect-square bg-white p-4 relative overflow-hidden flex items-center justify-center cursor-pointer border-b border-neutral-100"
                   >
                     <Image
@@ -544,7 +560,7 @@ export default function HalcyonStorefrontPage() {
                       loading="lazy"
                     />
 
-                    {/* Part Number Badge (Halcyon Technical Style) */}
+                    {/* Part Number Badge */}
                     {product.badge && (
                       <span className="absolute top-2.5 right-2.5 bg-neutral-900 text-white text-[9px] sm:text-[10px] font-mono-code px-2 py-0.5 tracking-wider uppercase">
                         {product.badge}
@@ -552,7 +568,7 @@ export default function HalcyonStorefrontPage() {
                     )}
 
                     <span className="absolute bottom-2 left-2 text-[10px] font-mono-code text-neutral-400 group-hover:text-black transition">
-                      [تفاصيل +]
+                      [المواصفات +]
                     </span>
                   </div>
 
@@ -560,18 +576,22 @@ export default function HalcyonStorefrontPage() {
                   <div className="p-3.5 sm:p-4 flex flex-col flex-1 justify-between gap-3 text-right">
                     <div className="space-y-1">
                       <span className="text-[10px] sm:text-[11px] font-mono-code text-neutral-500 uppercase block">
-                        {product.type || "فلتر أصلي"}
+                        {cleanType}
                       </span>
                       
+                      {/* Bold Part Number */}
                       <h3 
-                        onClick={() => setSelectedProduct(product)}
-                        className="font-bold text-xs sm:text-sm text-[#111111] line-clamp-2 cursor-pointer hover:underline leading-snug"
+                        onClick={() => {
+                          setSelectedProduct(product);
+                          setProductQty(1);
+                        }}
+                        className="font-black text-sm sm:text-base text-[#111111] font-mono-code cursor-pointer hover:underline tracking-tight"
                       >
-                        {product.title}
+                        {partNumber}
                       </h3>
 
-                      <p className="text-[11px] text-neutral-500 line-clamp-1">
-                        {product.description.split("المواصفات الفنية:")[0].replace("فلتر ", "")}
+                      <p className="text-[11px] text-neutral-600 line-clamp-1">
+                        {product.title}
                       </p>
                     </div>
 
@@ -692,7 +712,7 @@ export default function HalcyonStorefrontPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-8 py-14">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 text-right">
             
-            {/* Col 1: Brand & Identity */}
+            {/* Col 1 */}
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <Image src="/logo_a_blue_trans.png" alt="العاني" width={30} height={30} className="h-7 w-auto object-contain" />
@@ -706,7 +726,7 @@ export default function HalcyonStorefrontPage() {
               </div>
             </div>
 
-            {/* Col 2: Categories */}
+            {/* Col 2 */}
             <div className="space-y-2">
               <span className="font-mono-code font-bold text-black uppercase tracking-wider block mb-3">
                 أقسام الفلاتر
@@ -720,7 +740,7 @@ export default function HalcyonStorefrontPage() {
               </ul>
             </div>
 
-            {/* Col 3: Direct Contact */}
+            {/* Col 3 */}
             <div className="space-y-3">
               <span className="font-mono-code font-bold text-black uppercase tracking-wider block mb-3">
                 الاتصال والطلبات
@@ -741,7 +761,7 @@ export default function HalcyonStorefrontPage() {
               </div>
             </div>
 
-            {/* Col 4: Coverage & Admin */}
+            {/* Col 4 */}
             <div className="space-y-3">
               <span className="font-mono-code font-bold text-black uppercase tracking-wider block mb-3">
                 التغطية والخدمة
@@ -758,7 +778,6 @@ export default function HalcyonStorefrontPage() {
 
           </div>
 
-          {/* Bottom Copyright Strip */}
           <div className="border-t border-neutral-200 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono-code text-[11px] text-neutral-400">
             <div>
               © 2026 محل العاني للفلتر • AL ANI FILTER • BAGHDAD, IRAQ
@@ -771,65 +790,185 @@ export default function HalcyonStorefrontPage() {
       </footer>
 
       {/* ========================================================== */}
-      {/* 9. PRODUCT QUICK-VIEW MODAL (Halcyon Spec Drawer)          */}
+      {/* 9. HALCYON PRODUCT DETAIL VIEW (Pic 2, 3, 4 Exact Layout)   */}
       {/* ========================================================== */}
       {selectedProduct && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white border border-neutral-300 max-w-2xl w-full max-h-[90vh] overflow-y-auto text-right p-6 sm:p-8 relative space-y-6">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm overflow-y-auto flex items-start justify-center p-0 sm:p-6">
+          <div className="bg-white border-0 sm:border border-neutral-300 max-w-2xl w-full min-h-screen sm:min-h-0 sm:max-h-[92vh] overflow-y-auto text-right p-5 sm:p-8 relative space-y-6 shadow-2xl">
             
-            {/* Close Button */}
-            <button 
-              onClick={() => setSelectedProduct(null)}
-              className="absolute top-4 left-4 p-1.5 text-neutral-400 hover:text-black font-mono-code text-sm"
-            >
-              [إغلاق ✕]
-            </button>
+            {/* Top Bar with Back Button (Halcyon Style) */}
+            <div className="flex items-center justify-between border-b border-neutral-200 pb-3">
+              <button 
+                onClick={() => setSelectedProduct(null)}
+                className="inline-flex items-center gap-1.5 text-xs font-mono-code font-bold text-neutral-700 hover:text-black px-2.5 py-1 bg-neutral-100 hover:bg-neutral-200 transition"
+              >
+                <span>&lt; BACK</span>
+                <span className="font-sans text-[11px] text-neutral-500">(العودة للكتالوج)</span>
+              </button>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
-              <div className="aspect-square bg-neutral-50 border border-neutral-200 p-4 flex items-center justify-center">
+              <button 
+                onClick={() => setSelectedProduct(null)}
+                className="text-neutral-400 hover:text-black font-mono-code text-xs"
+              >
+                [✕ إغلاق]
+              </button>
+            </div>
+
+            {/* Product Header & Hero Image */}
+            <div className="space-y-6">
+              
+              {/* Product Gallery Container */}
+              <div className="aspect-square bg-[#fbfbfb] border border-neutral-200 p-6 sm:p-8 flex items-center justify-center relative">
                 <Image
                   src={selectedProduct.image_url || "/products/oil-filter.svg"}
                   alt={selectedProduct.title}
-                  width={400}
-                  height={400}
+                  width={600}
+                  height={600}
                   className="w-full h-full object-contain"
+                  priority
                 />
               </div>
 
-              <div className="space-y-3">
-                <span className="font-mono-code text-xs text-neutral-500 uppercase block">
-                  {selectedProduct.type || "فلتر أصلي"}
-                </span>
-                <h3 className="font-extrabold text-lg text-black">
-                  {selectedProduct.title}
-                </h3>
-                <div className="font-mono-code text-xl font-bold text-black">
-                  {formatIQD(selectedProduct.price)}
+              {/* Gallery Thumbnails (Halcyon Style) */}
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-12 h-12 border-2 border-black bg-white p-1 flex items-center justify-center cursor-pointer">
+                  <Image src={selectedProduct.image_url || "/products/oil-filter.svg"} alt="1" width={40} height={40} className="w-full h-full object-contain" />
                 </div>
-                <div className="text-xs text-neutral-500 font-mono-code">
-                  المخزن: متوفر للشحن الفوري
+                <div className="w-12 h-12 border border-neutral-200 bg-neutral-50 p-1 flex items-center justify-center cursor-pointer opacity-70 hover:opacity-100">
+                  <Image src={selectedProduct.image_url || "/products/oil-filter.svg"} alt="2" width={40} height={40} className="w-full h-full object-contain rotate-90" />
                 </div>
-                
-                <button
-                  onClick={() => {
-                    addToCart(selectedProduct);
-                    setSelectedProduct(null);
-                    setIsCartDrawerOpen(true);
-                  }}
-                  className="w-full halcyon-btn-primary py-3 text-xs font-bold uppercase tracking-wider"
-                >
-                  إضافة للسلة وإتمام الشراء
-                </button>
               </div>
+
+              {/* Product Code Header (Like X980 in Pic 2) */}
+              <div className="space-y-2 pt-2 border-t border-neutral-100">
+                <h1 className="text-3xl sm:text-5xl font-black font-mono-code text-black tracking-tight">
+                  {selectedProduct.part_number || selectedProduct.title.split(" ").pop()}
+                </h1>
+
+                <p className="text-sm sm:text-base font-semibold text-neutral-700 leading-snug">
+                  {selectedProduct.subtitle || selectedProduct.title}
+                </p>
+
+                {/* Live In-Stock Indicator (Like 🟢 84 IN AKL in Pic 2) */}
+                <div className="flex flex-wrap items-center gap-3 pt-2 font-mono-code text-xs text-neutral-600">
+                  <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>متوفر في مخزن بغداد (25 قطعة)</span>
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 bg-neutral-50 text-neutral-800 border border-neutral-200 px-2.5 py-1">
+                    <span className="w-2 h-2 rounded-full bg-neutral-500" />
+                    <span>توصيل سريع لـ 18 محافظة</span>
+                  </span>
+                </div>
+              </div>
+
+              {/* Price & Quantity & Action Controls (Like Pic 3) */}
+              <div className="pt-4 border-t border-neutral-200 space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono-code text-xs text-neutral-500">السعر النقدي للقطعة:</span>
+                  <span className="font-mono-code text-2xl sm:text-3xl font-black text-black">
+                    {formatIQD(selectedProduct.price)}
+                  </span>
+                </div>
+
+                {/* Quantity Stepper + Add Button */}
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center border border-neutral-300 font-mono-code text-sm h-12 bg-white">
+                    <button 
+                      onClick={() => setProductQty(Math.max(1, productQty - 1))} 
+                      className="px-3.5 h-full hover:bg-neutral-100 transition text-lg"
+                    >
+                      −
+                    </button>
+                    <span className="px-4 font-bold text-base min-w-[2.5rem] text-center">
+                      {productQty}
+                    </span>
+                    <button 
+                      onClick={() => setProductQty(productQty + 1)} 
+                      className="px-3.5 h-full hover:bg-neutral-100 transition text-lg"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      addToCart(selectedProduct, productQty);
+                      setSelectedProduct(null);
+                      setIsCartDrawerOpen(true);
+                    }}
+                    className="flex-1 halcyon-btn-primary h-12 text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2"
+                  >
+                    <span>إضافة إلى السلة وإتمام الطلب</span>
+                    <span className="font-mono-code text-xs">({formatIQD(selectedProduct.price * productQty)})</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* ========================================================== */}
+              {/* EXACT SPECIFICATIONS TABLE (As in Pic 3 & Pic 4)           */}
+              {/* ========================================================== */}
+              <div className="mt-8 border-t border-neutral-300 pt-6">
+                <div className="flex items-center justify-between border-b-2 border-black pb-2 mb-2">
+                  <span className="font-extrabold text-sm sm:text-base text-black font-mono-code uppercase">
+                    Specifications
+                  </span>
+                  <span className="font-mono-code text-xs sm:text-sm font-bold text-black">
+                    {selectedProduct.part_number || "ASAS"}
+                  </span>
+                </div>
+
+                <table className="w-full text-right text-xs sm:text-sm border-collapse">
+                  <tbody>
+                    {selectedProduct.spec_table && selectedProduct.spec_table.length > 0 ? (
+                      selectedProduct.spec_table.map((row, idx) => (
+                        <tr key={idx} className="border-b border-neutral-200 hover:bg-neutral-50 transition">
+                          <td className="py-2.5 text-neutral-500 font-sans w-2/5 sm:w-1/3 align-top">
+                            {row.label}
+                          </td>
+                          <td className="py-2.5 font-bold text-black font-mono-code leading-relaxed">
+                            {row.value}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <>
+                        <tr className="border-b border-neutral-200">
+                          <td className="py-2.5 text-neutral-500 font-sans w-2/5">الماركة / الوكالة</td>
+                          <td className="py-2.5 font-bold text-black font-mono-code">أساس ASAS Turkey (أصلي 100%)</td>
+                        </tr>
+                        <tr className="border-b border-neutral-200">
+                          <td className="py-2.5 text-neutral-500 font-sans">كود القطعة (Part Number)</td>
+                          <td className="py-2.5 font-bold text-black font-mono-code">{selectedProduct.part_number || selectedProduct.title}</td>
+                        </tr>
+                        <tr className="border-b border-neutral-200">
+                          <td className="py-2.5 text-neutral-500 font-sans">النوع</td>
+                          <td className="py-2.5 font-bold text-black font-mono-code">{selectedProduct.clean_type || selectedProduct.type}</td>
+                        </tr>
+                        <tr className="border-b border-neutral-200">
+                          <td className="py-2.5 text-neutral-500 font-sans">المعاينة والدفع</td>
+                          <td className="py-2.5 font-bold text-black font-mono-code">فحص الطرد قبل الدفع نقداً عند الاستلام</td>
+                        </tr>
+                      </>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Direct WhatsApp Assistance */}
+              <div className="pt-2">
+                <a 
+                  href={`https://wa.me/9647901526221?text=${encodeURIComponent(`مرحباً محل العاني، أود الاستفسار عن فلتر كود ${selectedProduct.part_number || selectedProduct.title}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full block text-center py-2.5 border border-neutral-300 text-xs font-mono-code font-bold text-neutral-700 hover:bg-neutral-50 transition"
+                >
+                  استفسار فني مباشر عبر واتساب لهذا الفلتر ↗
+                </a>
+              </div>
+
             </div>
 
-            {/* Description & Technical Specs */}
-            <div className="border-t border-neutral-200 pt-4 space-y-3">
-              <span className="font-mono-code text-xs font-bold text-black uppercase block">المواصفات الفنية والمطابقة:</span>
-              <p className="text-xs text-neutral-700 leading-relaxed">
-                {selectedProduct.description}
-              </p>
-            </div>
           </div>
         </div>
       )}

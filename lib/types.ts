@@ -11,6 +11,13 @@ export interface Product {
   image_url: string;
   is_active?: boolean;
   created_at?: string;
+  part_number?: string;
+  clean_type?: string;
+  subtitle?: string;
+  spec_table?: { label: string; value: string }[];
+  specs?: Record<string, any>;
+  vehicles?: string[];
+  cross_references?: string[];
 }
 
 export interface ShippingZone {
