@@ -21,52 +21,7 @@ export default function HalcyonStorefrontPage() {
     const t2 = setTimeout(() => setSplashFading(true), 2400);
     const t3 = setTimeout(() => setShowSplash(false), 3100);
 
-    return () =>
-      {/* ========================================================== */}
-      {/* APPLE SPLASH SCREEN ANIMATION                              */}
-      {/* ========================================================== */}
-      {showSplash && (
-        <div 
-          className={`fixed inset-0 z-[100] bg-[#004bb5] flex items-center justify-center p-6 transition-all duration-700 ease-in-out ${
-            splashFading ? "opacity-0 scale-105 blur-md pointer-events-none" : "opacity-100 scale-100"
-          }`}
-        >
-          {/* Subtle Water Glow */}
-          <div className="absolute w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-white/10 blur-3xl animate-pulse pointer-events-none" />
-
-          {/* Center Lockup Container */}
-          <div className="relative z-10 flex items-center justify-center" dir="ltr">
-            {/* Mark A */}
-            <div className="transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center shrink-0">
-              <Image 
-                src="/logo_a_trans.png" 
-                alt="A" 
-                width={130} 
-                height={130} 
-                className="h-20 sm:h-28 md:h-32 w-auto object-contain drop-shadow-2xl" 
-                priority
-              />
-            </div>
-
-            {/* Arabic Calligraphy 'العاني للفلتر' (Pops out from behind A) */}
-            <div 
-              className={`overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center shrink-0 ${
-                splashRevealed ? "max-w-[500px] opacity-100" : "max-w-0 opacity-0"
-              }`}
-            >
-              <Image 
-                src="/logo_text_trans.png" 
-                alt="العاني للفلتر" 
-                width={280} 
-                height={100} 
-                className="h-16 sm:h-24 md:h-28 w-auto max-w-none object-contain pl-3 sm:pl-5 drop-shadow-2xl"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      )}
- {
+    return () => {
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
@@ -271,6 +226,51 @@ export default function HalcyonStorefrontPage() {
 
   return (
     <div className="min-h-screen bg-[#f8f8f8] text-[#111111] flex flex-col antialiased selection:bg-[#111111] selection:text-white">
+      {/* ========================================================== */}
+      {/* APPLE SPLASH SCREEN ANIMATION (A SLIDES -> TEXT)           */}
+      {/* ========================================================== */}
+      {showSplash && (
+        <div 
+          className={`fixed inset-0 z-[100] bg-[#004bb5] flex items-center justify-center p-6 transition-all duration-700 ease-in-out ${
+            splashFading ? "opacity-0 scale-105 blur-md pointer-events-none" : "opacity-100 scale-100"
+          }`}
+        >
+          {/* Subtle Water Glow */}
+          <div className="absolute w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-white/10 blur-3xl animate-pulse pointer-events-none" />
+
+          {/* Center Lockup Container */}
+          <div className="relative z-10 flex items-center justify-center" dir="ltr">
+            {/* Mark A */}
+            <div className="transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center shrink-0">
+              <Image 
+                src="/logo_a_trans.png" 
+                alt="A" 
+                width={130} 
+                height={130} 
+                className="h-20 sm:h-28 md:h-32 w-auto object-contain drop-shadow-2xl" 
+                priority
+              />
+            </div>
+
+            {/* Arabic Calligraphy "العاني للفلتر" (Pops out from behind A) */}
+            <div 
+              className={`overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center shrink-0 ${
+                splashRevealed ? "max-w-[500px] opacity-100" : "max-w-0 opacity-0"
+              }`}
+            >
+              <Image 
+                src="/logo_text_trans.png" 
+                alt="العاني للفلتر" 
+                width={280} 
+                height={100} 
+                className="h-16 sm:h-24 md:h-28 w-auto max-w-none object-contain pl-3 sm:pl-5 drop-shadow-2xl"
+                priority
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
       
       {/* ========================================================== */}
       {/* 1. HALCYON TOP ANNOUNCEMENT BAR (Height ~37px)             */}
@@ -690,7 +690,7 @@ export default function HalcyonStorefrontPage() {
             مطابقة جميع أرقام القطع الأصلية OEM
           </h2>
           <p className="text-xs sm:text-sm text-neutral-600 max-w-2xl mx-auto leading-relaxed">
-            نوفر بدائل هندسية مطابقة تماماً لمواصفات شركات الفلاتر العالمية (Mann Filter, Donaldson, Fleetguard, Baldwin, Bosch, Wix). أرسل لنا رقم القطعة المسجل على الفلتر القديم وسنوفر لك الفلتر المطابق فوراً.
+            نوفر بدائل هندسية مطابقة تماماً لمواصفات شركات الفلاتر العالمية. أرسل لنا رقم القطعة المسجل على الفلتر القديم وسنوفر لك الفلتر المطابق فوراً.
           </p>
 
 
