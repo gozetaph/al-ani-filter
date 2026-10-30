@@ -75,6 +75,7 @@ export default function HalcyonStorefrontPage() {
 
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("الكل");
   const [searchQuery, setSearchQuery] = useState("");
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
@@ -470,9 +471,10 @@ export default function HalcyonStorefrontPage() {
       {/* ========================================================== */}
       <section id="catalog" className="max-w-7xl mx-auto px-4 sm:px-8 py-12 w-full flex-1">
         
-        {/* Controls Bar */}
+        {/* Controls Bar with Integrated Dropdown Filter Button */}
         <div className="bg-white border border-neutral-200 p-4 sm:p-5 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
           
+          {/* Search Input */}
           <div className="relative flex-1">
             <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-neutral-400">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -484,7 +486,7 @@ export default function HalcyonStorefrontPage() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="ابحث برقم القطعة (مثل SP 1450 أو CF 233) أو نوع الآلية (اكتروس، لاندكروزر، بيركنز)..."
+              placeholder="ابحث برقم القطعة (مثل SP 1450 أو CF 233) أو نوع الآلية..."
               className="w-full pr-10 pl-10 py-2.5 text-xs sm:text-sm bg-neutral-50 border border-neutral-200 focus:bg-white focus:border-black focus:outline-none transition rounded-none font-mono-code placeholder:font-sans placeholder:text-neutral-400"
             />
             {searchQuery && (
@@ -497,39 +499,82 @@ export default function HalcyonStorefrontPage() {
             )}
           </div>
 
-          <div className="shrink-0 font-mono-code text-xs text-neutral-500 flex items-center gap-2">
-            <span>النتائج:</span>
-            <span className="font-bold text-black">{filteredProducts.length}</span>
-            <span>من أصل {products.length}</span>
+          {/* Dropdown Filter Button (Replaces counter & horizontal tabs) */}
+          <div className="relative shrink-0">
+            <button
+              type="button"
+              onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
+              className="w-full md:w-auto px-4 py-2.5 bg-neutral-50 hover:bg-neutral-100 border border-neutral-300 text-xs font-mono-code font-bold text-black flex items-center justify-between gap-4 transition min-w-[200px]"
+            >
+              <div className="flex items-center gap-2">
+                <svg className="w-3.5 h-3.5 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                </svg>
+                <span>{activeCategory === "الكل" ? "تصفية الفئات (الكل)" : activeCategory}</span>
+              </div>
+              <svg className={`w-3.5 h-3.5 text-neutral-500 transition-transform ${isCategoryDropdownOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {/* Dropdown Menu Modal/Popover */}
+            {isCategoryDropdownOpen && (
+              <>
+                <div 
+                  className="fixed inset-0 z-20" 
+                  onClick={() => setIsCategoryDropdownOpen(false)}
+                />
+                <div className="absolute right-0 top-full mt-1.5 w-64 bg-white border border-neutral-300 shadow-xl z-30 py-1 text-right divide-y divide-neutral-100 animate-fadeIn">
+                  {categories.map((cat) => {
+                    const count = products.filter((p) =>
+                      cat === "الكل" ? true : (p.type || p.category || "").includes(cat.replace("فلاتر ", ""))
+                    ).length;
+                    const isSelected = activeCategory === cat;
+                    return (
+                      <button
+                        key={cat}
+                        onClick={() => {
+                          setActiveCategory(cat);
+                          setIsCategoryDropdownOpen(false);
+                          triggerHaptic("light");
+                        }}
+                        className={`w-full px-4 py-2.5 text-xs flex items-center justify-between font-mono-code transition text-right ${
+                          isSelected ? "bg-black text-white font-bold" : "text-neutral-700 hover:bg-neutral-50"
+                        }`}
+                      >
+                        <span className={`text-[10px] px-1.5 py-0.5 ${isSelected ? "bg-white text-black font-bold" : "bg-neutral-100 text-neutral-500"}`}>
+                          {count}
+                        </span>
+                        <span className="font-sans">{cat}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </>
+            )}
           </div>
         </div>
 
-        {/* Halcyon Horizontal Category Tabs */}
-        <div className="border-b border-neutral-200 mb-8 overflow-x-auto no-scrollbar">
-          <div className="flex items-center gap-1 sm:gap-2 min-w-max pb-1">
-            {categories.map((cat) => {
-              const isActive = activeCategory === cat;
-              return (
-                <button
-                  key={cat}
-                  onClick={() => {
-                    triggerHaptic("light");
-                    setActiveCategory(cat);
-                  }}
-                  className={`px-4 py-2.5 text-xs sm:text-sm font-semibold transition-all relative ${
-                    isActive 
-                      ? "text-black border-b-2 border-black font-bold" 
-                      : "text-neutral-500 hover:text-black"
-                  }`}
-                >
-                  <span>{cat}</span>
-                </button>
-              );
-            })}
+        {/* Active Filter Pill Badge if category is selected */}
+        {activeCategory !== "الكل" && (
+          <div className="mb-6 flex items-center gap-2">
+            <span className="text-xs text-neutral-500 font-mono-code">تصفية نشطة:</span>
+            <span className="inline-flex items-center gap-2 px-3 py-1 bg-black text-white text-xs font-mono-code font-bold">
+              <span>{activeCategory}</span>
+              <button
+                onClick={() => {
+                  setActiveCategory("الكل");
+                  triggerHaptic("light");
+                }}
+                className="hover:text-neutral-300 font-bold"
+                title="إلغاء التصفية"
+              >
+                ✕
+              </button>
+            </span>
           </div>
-        </div>
+        )}
 
-        {/* ========================================================== */}
         {/* 5. PRODUCT GRID (Halcyon boost-sd Product Cards)           */}
         {/* ========================================================== */}
         {filteredProducts.length === 0 ? (
@@ -640,9 +685,7 @@ export default function HalcyonStorefrontPage() {
       {/* ========================================================== */}
       <section id="oem-lookup" className="bg-white border-y border-neutral-200 py-16 px-4 sm:px-8">
         <div className="max-w-5xl mx-auto text-center space-y-6">
-          <span className="font-mono-code text-xs uppercase tracking-wider text-neutral-500">
-            OEM CROSS REFERENCE DIRECTORY
-          </span>
+
           <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-black">
             مطابقة جميع أرقام القطع الأصلية OEM
           </h2>
@@ -650,12 +693,7 @@ export default function HalcyonStorefrontPage() {
             نوفر بدائل هندسية مطابقة تماماً لمواصفات شركات الفلاتر العالمية (Mann Filter, Donaldson, Fleetguard, Baldwin, Bosch, Wix). أرسل لنا رقم القطعة المسجل على الفلتر القديم وسنوفر لك الفلتر المطابق فوراً.
           </p>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto pt-4 font-mono-code text-xs">
-            <div className="p-3 border border-neutral-200 bg-neutral-50">MANN FILTER</div>
-            <div className="p-3 border border-neutral-200 bg-neutral-50">FLEETGUARD</div>
-            <div className="p-3 border border-neutral-200 bg-neutral-50">DONALDSON</div>
-            <div className="p-3 border border-neutral-200 bg-neutral-50">BALDWIN FILTERS</div>
-          </div>
+
 
           <div className="pt-4">
             <a 
@@ -678,7 +716,7 @@ export default function HalcyonStorefrontPage() {
       {/* ========================================================== */}
       <section id="faq" className="max-w-4xl mx-auto px-4 sm:px-8 py-16 w-full">
         <div className="text-center space-y-2 mb-10">
-          <span className="font-mono-code text-xs text-neutral-500 uppercase tracking-wider">FREQUENTLY ASKED QUESTIONS</span>
+          
           <h2 className="text-2xl sm:text-3xl font-extrabold text-black">أسئلة شائعة قبل الطلب</h2>
         </div>
 
