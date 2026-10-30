@@ -2,152 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
 
 :root {
-  --bg-stone: #F7F6F2;
+  --bg-main: #f8f8f8;
+  --bg-card: #ffffff;
+  --border-subtle: #e8e8e8;
+  --border-strong: #111111;
+  --text-main: #111111;
+  --text-muted: #666666;
   --brand-blue: #004bb5;
-  --brand-blue-glow: rgba(0, 122, 255, 0.28);
-  --brand-blue-border: rgba(0, 122, 255, 0.45);
-  --brand-dark: #003685;
-  --text-main: #18181B;
-  --text-muted: #71717A;
+  --nav-height-desktop: 48px;
+  --nav-height-mobile: 44px;
 }
 
 body {
-  font-family: 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif;
-  background-color: var(--bg-stone);
+  font-family: 'IBM Plex Sans Arabic', 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-main);
   color: var(--text-main);
   -webkit-tap-highlight-color: transparent;
+  letter-spacing: -0.01em;
 }
 
-/* === AMAZING GLASS MATERIAL === */
-.amazing-glass-nav {
-  background: rgba(247, 246, 242, 0.75);
-  backdrop-filter: blur(28px) saturate(190%) contrast(92%);
-  -webkit-backdrop-filter: blur(28px) saturate(190%) contrast(92%);
-  border-bottom: 1.5px solid rgba(255, 255, 255, 0.85);
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
-  transition: all 0.3s ease;
+.font-mono-code {
+  font-family: 'IBM Plex Mono', monospace;
 }
 
-.amazing-glass-pill {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(24px) saturate(190%) contrast(92%);
-  -webkit-backdrop-filter: blur(24px) saturate(190%) contrast(92%);
-  border: 1.5px solid rgba(255, 255, 255, 0.85);
-  box-shadow: 
-    0 6px 18px -2px rgba(0, 0, 0, 0.05),
-    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.95),
-    inset 0 -1px 2px 0 rgba(0, 0, 0, 0.03);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+/* Halcyon architectural line dividers */
+.halcyon-border {
+  border-color: #e5e5e5;
 }
-.amazing-glass-pill:hover {
-  background: rgba(255, 255, 255, 0.82);
-  border-color: var(--brand-blue-border);
-  box-shadow: 
-    0 0 20px 2px var(--brand-blue-glow),
-    0 8px 24px -2px rgba(0, 75, 181, 0.15),
-    inset 0 1.5px 2px 0 rgba(255, 255, 255, 1),
-    inset 0 0 10px 0 rgba(0, 122, 255, 0.1);
+
+/* Halcyon smooth button hover */
+.halcyon-btn-primary {
+  background-color: #111111;
+  color: #ffffff;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.halcyon-btn-primary:hover {
+  background-color: #2b2b2b;
   transform: translateY(-1px);
 }
 
-.amazing-glass-pill-active {
-  background: #004bb5 !important;
-  color: #ffffff !important;
-  border: 1.5px solid #004bb5 !important;
-  box-shadow: 
-    0 0 22px 2px rgba(0, 75, 181, 0.4),
-    0 8px 20px -2px rgba(0, 75, 181, 0.3),
-    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.4) !important;
-}
-
-.amazing-glass-card {
-  background: rgba(255, 255, 255, 0.68);
-  backdrop-filter: blur(24px) saturate(190%) contrast(92%);
-  -webkit-backdrop-filter: blur(24px) saturate(190%) contrast(92%);
-  border: 1.5px solid rgba(255, 255, 255, 0.85);
-  box-shadow: 
-    0 10px 30px -4px rgba(0, 0, 0, 0.05),
-    0 4px 10px -2px rgba(0, 0, 0, 0.02),
-    inset 0 1.5px 2.5px 0 rgba(255, 255, 255, 0.95),
-    inset 0 -1.5px 2.5px 0 rgba(0, 0, 0, 0.03);
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.amazing-glass-card:hover {
-  background: rgba(255, 255, 255, 0.88);
-  border-color: var(--brand-blue-border);
-  box-shadow: 
-    0 0 30px 4px var(--brand-blue-glow),
-    0 18px 42px -6px rgba(0, 75, 181, 0.16),
-    inset 0 1.5px 2.5px 0 rgba(255, 255, 255, 1),
-    inset 0 0 16px 0 rgba(0, 122, 255, 0.08);
-  transform: translateY(-3px);
-}
-
-.amazing-glass-inner {
-  background: rgba(245, 244, 240, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
-}
-
-.amazing-glass-btn {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1.5px solid rgba(255, 255, 255, 0.95);
-  box-shadow: 
-    0 4px 12px -2px rgba(0, 0, 0, 0.06),
-    inset 0 1px 1.5px 0 rgba(255, 255, 255, 1);
+.halcyon-btn-outline {
+  border: 1px solid #111111;
+  color: #111111;
+  background-color: transparent;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.amazing-glass-btn:hover {
-  background: #004bb5;
+.halcyon-btn-outline:hover {
+  background-color: #111111;
   color: #ffffff;
-  border-color: #004bb5;
-  box-shadow: 
-    0 0 18px 2px rgba(0, 122, 255, 0.45),
-    0 6px 18px -2px rgba(0, 75, 181, 0.35);
-  transform: scale(1.06);
 }
 
-.amazing-glass-floating {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(32px) saturate(200%) contrast(92%);
-  -webkit-backdrop-filter: blur(32px) saturate(200%) contrast(92%);
-  border: 1.5px solid rgba(255, 255, 255, 0.95);
-  box-shadow: 
-    0 0 35px 3px rgba(0, 122, 255, 0.14),
-    0 20px 48px -6px rgba(0, 0, 0, 0.12),
-    inset 0 1.5px 2.5px 0 rgba(255, 255, 255, 1);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+/* Hide scrollbar for category tabs */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
-.amazing-glass-floating:hover {
-  background: rgba(255, 255, 255, 0.85);
-  box-shadow: 
-    0 0 45px 6px rgba(0, 122, 255, 0.25),
-    0 24px 54px -6px rgba(0, 75, 181, 0.18),
-    inset 0 1.5px 2.5px 0 rgba(255, 255, 255, 1);
-}
-
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-@media print {
-  body * {
-    visibility: hidden;
-  }
-  #printArea, #printArea * {
-    visibility: visible;
-  }
-  #printArea {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    display: block !important;
-  }
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
