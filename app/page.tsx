@@ -10,6 +10,69 @@ import { createClient } from "@/lib/supabase/client";
 import { triggerHaptic } from "@/lib/haptics";
 
 export default function HalcyonStorefrontPage() {
+  // Splash Screen State
+  const [showSplash, setShowSplash] = useState(true);
+  const [splashRevealed, setSplashRevealed] = useState(false);
+  const [splashFading, setSplashFading] = useState(false);
+
+  useEffect(() => {
+    // Splash animation sequence: A in center -> slides to side -> text pops out -> fade
+    const t1 = setTimeout(() => setSplashRevealed(true), 600);
+    const t2 = setTimeout(() => setSplashFading(true), 2400);
+    const t3 = setTimeout(() => setShowSplash(false), 3100);
+
+    return () =>
+      {/* ========================================================== */}
+      {/* APPLE SPLASH SCREEN ANIMATION                              */}
+      {/* ========================================================== */}
+      {showSplash && (
+        <div 
+          className={`fixed inset-0 z-[100] bg-[#004bb5] flex items-center justify-center p-6 transition-all duration-700 ease-in-out ${
+            splashFading ? "opacity-0 scale-105 blur-md pointer-events-none" : "opacity-100 scale-100"
+          }`}
+        >
+          {/* Subtle Water Glow */}
+          <div className="absolute w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-white/10 blur-3xl animate-pulse pointer-events-none" />
+
+          {/* Center Lockup Container */}
+          <div className="relative z-10 flex items-center justify-center" dir="ltr">
+            {/* Mark A */}
+            <div className="transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center shrink-0">
+              <Image 
+                src="/logo_a_trans.png" 
+                alt="A" 
+                width={130} 
+                height={130} 
+                className="h-20 sm:h-28 md:h-32 w-auto object-contain drop-shadow-2xl" 
+                priority
+              />
+            </div>
+
+            {/* Arabic Calligraphy 'العاني للفلتر' (Pops out from behind A) */}
+            <div 
+              className={`overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center shrink-0 ${
+                splashRevealed ? "max-w-[500px] opacity-100" : "max-w-0 opacity-0"
+              }`}
+            >
+              <Image 
+                src="/logo_text_trans.png" 
+                alt="العاني للفلتر" 
+                width={280} 
+                height={100} 
+                className="h-16 sm:h-24 md:h-28 w-auto max-w-none object-contain pl-3 sm:pl-5 drop-shadow-2xl"
+                priority
+              />
+            </div>
+          </div>
+        </div>
+      )}
+ {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
+  }, []);
+
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [activeCategory, setActiveCategory] = useState("الكل");
