@@ -1,57 +1,82 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { formatIQD } from "@/lib/utils";
-import { Product, CartItem } from "@/lib/types";
+import { createClient } from "@supabase/supabase-js";
 import { initialProducts } from "@/lib/mock-data";
-import { createClient } from "@/lib/supabase/client";
-import { triggerHaptic } from "@/lib/haptics";
+import { Product } from "@/lib/types";
+
+// Iraqi Governorates with COD delivery fees
+const GOVERNORATES = [
+  { name: "بغداد", fee: 5000 },
+  { name: "البصرة", fee: 7000 },
+  { name: "أربيل", fee: 7000 },
+  { name: "النجف الأشرف", fee: 7000 },
+  { name: "كربلاء المقدسة", fee: 7000 },
+  { name: "نينوى (الموصل)", fee: 7000 },
+  { name: "كركوك", fee: 7000 },
+  { name: "السليمانية", fee: 7000 },
+  { name: "بابل (الحلة)", fee: 7000 },
+  { name: "الأنبار (الرمادي/الفلوجة)", fee: 7000 },
+  { name: "ديالى (بعقوبة)", fee: 7000 },
+  { name: "ذي قار (الناصرية)", fee: 7000 },
+  { name: "صلاح الدين (تكريت/سامراء)", fee: 7000 },
+  { name: "القادسية (الديوانية)", fee: 7000 },
+  { name: "واسط (الكوت)", fee: 7000 },
+  { name: "ميسان (العمارة)", fee: 7000 },
+  { name: "المثنى (السماوة)", fee: 7000 },
+  { name: "دهوك", fee: 7000 },
+];
 
 export default function HalcyonStorefrontPage() {
   const [products, setProducts] = useState<Product[]>(initialProducts);
-  const [cart, setCart] = useState<CartItem[]>([]);
   const [activeCategory, setActiveCategory] = useState("الكل");
   const [searchQuery, setSearchQuery] = useState("");
+  const [cart, setCart] = useState<{ product: Product; quantity: number }[]>([]);
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [productQty, setProductQty] = useState(1);
   const [orderConfirmed, setOrderConfirmed] = useState<{ id: string; total: number; gov: string; waUrl: string } | null>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Live Baghdad Clock
   const [baghdadTime, setBaghdadTime] = useState("");
-
-  // FAQ State
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
-
-  // Checkout Fields
-  const [custName, setCustName] = useState("");
-  const [custPhone, setCustPhone] = useState("");
-  const [custGov, setCustGov] = useState("بغداد");
-  const [deliveryFee, setDeliveryFee] = useState(5000);
-  const [custArea, setCustArea] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const supabase = createClient();
-
   useEffect(() => {
-    // Update live Baghdad time
     const updateTime = () => {
       const now = new Date();
       const options: Intl.DateTimeFormatOptions = {
         timeZone: "Asia/Baghdad",
         hour: "2-digit",
         minute: "2-digit",
+        second: "2-digit",
         hour12: true,
       };
       setBaghdadTime(new Intl.DateTimeFormat("en-US", options).format(now));
     };
     updateTime();
-    const interval = setInterval(updateTime, 30000);
+    const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  // Header scroll detection for Halcyon transparent-to-solid navbar
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 80);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Supabase Client
+  const [supabase] = useState(() =>
+    createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL || "https://vfxgkajqrhgorvzwhecg.supabase.co",
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.dummy"
+    )
+  );
 
   useEffect(() => {
     async function loadProducts() {
@@ -63,7 +88,6 @@ export default function HalcyonStorefrontPage() {
           .order("created_at", { ascending: false });
 
         if (!error && data && data.length > 0) {
-          // Merge with mock specs if needed
           const enriched = data.map((d) => {
             const mock = initialProducts.find((m) => m.slug === d.slug || m.id === d.id);
             return {
@@ -112,6 +136,16 @@ export default function HalcyonStorefrontPage() {
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartSubtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+
+  // Checkout Form State
+  const [custName, setCustName] = useState("");
+  const [custPhone, setCustPhone] = useState("");
+  const [custGov, setCustGov] = useState("بغداد");
+  const [custAddress, setCustAddress] = useState("");
+  const [custNotes, setCustNotes] = useState("");
+  const [deliveryFee, setDeliveryFee] = useState(5000);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const orderTotal = cartSubtotal + deliveryFee;
 
   const addToCart = (product: Product, quantity = 1) => {
@@ -152,57 +186,76 @@ export default function HalcyonStorefrontPage() {
     setIsSubmitting(true);
 
     const orderId = "AF-" + Math.floor(1090 + Math.random() * 8000);
-    const itemsSummary = cart.map((i) => `${i.product.title} × ${i.quantity}`).join("، ");
+    const itemsSummary = cart.map((i) =>
+      `• ${i.product.title} [كود: ${i.product.part_number || i.product.title}] (العدد: ${i.quantity}) - ${formatIQD(i.product.price * i.quantity)}`
+    ).join("\n");
 
-    triggerHaptic("medium");
+    const waText =
+      `*طلب جديد من متجر محل العاني للفلتر (وكالة أساس ASAS)*\n` +
+      `-------------------------------------------\n` +
+      `*رقم الطلب:* ${orderId}\n` +
+      `*الاسم:* ${custName}\n` +
+      `*رقم الهاتف:* ${custPhone}\n` +
+      `*المحافظة:* ${custGov}\n` +
+      `*العنوان:* ${custAddress}\n` +
+      (custNotes ? `*ملاحظات الزبون:* ${custNotes}\n` : "") +
+      `-------------------------------------------\n` +
+      `*القطع المطلوبة:*\n${itemsSummary}\n` +
+      `-------------------------------------------\n` +
+      `*المجموع الفرعي:* ${formatIQD(cartSubtotal)}\n` +
+      `*أجور التوصيل:* ${formatIQD(deliveryFee)} (${custGov})\n` +
+      `*المجموع الإجمالي عند الاستلام:* ${formatIQD(orderTotal)}\n` +
+      `*سياسة الدفع:* نقداً عند الاستلام مع فحص الطرد قبل الدفع.`;
+
+    const waUrl = `https://wa.me/9647901526221?text=${encodeURIComponent(waText)}`;
 
     try {
-      await fetch("/api/orders", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: orderId,
+      await supabase.from("orders").insert([
+        {
+          order_id: orderId,
           customer_name: custName,
-          phone: custPhone,
+          customer_phone: custPhone,
           governorate: custGov,
-          detailed_address: custArea,
-          payment_method: "COD",
-          subtotal: cartSubtotal,
-          shipping_fee: deliveryFee,
-          total_amount: orderTotal,
+          address: custAddress,
+          items: cart,
+          total_price: orderTotal,
+          delivery_fee: deliveryFee,
           status: "pending",
-          notes: `المواد: ${itemsSummary}`,
-          items: cart.map((i) => ({
-            product_id: i.product.id,
-            quantity: i.quantity,
-            unit_price: i.product.price,
-          })),
-        }),
-      });
+        },
+      ]);
     } catch {
-      // Offline fallback
+      // offline mode fallback
     }
-
-    const waText = encodeURIComponent(
-      `مرحباً محل العاني، أود تأكيد طلبي الجديد:\n` +
-      `رقم الطلب: ${orderId}\n` +
-      `الاسم: ${custName}\n` +
-      `المحافظة: ${custGov} - ${custArea}\n` +
-      `الهاتف: ${custPhone}\n` +
-      `المواد: ${itemsSummary}\n` +
-      `المبلغ المطلوب نقداً: ${formatIQD(orderTotal)}`
-    );
 
     setOrderConfirmed({
       id: orderId,
       total: orderTotal,
       gov: custGov,
-      waUrl: `https://wa.me/9647901526221?text=${waText}`,
+      waUrl,
     });
 
     setCart([]);
-    setIsCartDrawerOpen(false);
     setIsSubmitting(false);
+  };
+
+  const formatIQD = (num: number) => {
+    return num.toLocaleString("en-US") + " د.ع";
+  };
+
+  const triggerHaptic = (type: "light" | "medium") => {
+    if (typeof window !== "undefined" && "vibrate" in navigator) {
+      navigator.vibrate(type === "light" ? 15 : 30);
+    }
+  };
+
+  const scrollToCatalogAndFocus = () => {
+    const el = document.getElementById("catalog");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+      setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 500);
+    }
   };
 
   return (
@@ -211,10 +264,10 @@ export default function HalcyonStorefrontPage() {
       {/* ========================================================== */}
       {/* 1. HALCYON TOP ANNOUNCEMENT BAR (Height ~37px)             */}
       {/* ========================================================== */}
-      <div className="bg-[#111111] text-white text-[11px] sm:text-xs font-mono-code px-4 sm:px-8 py-2 flex items-center justify-between border-b border-neutral-800">
+      <div className="bg-[#111111] text-white text-[11px] sm:text-xs font-mono-code px-4 sm:px-8 py-2 flex items-center justify-between border-b border-neutral-800 z-50 relative">
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span>بغداد {baghdadTime || "04:55 AM"} • مفتوح للطلبات</span>
+          <span>بغداد {baghdadTime || "06:00 AM"} • مفتوح للطلبات</span>
           <span className="hidden md:inline text-neutral-400">| شحن لكافة المحافظات 18 والدفع عند الاستلام</span>
         </div>
         <div className="flex items-center gap-4 text-neutral-300">
@@ -225,15 +278,20 @@ export default function HalcyonStorefrontPage() {
       </div>
 
       {/* ========================================================== */}
-      {/* 2. HALCYON MAIN NAVBAR (Height: 48px desktop / 44px mobile) */}
+      {/* 2. HALCYON DUAL-STATE NAVBAR (Transparent on Hero -> Solid) */}
       {/* ========================================================== */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200 px-4 sm:px-8 h-12 flex items-center justify-between transition-all">
-        
-        {/* Left: Brand Identity */}
+      <header
+        className={`sticky top-0 z-40 px-4 sm:px-8 h-12 flex items-center justify-between transition-all duration-300 ${
+          isScrolled
+            ? "bg-white/95 backdrop-blur-md border-b border-neutral-200 text-[#111111] shadow-sm"
+            : "bg-black/25 backdrop-blur-sm border-b border-white/10 text-white"
+        }`}
+      >
+        {/* Left: Brand Identity with White/Blue Logo swap */}
         <div className="flex items-center gap-3">
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-1.5 text-neutral-800 hover:text-black focus:outline-none"
+            className={`md:hidden p-1.5 focus:outline-none transition ${isScrolled ? "text-neutral-800 hover:text-black" : "text-white hover:text-neutral-200"}`}
             aria-label="القائمة"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -243,17 +301,17 @@ export default function HalcyonStorefrontPage() {
 
           <Link href="/" className="flex items-center gap-2.5 group">
             <Image 
-              src="/logo_a_blue_trans.png" 
+              src={isScrolled ? "/logo_a_blue_trans.png" : "/logo_a_trans.png"}
               alt="العاني" 
               width={28} 
               height={28} 
               className="h-6 sm:h-7 w-auto object-contain transition-transform group-hover:scale-105" 
             />
             <div className="flex flex-col">
-              <span className="font-extrabold text-sm sm:text-base tracking-tight leading-none text-[#111111]">
+              <span className={`font-extrabold text-sm sm:text-base tracking-tight leading-none ${isScrolled ? "text-[#111111]" : "text-white"}`}>
                 محل العاني للفلتر
               </span>
-              <span className="text-[9px] font-mono-code text-neutral-500 uppercase tracking-wider">
+              <span className={`text-[9px] font-mono-code uppercase tracking-wider ${isScrolled ? "text-neutral-500" : "text-neutral-300"}`}>
                 ASAS FILTER AGENCY
               </span>
             </div>
@@ -261,44 +319,42 @@ export default function HalcyonStorefrontPage() {
         </div>
 
         {/* Center: Desktop Nav Links */}
-        <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-xs font-semibold tracking-normal text-neutral-700">
-          <a href="#catalog" className="hover:text-black transition">كتالوج الفلاتر (80)</a>
-          <a href="#oem-lookup" className="hover:text-black transition">مطابقة OEM</a>
-          <a href="#features" className="hover:text-black transition">الوكالة والمواصفات</a>
-          <a href="#faq" className="hover:text-black transition">الأسئلة الشائعة</a>
-          <Link href="/admin" className="text-neutral-500 hover:text-black font-mono-code text-[11px] transition">
+        <nav className={`hidden md:flex items-center gap-6 lg:gap-8 text-xs font-semibold tracking-normal ${isScrolled ? "text-neutral-700" : "text-neutral-200"}`}>
+          <a href="#hero" className="hover:text-black dark:hover:text-white transition">الرئيسية</a>
+          <a href="#engineering" className="hover:text-black dark:hover:text-white transition">الهندسة والجودة</a>
+          <a href="#catalog" className="hover:text-black dark:hover:text-white transition">كتالوج الفلاتر (80)</a>
+          <a href="#oem-lookup" className="hover:text-black dark:hover:text-white transition">مطابقة OEM</a>
+          <a href="#faq" className="hover:text-black dark:hover:text-white transition">الشحن والضمان</a>
+          <Link href="/admin" className="font-mono-code text-[11px] opacity-75 hover:opacity-100 transition">
             [لوحة الإدارة]
           </Link>
         </nav>
 
-        {/* Right: Actions */}
+        {/* Right: Actions (Search Trigger & Monospace Cart Counter) */}
         <div className="flex items-center gap-2 sm:gap-4">
           <button
-            onClick={() => {
-              const input = document.getElementById("catalogSearchInput");
-              input?.focus();
-            }}
-            className="hidden sm:flex items-center gap-1.5 text-xs text-neutral-600 hover:text-black px-2.5 py-1.5 rounded border border-transparent hover:border-neutral-200 transition"
+            onClick={scrollToCatalogAndFocus}
+            className={`p-2 transition ${isScrolled ? "text-neutral-700 hover:text-black" : "text-neutral-200 hover:text-white"}`}
+            title="بحث في الكتالوج"
           >
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            <span className="font-mono-code text-[11px]">بحث</span>
           </button>
 
-          {/* Cart Bag with Halcyon Mono Counter */}
-          <button 
+          <button
             onClick={() => {
-              triggerHaptic("light");
+              triggerHaptic("medium");
               setIsCartDrawerOpen(true);
-            }} 
-            className="flex items-center gap-2 bg-[#111111] text-white px-3 sm:px-4 py-1.5 rounded-none text-xs font-semibold hover:bg-neutral-800 transition active:scale-95"
+            }}
+            className={`px-3 py-1.5 text-xs font-mono-code font-bold flex items-center gap-2 border transition ${
+              isScrolled
+                ? "bg-[#111111] text-white border-[#111111] hover:bg-black"
+                : "bg-white/10 text-white border-white/30 backdrop-blur-md hover:bg-white hover:text-black hover:border-white"
+            }`}
           >
-            <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-            </svg>
-            <span className="hidden sm:inline">السلة</span>
-            <span className="font-mono-code text-[11px] font-bold bg-white text-black px-1.5 py-0.2 rounded-xs">
+            <span>السلة</span>
+            <span className={`px-1.5 py-0.2 text-[10px] ${isScrolled ? "bg-white text-black" : "bg-white text-black font-extrabold"}`}>
               {cartCount}
             </span>
           </button>
@@ -316,6 +372,13 @@ export default function HalcyonStorefrontPage() {
             >
               <span>كتالوج الفلاتر الكامل</span>
               <span className="font-mono-code text-xs text-neutral-400">80 قطعة</span>
+            </a>
+            <a 
+              href="#engineering" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="py-2 border-b border-neutral-100"
+            >
+              الهندسة وتكنولوجيا الترشيح
             </a>
             <a 
               href="#oem-lookup" 
@@ -344,7 +407,7 @@ export default function HalcyonStorefrontPage() {
               href="https://wa.me/9647901526221" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="w-full text-center py-2.5 bg-emerald-600 text-white text-xs font-bold rounded-none"
+              className="w-full text-center py-2.5 bg-emerald-600 text-white text-xs font-bold"
             >
               تواصل عبر واتساب المباشر
             </a>
@@ -353,142 +416,228 @@ export default function HalcyonStorefrontPage() {
       )}
 
       {/* ========================================================== */}
-      {/* 3. HALCYON EDITORIAL HERO SECTION ("Good Light." Style)     */}
+      {/* 3. HALCYON SECTION 1: FULL-BLEED 100vh / 90vh HERO         */}
       {/* ========================================================== */}
-      <section className="bg-white border-b border-neutral-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-14 sm:py-24">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            
-            <div className="lg:col-span-8 space-y-6 text-right">
-              <div className="inline-flex items-center gap-2 border border-neutral-200 px-3 py-1 bg-neutral-50 text-[11px] font-mono-code text-neutral-700">
-                <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                <span>ASAS GENUINE AUTOMOTIVE & INDUSTRIAL FILTRATION</span>
-              </div>
-
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-[#111111] leading-[1.08]">
-                GOOD FILTRATION.
-                <span className="block text-2xl sm:text-4xl lg:text-5xl font-bold text-neutral-500 mt-2">
-                  فلاتر أصلية. أداء يدوم لأقسى الظروف.
-                </span>
-              </h1>
-
-              <p className="text-sm sm:text-base text-neutral-600 leading-relaxed max-w-2xl">
-                في محل العاني نوفر منظومة ترشيح أصلية متكاملة للسيارات والشاحنات والمولدات والمعدات الثقيلة. وكالة فلاتر أساس <span className="font-bold text-black">ASAS</span> التركية المعتمدة في العراق مع مطابقة هندسية دقيقة لمواصفات المصنع OEM وفحص الطرد قبل الدفع لكافة المحافظات الـ 18.
-              </p>
-
-              <div className="pt-2 flex flex-wrap items-center gap-3">
-                <a 
-                  href="#catalog" 
-                  className="halcyon-btn-primary px-7 py-3 text-xs sm:text-sm font-bold uppercase tracking-wider inline-flex items-center gap-2"
-                >
-                  <span>استعراض الفلاتر المتوفرة</span>
-                  <svg className="w-3.5 h-3.5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </a>
-                
-                <a 
-                  href="#oem-lookup" 
-                  className="halcyon-btn-outline px-6 py-3 text-xs sm:text-sm font-bold uppercase tracking-wider"
-                >
-                  مطابقة كود OEM
-                </a>
-              </div>
-            </div>
-
-            {/* Right: Technical Hero Spec Box */}
-            <div className="lg:col-span-4 bg-[#f4f4f4] border border-neutral-200 p-6 space-y-4">
-              <div className="flex items-center justify-between border-b border-neutral-300 pb-2">
-                <span className="font-mono-code text-xs uppercase font-bold text-neutral-600">SPECIFICATION SUMMARY</span>
-                <span className="text-[10px] font-mono-code bg-black text-white px-2 py-0.5">OEM CERTIFIED</span>
-              </div>
-              <div className="space-y-3 font-mono-code text-xs">
-                <div className="flex justify-between py-1 border-b border-neutral-200">
-                  <span className="text-neutral-500">الوكالة:</span>
-                  <span className="font-bold text-neutral-900">ASAS Turkey (أساس)</span>
-                </div>
-                <div className="flex justify-between py-1 border-b border-neutral-200">
-                  <span className="text-neutral-500">الموديلات المتوفرة:</span>
-                  <span className="font-bold text-neutral-900">80+ موديل فوري</span>
-                </div>
-                <div className="flex justify-between py-1 border-b border-neutral-200">
-                  <span className="text-neutral-500">المطابقة:</span>
-                  <span className="font-bold text-neutral-900">Mann, Donaldson, Fleetguard</span>
-                </div>
-                <div className="flex justify-between py-1 border-b border-neutral-200">
-                  <span className="text-neutral-500">التوصيل والمعاينة:</span>
-                  <span className="font-bold text-neutral-900">كافة محافظات العراق 18</span>
-                </div>
-                <div className="flex justify-between py-1">
-                  <span className="text-neutral-500">طريقة الدفع:</span>
-                  <span className="font-bold text-neutral-900">نقداً عند الاستلام (COD)</span>
-                </div>
-              </div>
-            </div>
-
-          </div>
+      <section id="hero" className="relative w-full h-[90vh] md:h-[calc(100vh-37px)] overflow-hidden bg-neutral-950 flex flex-col justify-between">
+        {/* Background Looping Video with Poster Fallback */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            poster="/hero_engine_poster.jpg"
+            className="w-full h-full object-cover scale-105 transform motion-safe:animate-subtleZoom opacity-75"
+          >
+            <source src="/hero_engine.mp4" type="video/mp4" />
+          </video>
+          {/* Halcyon Dark Cinematic Vignette */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/60" />
         </div>
 
-        {/* Halcyon 3-Column Stats Strip */}
-        <div className="border-t border-neutral-200 grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x md:divide-x-reverse divide-neutral-200 bg-white">
-          <div className="p-6 text-center">
-            <span className="block text-2xl font-mono-code font-black text-black">80+</span>
-            <span className="text-xs text-neutral-500 uppercase tracking-wider font-semibold">فلتر ترشيح أصلي جاهز للشحن</span>
+        {/* Hero Content Overlay: Top Headline */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 pt-10 sm:pt-16 w-full text-right">
+          <div className="inline-flex items-center gap-2 border border-white/20 px-3 py-1 bg-white/5 backdrop-blur-md text-[10px] sm:text-xs font-mono-code text-neutral-300 mb-4 sm:mb-6">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>ASAS GENUINE AUTOMOTIVE & INDUSTRIAL FILTRATION • BAGHDAD SINAK</span>
           </div>
-          <div className="p-6 text-center">
-            <span className="block text-2xl font-mono-code font-black text-black">100%</span>
-            <span className="text-xs text-neutral-500 uppercase tracking-wider font-semibold">مطابقة مواصفات المصنع OEM</span>
+
+          <h1 className="text-white text-5xl sm:text-7xl lg:text-9xl font-extrabold tracking-tight leading-[0.95] uppercase font-mono-code">
+            GOOD
+            <span className="block text-white/90">FILTRATION.</span>
+            <span className="block text-xl sm:text-3xl lg:text-4xl font-sans font-bold text-neutral-400 normal-case mt-3 tracking-normal">
+              فلاتر أصلية. أداء يدوم لأقسى الظروف.
+            </span>
+          </h1>
+        </div>
+
+        {/* Hero Content Overlay: Bottom Heritage Caption & Ghost Action Buttons */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 pb-10 sm:pb-16 w-full flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="max-w-xl text-right">
+            <p className="text-xs sm:text-sm text-neutral-300 font-sans leading-relaxed">
+              في محل العاني للفلتر، نوفر فلاتر أساس التركية الأصلية المصنعة وفق أعلى المعايير الهندسية لمواصفات المصنع OEM. من قلب سوق السنك في بغداد، نضمن وصول الفلاتر المعتمدة لكافة محافظات العراق الـ 18 مع فحص الطرد قبل الدفع نقداً.
+            </p>
           </div>
-          <div className="p-6 text-center">
-            <span className="block text-2xl font-mono-code font-black text-black">18 محافظة</span>
-            <span className="text-xs text-neutral-500 uppercase tracking-wider font-semibold">توصيل سريع مع فحص الطرد</span>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <a
+              href="#catalog"
+              className="px-6 py-3 border border-white text-white text-xs font-mono-code font-bold uppercase tracking-wider hover:bg-white hover:text-black transition"
+            >
+              استعراض الكتالوج (80 فلتر) ↓
+            </a>
+            <a
+              href="#engineering"
+              className="px-6 py-3 border border-white/30 bg-white/10 backdrop-blur-md text-white text-xs font-mono-code font-bold uppercase tracking-wider hover:bg-white/20 transition"
+            >
+              الهندسة الأصلية ↗
+            </a>
           </div>
         </div>
       </section>
 
       {/* ========================================================== */}
-      {/* 4. HALCYON TABBED COLLECTION & SEARCH (Clean Grid Layout)  */}
+      {/* 4. HALCYON SECTION 2: MODULAR SHOWCASE & 3D EXPLODED VIEW  */}
       {/* ========================================================== */}
-      <section id="catalog" className="max-w-7xl mx-auto px-4 sm:px-8 py-12 w-full flex-1">
-        
-        {/* Controls Bar */}
-        <div className="bg-white border border-neutral-200 p-4 sm:p-5 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <section id="engineering" className="bg-[#ffffff] border-b border-neutral-200 py-16 sm:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8">
           
-          <div className="relative flex-1">
-            <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-neutral-400">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
+          {/* Header Split Layout */}
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12 sm:mb-16 pb-8 border-b border-neutral-200">
+            <div className="space-y-3 text-right max-w-2xl">
+              <span className="font-mono-code text-xs text-neutral-500 font-bold tracking-widest uppercase">
+                ENGINEERING & INTERNAL QUALITY • ASAS TURKEY
+              </span>
+              <h2 className="text-3xl sm:text-5xl font-extrabold text-[#111111] tracking-tight">
+                سلسلة الآليات الثقيلة والمولدات
+              </h2>
+              <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed font-sans">
+                صُممت فلاتر أساس التركية بأحدث تكنولوجيا الترشيح الميكرو-اصطناعي المقاوم لدرجات حرارة الصيف الشديدة في العراق (أكثر من 50°C) وغبار الطرق الصحراوية. هيكل فولاذي مانع للانهيار وصمامات سيليكون حرارية تمنع جفاف مجاري الزيت عند الإقلاع الصباحي.
+              </p>
             </div>
-            <input
-              id="catalogSearchInput"
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="ابحث برقم القطعة (مثل SP 1450 أو CF 233) أو نوع الآلية (اكتروس، لاندكروزر، بيركنز)..."
-              className="w-full pr-10 pl-10 py-2.5 text-xs sm:text-sm bg-neutral-50 border border-neutral-200 focus:bg-white focus:border-black focus:outline-none transition rounded-none font-mono-code placeholder:font-sans placeholder:text-neutral-400"
-            />
-            {searchQuery && (
-              <button 
-                onClick={() => setSearchQuery("")}
-                className="absolute inset-y-0 left-0 pl-3 flex items-center text-xs text-neutral-400 hover:text-black font-mono-code"
+            <div>
+              <a
+                href="#catalog"
+                onClick={() => setActiveCategory("فلاتر مجفف هواء للشاحنات")}
+                className="inline-flex items-center gap-2 text-xs font-mono-code font-bold text-black border-b border-black pb-1 hover:text-blue-600 hover:border-blue-600 transition"
               >
-                مسح
-              </button>
-            )}
+                <span>مشاهدة فلاتر الشاحنات والآليات</span>
+                <span>↗</span>
+              </a>
+            </div>
           </div>
 
-          <div className="shrink-0 font-mono-code text-xs text-neutral-500 flex items-center gap-2">
-            <span>النتائج:</span>
-            <span className="font-bold text-black">{filteredProducts.length}</span>
-            <span>من أصل {products.length}</span>
+          {/* 3D Exploded Technical Layout & Breakdown Cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-16">
+            
+            {/* 3D Exploded Graphic */}
+            <div className="lg:col-span-7 bg-neutral-900 rounded-none overflow-hidden relative border border-neutral-800 p-2 sm:p-4 group">
+              <div className="relative aspect-video w-full overflow-hidden">
+                <Image
+                  src="/hero_filter_exploded.jpg"
+                  alt="3D Exploded View ASAS Oil Filter"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  priority
+                />
+              </div>
+              <div className="p-3 bg-neutral-950 flex items-center justify-between text-[11px] font-mono-code text-neutral-400">
+                <span>ASAS 3D EXPLODED ARCHITECTURE</span>
+                <span className="text-emerald-400 font-bold">100% OEM CERTIFIED</span>
+              </div>
+            </div>
+
+            {/* 5-Layer Engineering Points */}
+            <div className="lg:col-span-5 space-y-3 text-right">
+              {[
+                { num: "01", title: "غلاف فولاذي معزز ضد الانفجار", desc: "يتحمل ضغوط التشغيل القصوى حتى 25 بار دون أي تشوه." },
+                { num: "02", title: "صمام سيليكون حراري مانع للرجوع", desc: "يحافظ على امتلاء الفلتر بالزيت لمنع الاحتكاك الجاف عند أول تشغيل صباحي." },
+                { num: "03", title: "وسيط ألياف ميكرو-اصطناعية 99.5%", desc: "طيات متلاصقة محكمة تحتجز ذرات الكربون والرواسب حتى 10 ميكرون." },
+                { num: "04", title: "قلب معدني مخرم مانع للانهيار", desc: "يدعم طيات الفلتر تحت أقصى تدفق للزيت في السرعات العالية." },
+                { num: "05", title: "صمام أمان تفريغ الضغط الزائد", desc: "يضمن استمرار التزييت في الحالات القصوى والبرودة العالية." },
+              ].map((pt, idx) => (
+                <div key={idx} className="p-3 bg-[#f8f8f8] border border-neutral-200 hover:border-black transition">
+                  <div className="flex items-center gap-2 mb-1 justify-end">
+                    <span className="font-bold text-xs sm:text-sm text-black">{pt.title}</span>
+                    <span className="font-mono-code text-[11px] font-bold text-neutral-400">[{pt.num}]</span>
+                  </div>
+                  <p className="text-[11px] text-neutral-600 leading-normal">{pt.desc}</p>
+                </div>
+              ))}
+            </div>
+
           </div>
+
+          {/* 4 Flagship Heavy-Duty Filter Cards */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {products
+              .filter((p) => ["SP 1450", "SP 1453", "AS 845", "SP 900"].includes(p.part_number || ""))
+              .slice(0, 4)
+              .map((prod) => (
+                <div
+                  key={prod.id}
+                  onClick={() => {
+                    setSelectedProduct(prod);
+                    setProductQty(1);
+                  }}
+                  className="bg-white border border-neutral-200 p-4 flex flex-col justify-between hover:border-black transition cursor-pointer group"
+                >
+                  <div className="aspect-square relative w-full bg-[#f8f8f8] mb-3 overflow-hidden">
+                    <Image
+                      src={prod.image_url}
+                      alt={prod.title}
+                      fill
+                      className="object-contain p-4 group-hover:scale-105 transition-transform"
+                    />
+                  </div>
+                  <div className="space-y-1 text-right">
+                    <span className="font-mono-code text-xs font-bold text-black uppercase block">
+                      {prod.part_number || prod.title}
+                    </span>
+                    <p className="text-[11px] text-neutral-500 truncate">{prod.title}</p>
+                    <div className="pt-2 flex items-center justify-between border-t border-neutral-100">
+                      <span className="font-mono-code text-xs font-bold text-black">
+                        {formatIQD(prod.price)}
+                      </span>
+                      <span className="text-[10px] text-emerald-600 font-bold">متوفر</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+          </div>
+
         </div>
+      </section>
 
-        {/* Halcyon Horizontal Category Tabs */}
-        <div className="border-b border-neutral-200 mb-8 overflow-x-auto no-scrollbar">
-          <div className="flex items-center gap-1 sm:gap-2 min-w-max pb-1">
+      {/* ========================================================== */}
+      {/* 5. HALCYON SECTION 3: TABBED COLLECTION & SEARCH GRID      */}
+      {/* ========================================================== */}
+      <section id="catalog" className="bg-[#f8f8f8] py-14 sm:py-20 border-b border-neutral-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+          
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+            <div className="text-right">
+              <span className="font-mono-code text-xs font-bold text-neutral-500 uppercase tracking-widest block mb-1">
+                LATEST GENUINE COLLECTIONS
+              </span>
+              <h2 className="text-2xl sm:text-4xl font-extrabold text-[#111111] tracking-tight">
+                كتالوج الفلاتر المتوفرة ({filteredProducts.length} قطعة)
+              </h2>
+            </div>
+            
+            {/* Integrated Halcyon Search Bar with Live Clear */}
+            <div className="w-full md:w-96 relative">
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="ابحث برقم الفلتر (CF 233, SP 1450) أو الطراز..."
+                className="w-full text-right bg-white border border-neutral-300 px-4 py-2.5 text-xs font-mono-code focus:outline-none focus:border-black transition pr-9"
+              />
+              <span className="absolute left-3 top-3 text-neutral-400">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </span>
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-2.5 text-xs font-bold text-neutral-400 hover:text-black"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Halcyon Monospace Category Filter Tabs */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 border-b border-neutral-300 no-scrollbar">
             {categories.map((cat) => {
+              const count = products.filter((p) =>
+                cat === "الكل" ? true : (p.type || p.category || "").includes(cat.replace("فلاتر ", ""))
+              ).length;
               const isActive = activeCategory === cat;
               return (
                 <button
@@ -497,407 +646,538 @@ export default function HalcyonStorefrontPage() {
                     triggerHaptic("light");
                     setActiveCategory(cat);
                   }}
-                  className={`px-4 py-2.5 text-xs sm:text-sm font-semibold transition-all relative ${
-                    isActive 
-                      ? "text-black border-b-2 border-black font-bold" 
-                      : "text-neutral-500 hover:text-black"
+                  className={`whitespace-nowrap px-4 py-2 text-xs font-mono-code font-bold transition flex items-center gap-2 border-b-2 ${
+                    isActive
+                      ? "border-black text-black"
+                      : "border-transparent text-neutral-500 hover:text-black hover:border-neutral-400"
                   }`}
                 >
                   <span>{cat}</span>
+                  <span className={`text-[10px] px-1 py-0.2 ${isActive ? "bg-black text-white" : "bg-neutral-200 text-neutral-600"}`}>
+                    {count}
+                  </span>
                 </button>
               );
             })}
           </div>
-        </div>
 
-        {/* ========================================================== */}
-        {/* 5. PRODUCT GRID (Halcyon boost-sd Product Cards)           */}
-        {/* ========================================================== */}
-        {filteredProducts.length === 0 ? (
-          <div className="bg-white border border-neutral-200 p-12 text-center space-y-4">
-            <svg className="w-12 h-12 mx-auto text-neutral-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <h3 className="text-base font-bold text-neutral-800">لا توجد فلاتر مطابقة لبحثك</h3>
-            <p className="text-xs text-neutral-500 max-w-md mx-auto">
-              جرب البحث برقم آخر، أو تواصل معنا مباشرة عبر واتساب وسيقوم الفني بالتحقق من رقم القطعة المطلوب وتوفيره لك.
-            </p>
-            <button 
-              onClick={() => {
-                setSearchQuery("");
-                setActiveCategory("الكل");
-              }}
-              className="halcyon-btn-outline px-5 py-2 text-xs font-bold"
-            >
-              إعادة تعيين البحث
-            </button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
-            {filteredProducts.map((product) => {
-              const partNumber = product.part_number || product.title.split(" ").pop() || "ASAS";
-              const cleanType = product.clean_type || product.type?.replace(/^فلاتر\s+/, "فلتر ") || "فلتر أصلي";
-              
-              return (
-                <div 
+          {/* Halcyon 4-Column Desktop / 2-Column Mobile Product Grid */}
+          {filteredProducts.length === 0 ? (
+            <div className="text-center py-20 bg-white border border-neutral-200 p-8 space-y-3">
+              <span className="font-mono-code text-2xl">⚠️</span>
+              <p className="font-bold text-sm text-black">لم يتم العثور على فلاتر مطابقة لبحثك</p>
+              <p className="text-xs text-neutral-500">جرب البحث برقم الفلتر المباشر أو تواصل مع الدعم الفني للاستفسار</p>
+              <button
+                onClick={() => {
+                  setSearchQuery("");
+                  setActiveCategory("الكل");
+                }}
+                className="mt-2 px-4 py-2 bg-black text-white text-xs font-mono-code font-bold"
+              >
+                إعادة ضبط البحث
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+              {filteredProducts.map((product) => (
+                <div
                   key={product.id}
-                  className="bg-white border border-neutral-200 group flex flex-col justify-between hover:border-black transition-all duration-300 relative"
+                  className="bg-white border border-neutral-200 flex flex-col justify-between hover:border-black transition-all group"
                 >
-                  {/* Top Image Container */}
-                  <div 
+                  {/* Clickable Image Container */}
+                  <div
                     onClick={() => {
                       setSelectedProduct(product);
                       setProductQty(1);
                     }}
-                    className="aspect-square bg-white p-4 relative overflow-hidden flex items-center justify-center cursor-pointer border-b border-neutral-100"
+                    className="aspect-square relative w-full bg-[#ffffff] cursor-pointer overflow-hidden p-4 flex items-center justify-center border-b border-neutral-100"
                   >
                     <Image
-                      src={product.image_url || "/products/oil-filter.svg"}
+                      src={product.image_url}
                       alt={product.title}
-                      width={500}
-                      height={500}
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+                      width={300}
+                      height={300}
+                      className="object-contain max-h-full max-w-full group-hover:scale-105 transition-transform duration-300"
                       loading="lazy"
                     />
-
-                    {/* Part Number Badge */}
-                    {product.badge && (
-                      <span className="absolute top-2.5 right-2.5 bg-neutral-900 text-white text-[9px] sm:text-[10px] font-mono-code px-2 py-0.5 tracking-wider uppercase">
-                        {product.badge}
-                      </span>
-                    )}
-
-                    <span className="absolute bottom-2 left-2 text-[10px] font-mono-code text-neutral-400 group-hover:text-black transition">
-                      [المواصفات +]
+                    <span className="absolute top-2 right-2 text-[9px] font-mono-code font-bold uppercase px-1.5 py-0.5 bg-neutral-100 text-neutral-700">
+                      ASAS
                     </span>
                   </div>
 
-                  {/* Body Content */}
-                  <div className="p-3.5 sm:p-4 flex flex-col flex-1 justify-between gap-3 text-right">
-                    <div className="space-y-1">
-                      <span className="text-[10px] sm:text-[11px] font-mono-code text-neutral-500 uppercase block">
-                        {cleanType}
+                  {/* Product Metadata */}
+                  <div className="p-4 space-y-2 text-right flex-1 flex flex-col justify-between">
+                    <div>
+                      <span className="font-mono-code text-sm font-extrabold text-black uppercase tracking-tight block">
+                        {product.part_number || product.title}
                       </span>
-                      
-                      {/* Bold Part Number */}
-                      <h3 
-                        onClick={() => {
-                          setSelectedProduct(product);
-                          setProductQty(1);
-                        }}
-                        className="font-black text-sm sm:text-base text-[#111111] font-mono-code cursor-pointer hover:underline tracking-tight"
-                      >
-                        {partNumber}
-                      </h3>
-
-                      <p className="text-[11px] text-neutral-600 line-clamp-1">
+                      <p className="text-xs text-neutral-600 line-clamp-1 font-sans mt-0.5">
                         {product.title}
                       </p>
                     </div>
 
-                    {/* Price and Add Button */}
-                    <div className="pt-2 border-t border-neutral-100 flex items-center justify-between gap-2">
-                      <div className="font-mono-code font-bold text-xs sm:text-sm text-black">
-                        {formatIQD(product.price)}
+                    <div className="pt-3 border-t border-neutral-100 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono-code text-xs sm:text-sm font-bold text-black">
+                          {formatIQD(product.price)}
+                        </span>
+                        <div className="flex items-center gap-1.5 text-[10px] text-emerald-700 font-mono-code font-bold">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                          <span>متوفر</span>
+                        </div>
                       </div>
 
-                      <button
-                        onClick={() => addToCart(product)}
-                        className="bg-black text-white hover:bg-neutral-800 text-[11px] sm:text-xs font-semibold px-2.5 sm:px-3 py-1.5 rounded-none transition active:scale-95 shrink-0"
-                      >
-                        + إضافة
-                      </button>
+                      {/* Action Buttons: View Specs Modal + Quick Add */}
+                      <div className="grid grid-cols-2 gap-1.5 pt-1">
+                        <button
+                          onClick={() => {
+                            setSelectedProduct(product);
+                            setProductQty(1);
+                          }}
+                          className="w-full py-2 border border-neutral-300 text-neutral-700 hover:border-black hover:text-black text-[11px] font-mono-code font-bold transition text-center"
+                        >
+                          المواصفات
+                        </button>
+                        <button
+                          onClick={() => addToCart(product, 1)}
+                          className="w-full py-2 bg-[#111111] text-white hover:bg-black text-[11px] font-mono-code font-bold transition text-center"
+                        >
+                          + السلة
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
+
+        </div>
       </section>
 
       {/* ========================================================== */}
-      {/* 6. TECHNICAL OEM LOOKUP SECTION                            */}
+      {/* 6. HALCYON SECTION 4: INDUSTRIAL SERIES BANNER             */}
       {/* ========================================================== */}
-      <section id="oem-lookup" className="bg-white border-y border-neutral-200 py-16 px-4 sm:px-8">
-        <div className="max-w-5xl mx-auto text-center space-y-6">
-          <span className="font-mono-code text-xs uppercase tracking-wider text-neutral-500">
-            OEM CROSS REFERENCE DIRECTORY
-          </span>
-          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-black">
-            مطابقة جميع أرقام القطع الأصلية OEM
-          </h2>
-          <p className="text-xs sm:text-sm text-neutral-600 max-w-2xl mx-auto leading-relaxed">
-            نوفر بدائل هندسية مطابقة تماماً لمواصفات شركات الفلاتر العالمية (Mann Filter, Donaldson, Fleetguard, Baldwin, Bosch, Wix). أرسل لنا رقم القطعة المسجل على الفلتر القديم وسنوفر لك الفلتر المطابق فوراً.
-          </p>
+      <section className="bg-neutral-900 text-white py-16 sm:py-20 border-b border-neutral-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            
+            <div className="lg:col-span-7 space-y-4 text-right">
+              <span className="font-mono-code text-xs font-bold text-amber-400 tracking-widest uppercase">
+                DIESEL PURIFICATION & WATER SEPARATORS
+              </span>
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
+                فلاتر فاصل الماء وسبيتر الديزل (Water Separator)
+              </h2>
+              <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed font-sans max-w-2xl">
+                يحتوي وقود الديزل المحلي على نسب من الرطوبة والمياه المكثفة التي تسبب التآكل المباشر لنوزلات وبخاخات محركات الديزل الحديثة (Common Rail). توفر فلاتر سبيتر أساس كفاءة فصل ماء تبلغ 99.8% مع صمام تفريغ سفلي نقي، لحماية طرمبة الديزل من التلف المبكر.
+              </p>
+              <div className="pt-2 flex flex-wrap gap-3">
+                <button
+                  onClick={() => {
+                    setActiveCategory("فلاتر فاصل ماء وسبيتر");
+                    scrollToCatalogAndFocus();
+                  }}
+                  className="px-6 py-2.5 bg-white text-black text-xs font-mono-code font-bold hover:bg-neutral-200 transition"
+                >
+                  استعراض فلاتر فاصل الماء ↗
+                </button>
+              </div>
+            </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto pt-4 font-mono-code text-xs">
-            <div className="p-3 border border-neutral-200 bg-neutral-50">MANN FILTER</div>
-            <div className="p-3 border border-neutral-200 bg-neutral-50">FLEETGUARD</div>
-            <div className="p-3 border border-neutral-200 bg-neutral-50">DONALDSON</div>
-            <div className="p-3 border border-neutral-200 bg-neutral-50">BALDWIN FILTERS</div>
+            <div className="lg:col-span-5 bg-neutral-950 border border-neutral-800 p-6 space-y-4 text-right">
+              <span className="font-mono-code text-xs text-neutral-400 uppercase block border-b border-neutral-800 pb-2">
+                ASAS WATER SEPARATOR EFFICIENCY
+              </span>
+              <div className="space-y-3 font-mono-code text-xs">
+                <div className="flex justify-between">
+                  <span className="text-emerald-400 font-bold">99.8%</span>
+                  <span className="text-neutral-400">Water Separation:</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-white font-bold">10 Micron</span>
+                  <span className="text-neutral-400">Particle Filtration:</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-white font-bold">ISO 16332 Compliant</span>
+                  <span className="text-neutral-400">Certification:</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================== */}
+      {/* 7. HALCYON SECTION 5: OEM LOOKUP & RESOURCE HUB            */}
+      {/* ========================================================== */}
+      <section id="oem-lookup" className="bg-white py-16 sm:py-24 border-b border-neutral-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+          
+          <div className="text-right max-w-2xl mb-12">
+            <span className="font-mono-code text-xs font-bold text-neutral-500 uppercase tracking-widest block mb-1">
+              RESOURCE HUB & CROSS-REFERENCE
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-[#111111] tracking-tight">
+              مركز مطابقة أرقام المصنع OEM والشركات
+            </h2>
+            <p className="text-xs sm:text-sm text-neutral-600 mt-2 font-sans leading-relaxed">
+              تطابق فلاتر أساس التركية مع كبرى الشركات المصنعة عالمياً. إذا كان لديك رقم فلتر Mann، Fleetguard، Donaldson أو رقم وكالة السيارة، يمكنك المطابقة الفورية عبر الجدول أدناه أو عبر الواتساب.
+            </p>
           </div>
 
-          <div className="pt-4">
-            <a 
-              href="https://wa.me/9647901526221?text=مرحباً، أود الاستفسار عن مطابقة فلتر لرقم القطعة OEM التالي: " 
+          <div className="border border-neutral-200 overflow-x-auto">
+            <table className="w-full text-right text-xs border-collapse">
+              <thead>
+                <tr className="bg-[#f8f8f8] border-b border-neutral-200 font-mono-code text-neutral-700">
+                  <th className="p-3">كود أساس ASAS</th>
+                  <th className="p-3">النوع والتطبيق</th>
+                  <th className="p-3">مطابقة Mann / OEM</th>
+                  <th className="p-3">المركبات المتوافقة</th>
+                  <th className="p-3">الإجراء</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-neutral-200 font-sans">
+                {[
+                  { asas: "CF 233", type: "فلتر كابينة ومكيف", oem: "Mann CU 26 003 / 97133-2H001", app: "Hyundai Elantra, Kia Cerato" },
+                  { asas: "SP 1450", type: "فلتر دهن شاحنات", oem: "Mann W 11 102 / LF 3325", app: "Mercedes Actros, Scania Trucks" },
+                  { asas: "SP 900", type: "فلتر ديزل رئيسي", oem: "Mann WK 940/5 / FF 5052", app: "Perkins, Caterpillar Generators" },
+                  { asas: "AS 845", type: "فلتر مجفف هواء (Air Dryer)", oem: "Knorr II39797 / Wabco 432410", app: "Volvo, MAN, Scania Prime Movers" },
+                  { asas: "SP 1453", type: "فلتر فاصل ماء وسبيتر", oem: "Mann WK 1060 / FS 1280", app: "Cummins, DAF, Iveco Fleet" },
+                ].map((row, idx) => (
+                  <tr key={idx} className="hover:bg-neutral-50 transition">
+                    <td className="p-3 font-mono-code font-bold text-black">{row.asas}</td>
+                    <td className="p-3 text-neutral-700">{row.type}</td>
+                    <td className="p-3 font-mono-code text-neutral-600">{row.oem}</td>
+                    <td className="p-3 text-neutral-800 font-medium">{row.app}</td>
+                    <td className="p-3">
+                      <button
+                        onClick={() => {
+                          setSearchQuery(row.asas);
+                          scrollToCatalogAndFocus();
+                        }}
+                        className="text-blue-600 font-mono-code font-bold hover:underline"
+                      >
+                        عرض القطعة ↗
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-6 text-right">
+            <a
+              href="https://wa.me/9647901526221?text=مرحباً محل العاني، لدي رقم فلتر وأود التأكد من مطابقة كود أساس له"
               target="_blank"
               rel="noopener noreferrer"
-              className="halcyon-btn-primary px-8 py-3.5 text-xs font-bold uppercase tracking-wider inline-flex items-center gap-2"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white text-xs font-mono-code font-bold hover:bg-emerald-700 transition"
             >
-              <span>استعلام برقم القطعة عبر واتساب</span>
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.698.077-1.116-.062-.26-.086-.594-.216-1.026-.406-1.808-.795-2.984-2.617-3.076-2.739-.088-.121-.734-.977-.734-1.86 0-.884.464-1.32.63-1.498.167-.179.365-.224.487-.224.122 0 .243.001.35.006.112.006.262-.043.41.312.152.365.518 1.265.564 1.357.045.091.076.197.015.318-.061.121-.091.197-.182.303-.091.107-.193.238-.276.321-.091.091-.186.19-.08.373.107.182.474.782 1.018 1.267.701.624 1.292.818 1.474.909.182.091.289.076.395-.046.107-.121.456-.532.578-.715.121-.182.243-.152.41-.091.167.061 1.062.502 1.244.593.182.091.304.137.35.213.045.076.045.441-.099.846z"/>
-              </svg>
+              <span>طلب مطابقة رقم OEM غير موجود عبر واتساب</span>
+              <span>↗</span>
             </a>
           </div>
+
         </div>
       </section>
 
       {/* ========================================================== */}
-      {/* 7. HALCYON FAQ ACCORDION                                   */}
+      {/* 8. HALCYON SECTION 6: EDITORIAL HIGHLIGHTS & GUIDES        */}
       {/* ========================================================== */}
-      <section id="faq" className="max-w-4xl mx-auto px-4 sm:px-8 py-16 w-full">
-        <div className="text-center space-y-2 mb-10">
-          <span className="font-mono-code text-xs text-neutral-500 uppercase tracking-wider">FREQUENTLY ASKED QUESTIONS</span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-black">أسئلة شائعة قبل الطلب</h2>
-        </div>
+      <section className="bg-[#f8f8f8] py-16 sm:py-24 border-b border-neutral-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+          
+          <div className="text-right max-w-xl mb-12">
+            <span className="font-mono-code text-xs font-bold text-neutral-500 uppercase tracking-widest block mb-1">
+              TECHNICAL HIGHLIGHTS
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-[#111111] tracking-tight">
+              إرشادات هندسية من محل العاني
+            </h2>
+          </div>
 
-        <div className="divide-y divide-neutral-200 border-y border-neutral-200 bg-white">
-          {[
-            {
-              q: "كيف أتأكد من أن الفلتر يطابق سيارتي أو مولدتي أو آليتي بالضبط؟",
-              a: "بإمكانك التحقق من خلال كود الفلتر المسجل على القطعة القديمة (مثل SP 1450 أو كود OEM للمصنع)، أو بمجرد إرسال نوع المحرك وسنة الصنع إلى فني المحل عبر واتساب ليقوم بتأكيد المطابقة الفورية."
-            },
-            {
-              q: "هل فلاتر أساس ASAS أصلية ومعتمدة؟",
-              a: "نعم، جميع فلاتر أساس مستوردة رسمياً من المصنع الأصلي في تركيا بمواصفات تصنيع قياسية OEM ومطابقة لأعلى معايير كفاءة التدفق وحبس الشوائب وحماية المحرك."
-            },
-            {
-              q: "ما هي سياسة المعاينة والدفع عند الاستلام (COD)؟",
-              a: "نوفر خدمة الفحص والمعاينة عند باب منزلك أو ورشتك قبل تسليم أي مبلغ للمندوب. يحق لك فتح الصندوق والتأكد من مطابقة كود الفلتر وسلامته ثم الدفع نقداً."
-            },
-            {
-              q: "كم يستغرق التوصيل لكافة المحافظات؟",
-              a: "يتم تسليم الطرود داخل بغداد خلال 24 إلى 48 ساعة، ولجميع المحافظات العراقية الأخرى من يومين إلى 4 أيام عمل كحد أقصى."
-            }
-          ].map((item, idx) => {
-            const isOpen = openFaq === idx;
-            return (
-              <div key={idx} className="py-4 px-4 sm:px-6">
-                <button
-                  onClick={() => setOpenFaq(isOpen ? null : idx)}
-                  className="w-full flex items-center justify-between text-right text-sm sm:text-base font-bold text-neutral-900 gap-4"
-                >
-                  <span>{item.q}</span>
-                  <span className="font-mono-code text-lg text-neutral-400 shrink-0">
-                    {isOpen ? "−" : "+"}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                tag: "صيف العراق",
+                title: "اختيار فلتر الدهن في درجات حرارة تتجاوز 50 مئوية",
+                desc: "تتسبب درجات الحرارة المرتفعة في انخفاض لزوجة زيت المحرك. تضمن فلاتر أساس التركية المحافظة على معدل ضغط الزيت وصمامات مانعة للرجوع تتحمل حتى 150°C دون تآكل.",
+              },
+              {
+                tag: "حماية المحرك",
+                title: "5 علامات تكشف بها الفلاتر المقلدة والتجارية المغشوشة",
+                desc: "من جودة اللحام النقطي للغلاف، مرونة حلقة الـ O-ring المطاطية، إلى كثافة الطيات الورقية. تعرف على أسرار فحص الفلتر قبل تركيبه في سيارتك أو آليتك.",
+              },
+              {
+                tag: "الشاحنات والتريلات",
+                title: "أهمية فلتر مجفف الهواء (Air Dryer) لفرامل الشاحنات",
+                desc: "سحب الرطوبة والزيوت من شبكة الهواء يمنع تجمد أو تعطل صمامات الفرامل الهوائية وتلف خزانات الضغط في شاحنات سكانيا، أكتروس، وفولفو.",
+              },
+            ].map((art, idx) => (
+              <div key={idx} className="bg-white border border-neutral-200 p-6 flex flex-col justify-between text-right hover:border-black transition">
+                <div className="space-y-3">
+                  <span className="font-mono-code text-[11px] font-bold text-neutral-500 uppercase px-2 py-0.5 bg-neutral-100 inline-block">
+                    {art.tag}
                   </span>
-                </button>
-                {isOpen && (
-                  <p className="mt-3 text-xs sm:text-sm text-neutral-600 leading-relaxed text-right pl-4">
-                    {item.a}
-                  </p>
-                )}
+                  <h3 className="font-bold text-base text-black leading-snug">{art.title}</h3>
+                  <p className="text-xs text-neutral-600 leading-relaxed font-sans">{art.desc}</p>
+                </div>
+                <div className="pt-4 border-t border-neutral-100 mt-4">
+                  <a
+                    href="https://wa.me/9647901526221"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-mono-code font-bold text-black hover:text-blue-600"
+                  >
+                    استشارة فنية عبر واتساب ↗
+                  </a>
+                </div>
               </div>
-            );
-          })}
+            ))}
+          </div>
+
         </div>
       </section>
 
       {/* ========================================================== */}
-      {/* 8. HALCYON 4-COLUMN ARCHITECTURAL FOOTER                   */}
+      {/* 9. FAQ SECTION ACCORDION                                   */}
       {/* ========================================================== */}
-      <footer className="bg-white border-t border-neutral-200 mt-auto text-neutral-700 text-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-14">
+      <section id="faq" className="bg-white py-16 sm:py-24 border-b border-neutral-200">
+        <div className="max-w-3xl mx-auto px-4 sm:px-8 text-right">
+          
+          <div className="mb-10 text-center">
+            <span className="font-mono-code text-xs font-bold text-neutral-500 uppercase tracking-widest block mb-1">
+              FREQUENTLY ASKED QUESTIONS
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#111111]">
+              الأسئلة الشائعة قبل الطلب
+            </h2>
+          </div>
+
+          <div className="space-y-3">
+            {[
+              {
+                q: "كيف أتأكد أن الفلتر يطابق سيارتي أو مولدتي أو آليتي؟",
+                a: "يمكنك التحقق بمطابقة كود الفلتر في خانة البحث، أو عبر جدول مطابقة أرقام OEM، أو مراسلتنا مباشرة على واتساب بصورة الفلتر القديم أو موديل الآلية وسيقوم الفريق الفني بتأكيد الكود المطابق تماماً.",
+              },
+              {
+                q: "هل فلاتر أساس أصلية ومعتمدة 100%؟",
+                a: "نعم، نحن في محل العاني نتعامل مع وكالة فلاتر أساس ASAS Turkey التركية الأصلية مباشرة. جميع الفلاتر مصنعة وفق مواصفات المصانع العالمية ISO 9001 و TS 16949 ومطابقة للمواصفات الأصلية.",
+              },
+              {
+                q: "هل الدفع عند الاستلام وما هي سياسة المعاينة؟",
+                a: "نعم، جميع الطلبات تُشحن بنظام الدفع عند الاستلام (COD). يحق للزبون فتح الطرد ومعاينة الفلتر والتأكد من مطابقته وسلامته قبل تسليم المبلغ لمندوب شركة التوصيل.",
+              },
+              {
+                q: "كم يستغرق التوصيل إلى محافظتي؟",
+                a: "يتم تسليم الطرود يومياً لشركات التوصيل السريع. يستغرق التوصيل داخل بغداد 24-48 ساعة، وإلى باقي محافظات العراق الـ 17 من يومين إلى 4 أيام عمل.",
+              },
+            ].map((faq, idx) => (
+              <details key={idx} className="group border border-neutral-200 bg-[#f8f8f8] p-4 cursor-pointer">
+                <summary className="font-bold text-xs sm:text-sm text-black flex items-center justify-between list-none">
+                  <span className="font-mono-code text-neutral-400 group-open:rotate-45 transition-transform text-sm">+</span>
+                  <span>{faq.q}</span>
+                </summary>
+                <p className="mt-3 text-xs text-neutral-600 leading-relaxed font-sans pt-3 border-t border-neutral-200">
+                  {faq.a}
+                </p>
+              </details>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ========================================================== */}
+      {/* 10. HALCYON 4-COLUMN ARCHITECTURAL FOOTER                  */}
+      {/* ========================================================== */}
+      <footer className="bg-[#111111] text-white py-14 sm:py-20 border-t border-neutral-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 text-right">
             
-            {/* Col 1 */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Image src="/logo_a_blue_trans.png" alt="العاني" width={30} height={30} className="h-7 w-auto object-contain" />
-                <span className="font-black text-sm text-black">محل العاني للفلتر</span>
+            {/* Col 1: Brand & Location */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2.5 justify-end">
+                <div className="flex flex-col text-right">
+                  <span className="font-extrabold text-base tracking-tight leading-none text-white">
+                    محل العاني للفلتر
+                  </span>
+                  <span className="text-[10px] font-mono-code text-neutral-400 uppercase tracking-wider">
+                    ASAS FILTER AGENCY
+                  </span>
+                </div>
+                <Image 
+                  src="/logo_a_trans.png" 
+                  alt="العاني" 
+                  width={30} 
+                  height={30} 
+                  className="h-8 w-auto object-contain" 
+                />
               </div>
-              <p className="text-neutral-500 leading-relaxed text-xs">
-                بغداد، العراق • متخصصون في فلاتر المحركات الأصلية، الشاحنات، والمعدات الثقيلة. وكالة فلاتر أساس ASAS المعتمدة.
+              <p className="text-xs text-neutral-400 leading-relaxed font-sans">
+                بغداد، العراق • فلاتر أصلية معتمدة للسيارات والمولدات والمعدات الثقيلة والشاحنات. توصيل لكافة المحافظات والدفع نقداً عند الاستلام.
               </p>
-              <div className="font-mono-code text-[11px] text-neutral-400">
-                AUTHORIZED ASAS DISTRIBUTOR
+              <div className="text-[11px] font-mono-code text-neutral-500">
+                <span>سوق السنك التجاري، بغداد</span>
               </div>
             </div>
 
-            {/* Col 2 */}
-            <div className="space-y-2">
-              <span className="font-mono-code font-bold text-black uppercase tracking-wider block mb-3">
-                أقسام الفلاتر
-              </span>
-              <ul className="space-y-2 text-neutral-600">
-                <li><a href="#catalog" className="hover:text-black transition">فلاتر دهن وزيت (Spin-on & Element)</a></li>
-                <li><a href="#catalog" className="hover:text-black transition">فلاتر هواء سيارات ومعدات</a></li>
-                <li><a href="#catalog" className="hover:text-black transition">فلاتر مجفف هواء للشاحنات</a></li>
-                <li><a href="#catalog" className="hover:text-black transition">فلاتر وقود ديزل وسبيتر</a></li>
-                <li><a href="#catalog" className="hover:text-black transition">فلاتر كابينة وتكييف</a></li>
-              </ul>
-            </div>
-
-            {/* Col 3 */}
-            <div className="space-y-3">
-              <span className="font-mono-code font-bold text-black uppercase tracking-wider block mb-3">
-                الاتصال والطلبات
+            {/* Col 2: Direct Contact */}
+            <div className="space-y-3 font-mono-code text-xs">
+              <span className="text-neutral-400 font-bold uppercase tracking-wider block border-b border-neutral-800 pb-2">
+                CONTACT & INQUIRIES
               </span>
               <div className="space-y-2">
-                <div className="p-3 bg-neutral-50 border border-neutral-200 space-y-1">
-                  <span className="text-[10px] text-neutral-400 font-mono-code block">الرقم الأساسي / واتساب:</span>
-                  <a href="tel:+9647901526221" className="font-mono-code font-bold text-black text-sm block hover:underline" dir="ltr">
+                <div>
+                  <span className="text-neutral-500 text-[10px] block">الرقم الأساسي / واتساب:</span>
+                  <a href="https://wa.me/9647901526221" target="_blank" rel="noopener noreferrer" className="text-white hover:text-emerald-400 font-bold">
                     +964 790 152 6221
                   </a>
                 </div>
-                <div className="p-3 bg-neutral-50 border border-neutral-200 space-y-1">
-                  <span className="text-[10px] text-neutral-400 font-mono-code block">الرقم الثاني / اتصال:</span>
-                  <a href="tel:+9647710077880" className="font-mono-code font-bold text-black text-sm block hover:underline" dir="ltr">
+                <div>
+                  <span className="text-neutral-500 text-[10px] block">الرقم الثاني / اتصال مباشر:</span>
+                  <a href="tel:+9647710077880" className="text-white hover:text-emerald-400 font-bold">
                     +964 771 007 7880
                   </a>
                 </div>
               </div>
             </div>
 
-            {/* Col 4 */}
-            <div className="space-y-3">
-              <span className="font-mono-code font-bold text-black uppercase tracking-wider block mb-3">
-                التغطية والخدمة
+            {/* Col 3: Navigation */}
+            <div className="space-y-3 text-xs">
+              <span className="font-mono-code text-neutral-400 font-bold uppercase tracking-wider block border-b border-neutral-800 pb-2">
+                NAVIGATION
               </span>
-              <p className="text-neutral-500 text-xs leading-relaxed">
-                توصيل سريع لكافة محافظات العراق الـ 18: بغداد، البصرة، نينوى، أربيل، كركوك، النجف، كربلاء، وباقي المحافظات مع المعاينة عند الاستلام.
-              </p>
-              <div className="pt-2">
-                <Link href="/admin" className="inline-block text-xs font-mono-code text-neutral-600 hover:text-black border border-neutral-300 px-3 py-1.5 transition">
-                  لوحة إدارة الطلبات [PIN]
-                </Link>
+              <ul className="space-y-2 text-neutral-300">
+                <li><a href="#catalog" className="hover:text-white transition">كتالوج الفلاتر (80)</a></li>
+                <li><a href="#engineering" className="hover:text-white transition">الهندسة والجودة الأصلية</a></li>
+                <li><a href="#oem-lookup" className="hover:text-white transition">مطابقة أرقام المصنع OEM</a></li>
+                <li><a href="#faq" className="hover:text-white transition">الشحن والضمان</a></li>
+                <li>
+                  <Link href="/admin" className="font-mono-code text-[11px] text-blue-400 hover:text-blue-300">
+                    لوحة الإدارة [PIN: 12345678]
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Col 4: COD & Inspection Guarantee */}
+            <div className="space-y-3 text-xs">
+              <span className="font-mono-code text-neutral-400 font-bold uppercase tracking-wider block border-b border-neutral-800 pb-2">
+                IRAQ-WIDE GUARANTEE
+              </span>
+              <div className="space-y-2 text-neutral-300">
+                <p className="leading-relaxed">
+                  🚚 شحن لجميع محافظات العراق الـ 18.
+                </p>
+                <p className="leading-relaxed">
+                  📦 فحص ومعاينة الطرد قبل تسليم المبلغ للمندوب.
+                </p>
+                <p className="leading-relaxed font-mono-code text-[11px] text-emerald-400">
+                  ✓ فلاتر أساس أصلية 100%
+                </p>
               </div>
             </div>
 
           </div>
 
-          <div className="border-t border-neutral-200 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono-code text-[11px] text-neutral-400">
-            <div>
-              © 2026 محل العاني للفلتر • AL ANI FILTER • BAGHDAD, IRAQ
-            </div>
-            <div>
-              CASH ON DELIVERY (COD) • ALL 18 GOVERNORATES
-            </div>
+          <div className="mt-12 pt-6 border-t border-neutral-800 flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono-code text-neutral-500 gap-3">
+            <span>حقوق النشر © {new Date().getFullYear()} محل العاني للفلتر. جميع الحقوق محفوظة.</span>
+            <span>ASAS FILTERS IRAQ • POWERED BY HALCYON ARCHITECTURE</span>
           </div>
+
         </div>
       </footer>
 
       {/* ========================================================== */}
-      {/* 9. HALCYON PRODUCT DETAIL VIEW (Pic 2, 3, 4 Exact Layout)   */}
+      {/* 11. HALCYON PRODUCT DETAIL VIEW (Pic 2, 3, 4 Exact Layout) */}
       {/* ========================================================== */}
       {selectedProduct && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm overflow-y-auto flex items-start justify-center p-0 sm:p-6">
-          <div className="bg-white border-0 sm:border border-neutral-300 max-w-2xl w-full min-h-screen sm:min-h-0 sm:max-h-[92vh] overflow-y-auto text-right p-5 sm:p-8 relative space-y-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 animate-fadeIn overflow-y-auto">
+          <div className="bg-white text-black w-full max-w-2xl max-h-[92vh] overflow-y-auto border border-neutral-300 shadow-2xl relative my-auto">
             
-            {/* Top Bar with Back Button (Halcyon Style) */}
-            <div className="flex items-center justify-between border-b border-neutral-200 pb-3">
-              <button 
+            {/* Back Button matching Halcyon Pic 2 */}
+            <div className="sticky top-0 bg-white/95 backdrop-blur-md z-10 px-6 py-4 border-b border-neutral-200 flex items-center justify-between">
+              <button
                 onClick={() => setSelectedProduct(null)}
-                className="inline-flex items-center gap-1.5 text-xs font-mono-code font-bold text-neutral-700 hover:text-black px-2.5 py-1 bg-neutral-100 hover:bg-neutral-200 transition"
+                className="px-4 py-1.5 bg-neutral-200 hover:bg-neutral-300 text-xs font-mono-code font-bold uppercase tracking-wider text-black flex items-center gap-1.5 transition"
               >
                 <span>&lt; BACK</span>
-                <span className="font-sans text-[11px] text-neutral-500">(العودة للكتالوج)</span>
               </button>
-
-              <button 
-                onClick={() => setSelectedProduct(null)}
-                className="text-neutral-400 hover:text-black font-mono-code text-xs"
-              >
-                [✕ إغلاق]
-              </button>
+              <span className="font-mono-code text-xs text-neutral-400 uppercase">ASAS FILTER CATALOG</span>
             </div>
 
-            {/* Product Header & Hero Image */}
-            <div className="space-y-6">
+            <div className="p-6 sm:p-8 space-y-6 text-right">
               
-              {/* Product Gallery Container */}
-              <div className="aspect-square bg-[#fbfbfb] border border-neutral-200 p-6 sm:p-8 flex items-center justify-center relative">
+              {/* Product Gallery Studio Image */}
+              <div className="bg-[#f8f8f8] border border-neutral-200 aspect-square max-w-md mx-auto relative flex items-center justify-center p-6">
                 <Image
-                  src={selectedProduct.image_url || "/products/oil-filter.svg"}
+                  src={selectedProduct.image_url}
                   alt={selectedProduct.title}
-                  width={600}
-                  height={600}
-                  className="w-full h-full object-contain"
+                  width={400}
+                  height={400}
+                  className="object-contain max-h-full max-w-full"
                   priority
                 />
               </div>
 
-              {/* Gallery Thumbnails (Halcyon Style) */}
-              <div className="flex items-center justify-center gap-2">
-                <div className="w-12 h-12 border-2 border-black bg-white p-1 flex items-center justify-center cursor-pointer">
-                  <Image src={selectedProduct.image_url || "/products/oil-filter.svg"} alt="1" width={40} height={40} className="w-full h-full object-contain" />
-                </div>
-                <div className="w-12 h-12 border border-neutral-200 bg-neutral-50 p-1 flex items-center justify-center cursor-pointer opacity-70 hover:opacity-100">
-                  <Image src={selectedProduct.image_url || "/products/oil-filter.svg"} alt="2" width={40} height={40} className="w-full h-full object-contain rotate-90" />
-                </div>
-              </div>
-
-              {/* Product Code Header (Like X980 in Pic 2) */}
-              <div className="space-y-2 pt-2 border-t border-neutral-100">
-                <h1 className="text-3xl sm:text-5xl font-black font-mono-code text-black tracking-tight">
-                  {selectedProduct.part_number || selectedProduct.title.split(" ").pop()}
-                </h1>
-
-                <p className="text-sm sm:text-base font-semibold text-neutral-700 leading-snug">
-                  {selectedProduct.subtitle || selectedProduct.title}
+              {/* Title Section (Pic 2 Architecture) */}
+              <div className="space-y-2 border-b border-neutral-200 pb-6">
+                <h2 className="text-3xl sm:text-5xl font-black font-mono-code text-black tracking-tight">
+                  {selectedProduct.part_number || selectedProduct.title}
+                </h2>
+                <p className="text-sm sm:text-base text-neutral-700 font-sans font-medium">
+                  {selectedProduct.title}
                 </p>
-
-                {/* Live In-Stock Indicator (Like 🟢 84 IN AKL in Pic 2) */}
-                <div className="flex flex-wrap items-center gap-3 pt-2 font-mono-code text-xs text-neutral-600">
-                  <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1">
+                <div className="flex flex-wrap items-center gap-3 pt-2 text-xs font-mono-code font-bold">
+                  <span className="flex items-center gap-1 text-emerald-700 bg-emerald-50 px-2.5 py-1 border border-emerald-200">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>متوفر في مخزن بغداد (25 قطعة)</span>
+                    <span>25 متوفر في مخزن بغداد</span>
                   </span>
-                  <span className="inline-flex items-center gap-1.5 bg-neutral-50 text-neutral-800 border border-neutral-200 px-2.5 py-1">
-                    <span className="w-2 h-2 rounded-full bg-neutral-500" />
-                    <span>توصيل سريع لـ 18 محافظة</span>
+                  <span className="flex items-center gap-1 text-blue-700 bg-blue-50 px-2.5 py-1 border border-blue-200">
+                    <span>🟢 شحن سريع لكافة المحافظات 18</span>
                   </span>
                 </div>
               </div>
 
-              {/* Price & Quantity & Action Controls (Like Pic 3) */}
-              <div className="pt-4 border-t border-neutral-200 space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono-code text-xs text-neutral-500">السعر النقدي للقطعة:</span>
-                  <span className="font-mono-code text-2xl sm:text-3xl font-black text-black">
+              {/* Price & Quantity Stepper & Add to Cart (Pic 3 Architecture) */}
+              <div className="space-y-4">
+                <div className="flex items-baseline justify-between">
+                  <span className="text-neutral-500 text-xs font-mono-code uppercase">السعر الفردي:</span>
+                  <span className="text-2xl sm:text-3xl font-extrabold text-black font-mono-code">
                     {formatIQD(selectedProduct.price)}
                   </span>
                 </div>
 
-                {/* Quantity Stepper + Add Button */}
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center border border-neutral-300 font-mono-code text-sm h-12 bg-white">
-                    <button 
-                      onClick={() => setProductQty(Math.max(1, productQty - 1))} 
-                      className="px-3.5 h-full hover:bg-neutral-100 transition text-lg"
+                  {/* Quantity Stepper */}
+                  <div className="flex items-center border border-neutral-300 h-12 px-2 font-mono-code font-bold">
+                    <button
+                      onClick={() => setProductQty(Math.max(1, productQty - 1))}
+                      className="w-8 h-full flex items-center justify-center text-lg hover:text-neutral-500"
                     >
-                      −
+                      -
                     </button>
-                    <span className="px-4 font-bold text-base min-w-[2.5rem] text-center">
-                      {productQty}
-                    </span>
-                    <button 
-                      onClick={() => setProductQty(productQty + 1)} 
-                      className="px-3.5 h-full hover:bg-neutral-100 transition text-lg"
+                    <span className="w-10 text-center text-sm">{productQty}</span>
+                    <button
+                      onClick={() => setProductQty(productQty + 1)}
+                      className="w-8 h-full flex items-center justify-center text-lg hover:text-neutral-500"
                     >
                       +
                     </button>
                   </div>
 
+                  {/* Add to Cart Button */}
                   <button
                     onClick={() => {
                       addToCart(selectedProduct, productQty);
                       setSelectedProduct(null);
                       setIsCartDrawerOpen(true);
                     }}
-                    className="flex-1 halcyon-btn-primary h-12 text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2"
+                    className="flex-1 h-12 bg-[#111111] hover:bg-black text-white text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2"
                   >
                     <span>إضافة إلى السلة وإتمام الطلب</span>
                     <span className="font-mono-code text-xs">({formatIQD(selectedProduct.price * productQty)})</span>
@@ -905,9 +1185,7 @@ export default function HalcyonStorefrontPage() {
                 </div>
               </div>
 
-              {/* ========================================================== */}
-              {/* EXACT SPECIFICATIONS TABLE (As in Pic 3 & Pic 4)           */}
-              {/* ========================================================== */}
+              {/* Exact Specifications Table (Pic 3 & Pic 4) */}
               <div className="mt-8 border-t border-neutral-300 pt-6">
                 <div className="flex items-center justify-between border-b-2 border-black pb-2 mb-2">
                   <span className="font-extrabold text-sm sm:text-base text-black font-mono-code uppercase">
@@ -974,74 +1252,84 @@ export default function HalcyonStorefrontPage() {
       )}
 
       {/* ========================================================== */}
-      {/* 10. HALCYON SLIDE-OVER CART DRAWER                         */}
+      {/* 12. HALCYON SLIDE-OVER CART DRAWER & COD FORM              */}
       {/* ========================================================== */}
       {isCartDrawerOpen && (
-        <div className="fixed inset-0 z-50 overflow-hidden">
-          <div 
-            onClick={() => setIsCartDrawerOpen(false)}
-            className="absolute inset-0 bg-black/50 backdrop-blur-xs transition-opacity" 
-          />
-
-          <div className="absolute inset-y-0 left-0 max-w-md w-full bg-white shadow-2xl flex flex-col text-right">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex justify-end animate-fadeIn">
+          <div className="bg-white text-black w-full max-w-md h-full flex flex-col justify-between border-l border-neutral-200 shadow-2xl relative">
             
             {/* Drawer Header */}
-            <div className="px-6 py-4 border-b border-neutral-200 flex items-center justify-between">
-              <button 
+            <div className="p-4 sm:p-6 border-b border-neutral-200 flex items-center justify-between">
+              <button
                 onClick={() => setIsCartDrawerOpen(false)}
-                className="text-xs font-mono-code text-neutral-400 hover:text-black"
+                className="text-xs font-mono-code font-bold text-neutral-500 hover:text-black uppercase"
               >
-                [إغلاق ✕]
+                [ إغلاق ✕ ]
               </button>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-sm text-black">سلة المشتريات</span>
-                <span className="font-mono-code text-xs bg-black text-white px-2 py-0.5">
+                <span className="font-bold text-sm">سلة المشتريات</span>
+                <span className="font-mono-code text-xs px-2 py-0.5 bg-black text-white font-bold">
                   {cartCount}
                 </span>
               </div>
             </div>
 
-            {/* Items List */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            {/* Cart Items List */}
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
               {cart.length === 0 ? (
-                <div className="py-20 text-center space-y-3 text-neutral-400">
-                  <svg className="w-12 h-12 mx-auto text-neutral-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                  </svg>
-                  <p className="text-sm font-semibold">سلة المشتريات فارغة</p>
-                  <button 
-                    onClick={() => setIsCartDrawerOpen(false)}
-                    className="halcyon-btn-outline px-5 py-2 text-xs font-bold"
+                <div className="text-center py-16 space-y-3">
+                  <span className="font-mono-code text-3xl">🛒</span>
+                  <p className="text-sm font-bold text-neutral-700">السلة فارغة حالياً</p>
+                  <p className="text-xs text-neutral-500">اختر الفلاتر المطلوبة من الكتالوج لإتمام الشراء</p>
+                  <button
+                    onClick={() => {
+                      setIsCartDrawerOpen(false);
+                      scrollToCatalogAndFocus();
+                    }}
+                    className="mt-4 px-4 py-2 bg-black text-white text-xs font-mono-code font-bold"
                   >
-                    تصفح الفلاتر
+                    استعراض الفلاتر
                   </button>
                 </div>
               ) : (
-                <div className="divide-y divide-neutral-100">
+                <div className="space-y-3">
                   {cart.map((item) => (
-                    <div key={item.product.id} className="py-3 flex items-center gap-3">
-                      <div className="w-16 h-16 bg-neutral-50 border border-neutral-200 p-1 shrink-0 flex items-center justify-center">
+                    <div
+                      key={item.product.id}
+                      className="border border-neutral-200 p-3 flex gap-3 text-right bg-[#fcfcfc]"
+                    >
+                      <div className="w-16 h-16 bg-white border border-neutral-100 relative shrink-0 p-1">
                         <Image
-                          src={item.product.image_url || "/products/oil-filter.svg"}
+                          src={item.product.image_url}
                           alt={item.product.title}
-                          width={60}
-                          height={60}
-                          className="w-full h-full object-contain"
+                          fill
+                          className="object-contain"
                         />
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-bold text-xs text-black truncate">{item.product.title}</h4>
-                        <span className="font-mono-code text-xs text-neutral-500 block">
-                          {formatIQD(item.product.price)}
-                        </span>
-                        
-                        <div className="flex items-center gap-3 mt-2">
-                          <div className="flex items-center border border-neutral-200 font-mono-code text-xs">
-                            <button onClick={() => updateQuantity(item.product.id, -1)} className="px-2 py-0.5 hover:bg-neutral-100">−</button>
+                      <div className="flex-1 flex flex-col justify-between">
+                        <div>
+                          <span className="font-mono-code text-xs font-bold text-black uppercase block">
+                            {item.product.part_number || item.product.title}
+                          </span>
+                          <p className="text-[11px] text-neutral-600 line-clamp-1">{item.product.title}</p>
+                        </div>
+                        <div className="flex items-center justify-between pt-1">
+                          <div className="flex items-center border border-neutral-300 font-mono-code text-xs">
+                            <button
+                              onClick={() => updateQuantity(item.product.id, -1)}
+                              className="px-2 py-0.5 hover:bg-neutral-100"
+                            >
+                              -
+                            </button>
                             <span className="px-2 font-bold">{item.quantity}</span>
-                            <button onClick={() => updateQuantity(item.product.id, 1)} className="px-2 py-0.5 hover:bg-neutral-100">+</button>
+                            <button
+                              onClick={() => updateQuantity(item.product.id, 1)}
+                              className="px-2 py-0.5 hover:bg-neutral-100"
+                            >
+                              +
+                            </button>
                           </div>
-                          <span className="font-mono-code font-bold text-xs text-black">
+                          <span className="font-mono-code text-xs font-bold text-black">
                             {formatIQD(item.product.price * item.quantity)}
                           </span>
                         </div>
@@ -1052,121 +1340,116 @@ export default function HalcyonStorefrontPage() {
               )}
             </div>
 
-            {/* Checkout Form */}
+            {/* Checkout & Delivery Calculation */}
             {cart.length > 0 && (
-              <form onSubmit={handlePlaceOrder} className="border-t border-neutral-200 p-6 bg-neutral-50 space-y-4">
-                <div className="space-y-2">
-                  <div className="flex justify-between font-mono-code text-xs">
-                    <span className="text-neutral-500">المجموع الفرعي:</span>
-                    <span className="font-bold text-black">{formatIQD(cartSubtotal)}</span>
+              <div className="border-t border-neutral-200 p-4 sm:p-6 bg-[#f8f8f8] space-y-4">
+                
+                {/* Cost Breakdown */}
+                <div className="space-y-1.5 font-mono-code text-xs text-neutral-600 border-b border-neutral-200 pb-3">
+                  <div className="flex justify-between">
+                    <span className="text-black font-bold">{formatIQD(cartSubtotal)}</span>
+                    <span>المجموع الفرعي:</span>
                   </div>
-                  <div className="flex justify-between font-mono-code text-xs">
-                    <span className="text-neutral-500">أجور التوصيل:</span>
-                    <span className="font-bold text-black">{formatIQD(deliveryFee)}</span>
+                  <div className="flex justify-between">
+                    <span className="text-black font-bold">{formatIQD(deliveryFee)}</span>
+                    <span>أجور التوصيل ({custGov}):</span>
                   </div>
-                  <div className="flex justify-between font-mono-code text-sm font-bold border-t border-neutral-200 pt-2">
-                    <span>المبلغ الكلي نقداً:</span>
-                    <span className="text-black">{formatIQD(orderTotal)}</span>
+                  <div className="flex justify-between text-sm text-black font-extrabold pt-1">
+                    <span>{formatIQD(orderTotal)}</span>
+                    <span>الإجمالي عند الاستلام:</span>
                   </div>
                 </div>
 
-                <div className="space-y-2 pt-2">
-                  <input
-                    type="text"
-                    required
-                    value={custName}
-                    onChange={(e) => setCustName(e.target.value)}
-                    placeholder="الاسم الكامل"
-                    className="w-full px-3 py-2 text-xs border border-neutral-300 bg-white focus:outline-none focus:border-black rounded-none"
-                  />
-                  <input
-                    type="tel"
-                    required
-                    value={custPhone}
-                    onChange={(e) => setCustPhone(e.target.value)}
-                    placeholder="رقم الهاتف (07xxxxxxxxx)"
-                    className="w-full px-3 py-2 text-xs border border-neutral-300 bg-white focus:outline-none focus:border-black rounded-none font-mono-code"
-                  />
-                  
-                  <div className="grid grid-cols-2 gap-2">
-                    <select
-                      value={custGov}
-                      onChange={handleGovChange}
-                      className="px-2 py-2 text-xs border border-neutral-300 bg-white focus:outline-none focus:border-black rounded-none"
-                    >
-                      <option value="بغداد" data-fee="5000">بغداد (5,000 د.ع)</option>
-                      <option value="البصرة" data-fee="7000">البصرة (7,000 د.ع)</option>
-                      <option value="أربيل" data-fee="7000">أربيل (7,000 د.ع)</option>
-                      <option value="السليمانية" data-fee="7000">السليمانية (7,000 د.ع)</option>
-                      <option value="نينوى" data-fee="7000">نينوى (7,000 د.ع)</option>
-                      <option value="كركوك" data-fee="7000">كركوك (7,000 د.ع)</option>
-                      <option value="النجف" data-fee="7000">النجف (7,000 د.ع)</option>
-                      <option value="كربلاء" data-fee="7000">كربلاء (7,000 د.ع)</option>
-                      <option value="بابل" data-fee="7000">بابل (7,000 د.ع)</option>
-                      <option value="واسط" data-fee="7000">واسط (7,000 د.ع)</option>
-                      <option value="ميسان" data-fee="7000">ميسان (7,000 د.ع)</option>
-                      <option value="ذي قار" data-fee="7000">ذي قار (7,000 د.ع)</option>
-                      <option value="القادسية" data-fee="7000">القادسية (7,000 د.ع)</option>
-                      <option value="المثنى" data-fee="7000">المثنى (7,000 د.ع)</option>
-                      <option value="ديالى" data-fee="7000">ديالى (7,000 د.ع)</option>
-                      <option value="صلاح الدين" data-fee="7000">صلاح الدين (7,000 د.ع)</option>
-                      <option value="الأنبار" data-fee="7000">الأنبار (7,000 د.ع)</option>
-                      <option value="دهوك" data-fee="7000">دهوك (7,000 د.ع)</option>
-                    </select>
-
+                {/* Customer Checkout Form */}
+                <form onSubmit={handlePlaceOrder} className="space-y-2.5 text-right">
+                  <div>
                     <input
                       type="text"
                       required
-                      value={custArea}
-                      onChange={(e) => setCustArea(e.target.value)}
-                      placeholder="المنطقة والشارع"
-                      className="px-3 py-2 text-xs border border-neutral-300 bg-white focus:outline-none focus:border-black rounded-none"
+                      value={custName}
+                      onChange={(e) => setCustName(e.target.value)}
+                      placeholder="الاسم الكامل *"
+                      className="w-full bg-white border border-neutral-300 px-3 py-2 text-xs text-right focus:outline-none focus:border-black"
                     />
                   </div>
-                </div>
+                  <div>
+                    <input
+                      type="tel"
+                      required
+                      value={custPhone}
+                      onChange={(e) => setCustPhone(e.target.value)}
+                      placeholder="رقم الهاتف العراقي (مثال: 07901234567) *"
+                      className="w-full bg-white border border-neutral-300 px-3 py-2 text-xs text-right font-mono-code focus:outline-none focus:border-black"
+                    />
+                  </div>
+                  <div>
+                    <select
+                      value={custGov}
+                      onChange={handleGovChange}
+                      className="w-full bg-white border border-neutral-300 px-3 py-2 text-xs text-right focus:outline-none focus:border-black font-sans"
+                    >
+                      {GOVERNORATES.map((g) => (
+                        <option key={g.name} value={g.name} data-fee={g.fee}>
+                          {g.name} (توصيل: {formatIQD(g.fee)})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <input
+                      type="text"
+                      required
+                      value={custAddress}
+                      onChange={(e) => setCustAddress(e.target.value)}
+                      placeholder="العنوان التفصيلي / نقطة دالة *"
+                      className="w-full bg-white border border-neutral-300 px-3 py-2 text-xs text-right focus:outline-none focus:border-black"
+                    />
+                  </div>
 
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full halcyon-btn-primary py-3 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2"
-                >
-                  {isSubmitting ? "جاري الحفظ..." : "تأكيد الطلب نقداً عند الاستلام"}
-                </button>
-              </form>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full py-3 bg-[#111111] hover:bg-black text-white text-xs font-mono-code font-bold uppercase tracking-wider flex items-center justify-center gap-2 mt-2 disabled:opacity-50"
+                  >
+                    <span>تأكيد الطلب والدفع عند الاستلام</span>
+                    <span>({formatIQD(orderTotal)})</span>
+                  </button>
+                </form>
+
+              </div>
             )}
+
           </div>
         </div>
       )}
 
-      {/* Order Confirmed Modal */}
+      {/* Order Confirmed Modal with WhatsApp Redirection */}
       {orderConfirmed && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white border border-neutral-300 max-w-md w-full p-6 text-center space-y-4">
-            <div className="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            
-            <h3 className="text-lg font-bold text-black">تم تسجيل طلبك بنجاح!</h3>
-            <p className="font-mono-code text-xs text-neutral-600">رقم الطلب: {orderConfirmed.id}</p>
-            <p className="text-xs text-neutral-600">
-              سيتم توصيل طلبك إلى <span className="font-bold text-black">{orderConfirmed.gov}</span> بمبلغ إجمالي{" "}
-              <span className="font-bold text-black">{formatIQD(orderConfirmed.total)}</span> تدفع نقداً عند المعاينة والاستلام.
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-white text-black max-w-md w-full p-6 sm:p-8 text-center space-y-4 border border-neutral-300 shadow-2xl">
+            <span className="text-4xl">🎉</span>
+            <h3 className="font-extrabold text-lg text-black">تم تسجيل طلبك بنجاح!</h3>
+            <p className="font-mono-code text-xs text-neutral-500 font-bold">
+              رقم الطلب: {orderConfirmed.id}
             </p>
-
-            <div className="pt-2 flex flex-col gap-2">
-              <a 
+            <p className="text-xs text-neutral-600 leading-relaxed font-sans">
+              المجموع الإجمالي: <span className="font-bold text-black">{formatIQD(orderConfirmed.total)}</span>
+              <br />
+              الشحن إلى: <span className="font-bold text-black">{orderConfirmed.gov}</span> (الدفع نقداً عند المعاينة والاستلام).
+            </p>
+            
+            <div className="pt-2 space-y-2">
+              <a
                 href={orderConfirmed.waUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-none transition"
+                className="w-full block py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-mono-code font-bold uppercase tracking-wider"
               >
-                تأكيد فوري عبر واتساب المحل
+                تأكيد فوري عبر واتساب المحل ↗
               </a>
-              <button 
+              <button
                 onClick={() => setOrderConfirmed(null)}
-                className="w-full halcyon-btn-outline py-2.5 text-xs font-bold"
+                className="w-full py-2 border border-neutral-300 text-xs font-mono-code text-neutral-700 hover:bg-neutral-50"
               >
                 إغلاق والعودة للمتجر
               </button>
