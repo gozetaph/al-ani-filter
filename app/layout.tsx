@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "محل العاني للفلتر | Al Ani Filter — وكالة فلاتر أساس ASAS الأصلية",
-  description: "الرائد في فلاتر المحركات الأصلية للسيارات والشاحنات والمولدات في العراق • وكالة أساس ASAS التركية المعتمدة مع التوصيل لكافة المحافظات والدفع عند الاستلام",
+  title: "العاني للفلاتر | Al Ani Filter — فلاتر أصلية ومطابقة هندسية",
+  description: "الرائد في فلاتر المحركات الأصلية للسيارات والشاحنات والمولدات والمعدات الثقيلة في العراق • مطابقة دقيقة لكافة الماركات العالمية (Mann, Perkins, Fleetguard, Donaldson, ASAS, MAK)",
 };
 
 export default function RootLayout({

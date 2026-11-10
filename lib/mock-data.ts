@@ -1,4 +1,4 @@
-import { Product, Order } from "./types";
+import { Product, Order, FAQItem } from "./types";
 
 export const initialProducts: Product[] = [
   {
@@ -1361,6 +1361,37 @@ export const initialProducts: Product[] = [
     is_active: true,
     spec_table: [{"label": "الماركة والمصنع", "value": "أساس ASAS Turkey (وكالة رسمية)"}, {"label": "كود القطعة (Part Number)", "value": "CF 571"}, {"label": "نوع الفلتر (Category)", "value": "فلتر كابينة ومكيف"}, {"label": "الارتفاع (Height)", "value": "32 مم"}, {"label": "القطر الخارجي (Outer Ø)", "value": "415 مم"}, {"label": "القطر الداخلي (Inner Ø)", "value": "190 مم"}, {"label": "الآليات والمحركات المتوافقة", "value": "Volvo FH12/FH13 Cabin Air Filter, Volvo FM"}, {"label": "أرقام المطابقة (OEM Cross Ref)", "value": "Mann CU 4251, Volvo 21758906"}, {"label": "المعاينة والاستلام", "value": "فحص الطرد قبل الدفع نقداً عند الاستلام"}, {"label": "الضمان والجودة", "value": "مطابق لمواصفات المصنع OEM بنسبة 100%"}],
   }
+];
+
+export const initialFaqs: FAQItem[] = [
+  {
+    id: "faq-1",
+    question: "كيف أتأكد من مطابقة الفلتر لسيارتي أو مولدتي أو آليتي بالضبط؟",
+    answer: "بإمكانك التحقق من خلال كود الفلتر المسجل على القطعة القديمة أو بمجرد إرسال صورة القطعة أو نوع المحرك وسنة الصنع إلى فني العاني للفلاتر عبر واتساب ليقوم بتأكيد المطابقة الفورية وتوفير البدائل المعتمدة.",
+    order_index: 1,
+    is_active: true,
+  },
+  {
+    id: "faq-2",
+    question: "ما هي الماركات العالمية المتوفرة لديكم؟",
+    answer: "نوفر فلاتر أصلية وبدائل مطابقة هندسياً لأشهر الماركات العالمية المعتمدة مثل: Mann+Hummel, Perkins, Fleetguard, Donaldson, ASAS, MAK, Baldwin وغيرها لكافة أنواع المركبات والمعدات.",
+    order_index: 2,
+    is_active: true,
+  },
+  {
+    id: "faq-3",
+    question: "هل تتوفر فلاتر للمولدات والمعدات الثقيلة والشاحنات؟",
+    answer: "نعم، يتوفر لدينا مخزون تخصصي متكامل لفلاتر الزيت، الوقود، فواصل الماء، مجففات الهواء، وفلاتر الهواء للمولدات (Perkins, Cummins, Caterpillar) والشاحنات والآليات الإنشائية.",
+    order_index: 3,
+    is_active: true,
+  },
+  {
+    id: "faq-4",
+    question: "كيف يمكنني الاستفسار أو طلب كميات للجملة والورش؟",
+    answer: "تواصل معنا مباشرة عبر أرقام الواتساب المتاحة في الموقع، وسيقوم فريق المبيعات بتزويدك بكافة التفاصيل وعروض الأسعار المخصصة للورش والشركات والموزعين.",
+    order_index: 4,
+    is_active: true,
+  },
 ];
 
 export const sampleOrders: Order[] = [

@@ -194,10 +194,10 @@ export default function AdminLayout({
               </div>
               <div>
                 <span className="font-bold text-sm sm:text-base text-zinc-900 leading-tight block">
-                  لوحة إدارة العاني للفلتر
+                  لوحة إدارة العاني للفلاتر
                 </span>
                 <span className="text-[10px] text-zinc-400 block font-mono">
-                  AL ANI FILTER CONTROL PANEL
+                  AL ANI FILTERS CONTROL PANEL
                 </span>
               </div>
             </Link>
@@ -215,13 +215,13 @@ export default function AdminLayout({
               href="/admin/items"
               className="px-3 py-1.5 rounded-xl text-zinc-600 hover:text-[#004bb5] hover:bg-blue-50 transition"
             >
-              المخزن والمواد
+              المواد والمنتجات
             </Link>
             <Link
-              href="/admin/orders"
+              href="/admin/faq"
               className="px-3 py-1.5 rounded-xl text-zinc-600 hover:text-[#004bb5] hover:bg-blue-50 transition"
             >
-              الطلبيات والشحن
+              الأسئلة الشائعة (FAQ)
             </Link>
             <button
               onClick={handleLogout}

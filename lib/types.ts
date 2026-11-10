@@ -1,3 +1,17 @@
+export interface BrandCrossReference {
+  brand: string;
+  code: string;
+}
+
+export interface FAQItem {
+  id: string;
+  question: string;
+  answer: string;
+  order_index?: number;
+  is_active?: boolean;
+  created_at?: string;
+}
+
 export interface Product {
   id: string;
   title: string;
@@ -6,14 +20,15 @@ export interface Product {
   category?: string;
   type?: string;
   badge?: string;
-  price: number;
-  stock_quantity: number;
+  price?: number;
+  stock_quantity?: number;
   image_url: string;
   is_active?: boolean;
   created_at?: string;
   part_number?: string;
   clean_type?: string;
   subtitle?: string;
+  other_brands?: BrandCrossReference[];
   spec_table?: { label: string; value: string }[];
   specs?: Record<string, any>;
   vehicles?: string[];

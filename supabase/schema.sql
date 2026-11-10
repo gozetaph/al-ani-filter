@@ -142,11 +142,22 @@ create table if not exists public.order_items (
   unit_price integer not null
 );
 
--- 7. Row-Level Security
+-- 7. FAQs Table (الأسئلة الشائعة)
+create table if not exists public.faqs (
+  id text primary key,
+  question text not null,
+  answer text not null,
+  order_index integer default 1 not null,
+  is_active boolean default true not null,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- 8. Row-Level Security
 alter table public.products enable row level security;
 alter table public.orders enable row level security;
 alter table public.order_items enable row level security;
 alter table public.shipping_zones enable row level security;
+alter table public.faqs enable row level security;
 
 create policy "Allow read on products" on public.products for select using (true);
 create policy "Allow insert on products" on public.products for insert with check (true);
@@ -160,3 +171,8 @@ create policy "Allow update on orders" on public.orders for update using (true);
 
 create policy "Allow insert on order_items" on public.order_items for insert with check (true);
 create policy "Allow read on order_items" on public.order_items for select using (true);
+
+create policy "Allow read on faqs" on public.faqs for select using (true);
+create policy "Allow insert on faqs" on public.faqs for insert with check (true);
+create policy "Allow update on faqs" on public.faqs for update using (true);
+create policy "Allow delete on faqs" on public.faqs for delete using (true);

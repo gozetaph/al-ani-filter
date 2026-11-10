@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { formatIQD } from "@/lib/utils";
-import { Product } from "@/lib/types";
+import { Product, BrandCrossReference } from "@/lib/types";
 import { initialProducts } from "@/lib/mock-data";
 import { createClient } from "@/lib/supabase/client";
 
@@ -12,19 +11,41 @@ export default function AdminItemsPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
-  // Form State: Name, Type, Description, Price, Stock, Picture
+  // Form State: Name, Part Number, Type, Description, Picture, Other Brands
   const [name, setName] = useState("");
-  const [type, setType] = useState("منظومات R.O");
+  const [partNumber, setPartNumber] = useState("");
+  const [type, setType] = useState("فلتر دهن (زيت)");
   const [desc, setDesc] = useState("");
-  const [price, setPrice] = useState(15000);
-  const [stock, setStock] = useState(10);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imageUrl, setImageUrl] = useState("/products/ro-system.jpg");
+  const [imageUrl, setImageUrl] = useState("/products/asas/sp_001.jpg");
+
+  // Other Brands input list: [{ brand: 'Mann', code: 'W 67/1' }, ...]
+  const [otherBrands, setOtherBrands] = useState<BrandCrossReference[]>([
+    { brand: "Mann • Hummel", code: "" },
+    { brand: "AL ANI", code: "" },
+    { brand: "MAK", code: "" },
+    { brand: "PERKINS", code: "" },
+    { brand: "Fleetguard", code: "" },
+  ]);
 
   const supabase = createClient();
 
   useEffect(() => {
     async function loadItems() {
+      // 1. Try local storage
+      const cached = localStorage.getItem("al_ani_custom_items");
+      if (cached) {
+        try {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setItems(parsed);
+          }
+        } catch {
+          // ignore
+        }
+      }
+
+      // 2. Query Supabase
       try {
         const { data, error } = await supabase
           .from("products")
@@ -40,6 +61,22 @@ export default function AdminItemsPage() {
     }
     loadItems();
   }, [supabase]);
+
+  const handleBrandChange = (index: number, field: "brand" | "code", val: string) => {
+    setOtherBrands((prev) => {
+      const copy = [...prev];
+      copy[index] = { ...copy[index], [field]: val };
+      return copy;
+    });
+  };
+
+  const addBrandRow = () => {
+    setOtherBrands((prev) => [...prev, { brand: "", code: "" }]);
+  };
+
+  const removeBrandRow = (index: number) => {
+    setOtherBrands((prev) => prev.filter((_, idx) => idx !== index));
+  };
 
   // Handle Add Item (With Supabase Storage Upload)
   const handleAddItem = async (e: React.FormEvent) => {
@@ -73,16 +110,21 @@ export default function AdminItemsPage() {
       }
     }
 
+    const filteredBrands = otherBrands.filter(
+      (b) => b.brand.trim() !== "" || b.code.trim() !== ""
+    );
+
     const newItem: Product = {
       id: "prod-" + Date.now(),
-      title: name,
+      title: name || `فلتر ${partNumber}`,
+      part_number: partNumber,
       slug: "item-" + Date.now(),
       description: desc,
       type: type,
-      category: type,
-      price: Number(price),
-      stock_quantity: Number(stock),
+      category: type.includes("دهن") ? "oil" : type.includes("هواء") ? "air" : type.includes("وقود") ? "fuel" : "other",
+      clean_type: type,
       image_url: finalImageUrl,
+      other_brands: filteredBrands,
       is_active: true,
       created_at: new Date().toISOString(),
     };
@@ -95,9 +137,9 @@ export default function AdminItemsPage() {
           slug: newItem.slug,
           description: newItem.description,
           type: newItem.type,
-          price: newItem.price,
-          stock_quantity: newItem.stock_quantity,
           image_url: newItem.image_url,
+          part_number: newItem.part_number,
+          specs: { other_brands: newItem.other_brands },
           is_active: true,
         },
       ]);
@@ -105,31 +147,36 @@ export default function AdminItemsPage() {
       // Handled
     }
 
-    setItems((prev) => [newItem, ...prev]);
+    const updated = [newItem, ...items];
+    setItems(updated);
+    try {
+      localStorage.setItem("al_ani_custom_items", JSON.stringify(updated));
+    } catch {
+      // ignore
+    }
+
     setIsAddModalOpen(false);
     setIsUploading(false);
 
     // Reset Form
     setName("");
-    setType("منظومات R.O");
+    setPartNumber("");
+    setType("فلتر دهن (زيت)");
     setDesc("");
-    setPrice(15000);
-    setStock(10);
     setImageFile(null);
+    setOtherBrands([
+      { brand: "Mann • Hummel", code: "" },
+      { brand: "AL ANI", code: "" },
+      { brand: "MAK", code: "" },
+      { brand: "PERKINS", code: "" },
+      { brand: "Fleetguard", code: "" },
+    ]);
 
-    alert("تمت إضافة المادة بنجاح إلى المخزن والمتجر!");
-  };
-
-  const updateStock = (id: string, delta: number) => {
-    setItems((prev) =>
-      prev.map((i) =>
-        i.id === id ? { ...i, stock_quantity: Math.max(0, i.stock_quantity + delta) } : i
-      )
-    );
+    alert("تمت إضافة الفلتر بنجاح إلى الكتالوج!");
   };
 
   const deleteItem = async (id: string) => {
-    if (!confirm("هل أنت متأكد من حذف هذه المادة نهائياً من المتجر والمخزن؟")) return;
+    if (!confirm("هل أنت متأكد من حذف هذا الفلتر نهائياً من الكتالوج؟")) return;
 
     try {
       await supabase.from("products").delete().eq("id", id);
@@ -137,7 +184,13 @@ export default function AdminItemsPage() {
       console.error("Delete DB error:", err);
     }
 
-    setItems((prev) => prev.filter((i) => i.id !== id));
+    const updated = items.filter((i) => i.id !== id);
+    setItems(updated);
+    try {
+      localStorage.setItem("al_ani_custom_items", JSON.stringify(updated));
+    } catch {
+      // ignore
+    }
   };
 
   return (
@@ -147,10 +200,10 @@ export default function AdminItemsPage() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
         <div>
           <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-            إدارة المواد والمنتجات
+            إدارة الفلاتر والمنتجات (الكتالوج)
           </h1>
           <p className="text-xs text-slate-500 mt-0.5">
-            عرض المواد المتوفرة، تصنيفها، وتحديث المخزون وإضافة بضاعة جديدة
+            إضافة فلاتر جديدة، تحديد كود القطعة، وتعبئة أرقام الماركات البديلة (الماركات الأخرى)
           </p>
         </div>
 
@@ -158,7 +211,7 @@ export default function AdminItemsPage() {
           onClick={() => setIsAddModalOpen(true)}
           className="bg-[#004bb5] hover:bg-[#00388a] text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl shadow-xs transition flex items-center gap-1.5"
         >
-          <span>+ إضافة مادة جديدة</span>
+          <span>+ إضافة فلتر جديد</span>
         </button>
       </div>
 
@@ -166,7 +219,7 @@ export default function AdminItemsPage() {
       <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
         <div className="p-4 border-b border-slate-200 flex items-center justify-between">
           <h3 className="font-bold text-sm text-slate-900">
-            قائمة المواد في المستودع ({items.length} مادة)
+            قائمة الفلاتر في الكتالوج ({items.length} فلتر)
           </h3>
         </div>
 
@@ -174,86 +227,72 @@ export default function AdminItemsPage() {
           <table className="w-full text-right text-xs">
             <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
               <tr>
-                <th className="p-3.5">صورة المادة</th>
-                <th className="p-3.5">اسم المادة</th>
+                <th className="p-3.5">صورة الفلتر</th>
+                <th className="p-3.5">كود الفلتر</th>
+                <th className="p-3.5">الاسم والوصف</th>
                 <th className="p-3.5">النوع / التصنيف</th>
-                <th className="p-3.5">السعر (IQD)</th>
-                <th className="p-3.5">المتوفر بالمخزن</th>
-                <th className="p-3.5 text-center">الكمية</th>
+                <th className="p-3.5">الماركات الأخرى</th>
                 <th className="p-3.5 text-center">إجراءات</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-slate-700">
-              {items.map((item) => (
-                <tr key={item.id} className="hover:bg-slate-50 transition">
-                  <td className="p-3.5">
-                    <div className="w-12 h-12 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-center p-1">
-                      <Image
-                        src={item.image_url}
-                        alt={item.title}
-                        width={44}
-                        height={44}
-                        className="max-h-10 w-auto object-contain"
-                      />
-                    </div>
-                  </td>
-                  <td className="p-3.5 font-bold text-slate-900 text-xs sm:text-sm">
-                    {item.title}
-                    <span className="block text-[11px] text-slate-400 font-normal line-clamp-1 mt-0.5">
-                      {item.description}
-                    </span>
-                  </td>
-                  <td className="p-3.5">
-                    <span className="bg-blue-50 text-[#004bb5] font-bold text-[11px] px-2.5 py-1 rounded-md border border-blue-200/80">
-                      {item.type || item.category || "عام"}
-                    </span>
-                  </td>
-                  <td className="p-3.5 font-extrabold text-[#004bb5] text-xs sm:text-sm">
-                    {formatIQD(item.price)}
-                  </td>
-                  <td className="p-3.5">
-                    <span
-                      className={`font-black text-xs sm:text-sm ${
-                        item.stock_quantity <= 3 ? "text-amber-600" : "text-slate-900"
-                      }`}
-                    >
-                      {item.stock_quantity} قطعة
-                    </span>
-                    {item.stock_quantity <= 3 && (
-                      <span className="block text-[10px] text-amber-600 font-bold">
-                        ⚠️ قارب على النفاد
+              {items.map((item) => {
+                const pNum = item.part_number || item.title.split(" ").pop() || "AL-ANI";
+                const brands = item.other_brands || [];
+                return (
+                  <tr key={item.id} className="hover:bg-slate-50 transition">
+                    <td className="p-3.5">
+                      <div className="w-12 h-12 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-center p-1">
+                        <Image
+                          src={item.image_url || "/products/oil-filter.svg"}
+                          alt={item.title}
+                          width={44}
+                          height={44}
+                          className="max-h-10 w-auto object-contain"
+                        />
+                      </div>
+                    </td>
+                    <td className="p-3.5 font-black text-slate-900 text-sm font-mono">
+                      {pNum}
+                    </td>
+                    <td className="p-3.5 font-bold text-slate-900 text-xs sm:text-sm">
+                      {item.title}
+                      <span className="block text-[11px] text-slate-400 font-normal line-clamp-1 mt-0.5">
+                        {item.description}
                       </span>
-                    )}
-                  </td>
-                  <td className="p-3.5 text-center">
-                    <div className="inline-flex items-center bg-slate-100 rounded-lg p-0.5 border border-slate-200">
-                      <button
-                        onClick={() => updateStock(item.id, -1)}
-                        className="w-6 h-6 rounded bg-white shadow-xs font-bold text-slate-700 hover:bg-slate-200"
-                      >
-                        -
-                      </button>
-                      <span className="w-7 text-center font-bold font-mono text-xs">
-                        {item.stock_quantity}
+                    </td>
+                    <td className="p-3.5">
+                      <span className="bg-blue-50 text-[#004bb5] font-bold text-[11px] px-2.5 py-1 rounded-md border border-blue-200/80">
+                        {item.clean_type || item.type || item.category || "فلتر"}
                       </span>
+                    </td>
+                    <td className="p-3.5 text-xs text-slate-600">
+                      {brands.length > 0 ? (
+                        <div className="space-y-0.5 font-mono text-[11px]">
+                          {brands.slice(0, 3).map((b, i) => (
+                            <div key={i}>
+                              <span className="font-bold text-slate-800">{b.brand}:</span> {b.code}
+                            </div>
+                          ))}
+                          {brands.length > 3 && (
+                            <span className="text-slate-400">+{brands.length - 3} ماركات أخرى...</span>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-slate-400 font-sans text-[11px]">مطابقة حسب الطلب</span>
+                      )}
+                    </td>
+                    <td className="p-3.5 text-center">
                       <button
-                        onClick={() => updateStock(item.id, 1)}
-                        className="w-6 h-6 rounded bg-white shadow-xs font-bold text-slate-700 hover:bg-slate-200"
+                        onClick={() => deleteItem(item.id)}
+                        className="text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-xs font-bold px-3 py-1.5 rounded-lg transition"
                       >
-                        +
+                        حذف
                       </button>
-                    </div>
-                  </td>
-                  <td className="p-3.5 text-center">
-                    <button
-                      onClick={() => deleteItem(item.id)}
-                      className="text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-xs font-bold px-3 py-1.5 rounded-lg transition"
-                    >
-                      حذف
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -261,14 +300,14 @@ export default function AdminItemsPage() {
 
       {/* ADD ITEM MODAL */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden">
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden my-8">
             
             <div className="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
-              <h3 className="font-bold text-base text-slate-900">إضافة مادة جديدة للمخزن</h3>
+              <h3 className="font-bold text-base text-slate-900">إضافة فلتر جديد للكتالوج</h3>
               <button
                 onClick={() => setIsAddModalOpen(false)}
-                className="w-8 h-8 rounded-lg bg-slate-200 hover:bg-slate-300 flex items-center justify-center text-slate-700"
+                className="w-8 h-8 rounded-lg bg-slate-200 hover:bg-slate-300 flex items-center justify-center text-slate-700 font-bold"
               >
                 ✕
               </button>
@@ -276,69 +315,108 @@ export default function AdminItemsPage() {
 
             <form onSubmit={handleAddItem} className="p-5 space-y-4 text-xs">
               
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">كود القطعة (Part Number) *</label>
+                  <input
+                    type="text"
+                    required
+                    value={partNumber}
+                    onChange={(e) => setPartNumber(e.target.value)}
+                    placeholder="مثال: SP 002 HT أو W 67/1"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs font-mono font-bold focus:bg-white transition"
+                  />
+                </div>
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">نوع الفلتر / القسم *</label>
+                  <select
+                    value={type}
+                    onChange={(e) => setType(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs font-bold focus:bg-white transition"
+                  >
+                    <option value="فلتر دهن (زيت)">فلتر دهن (زيت)</option>
+                    <option value="فلتر هواء سيارات ومعدات">فلتر هواء سيارات ومعدات</option>
+                    <option value="فلتر وقود ديزل وسبيتر">فلتر وقود ديزل وسبيتر</option>
+                    <option value="فلتر مجفف هواء للشاحنات">فلتر مجفف هواء للشاحنات</option>
+                    <option value="فلتر كابينة ومكيف">فلتر كابينة ومكيف</option>
+                    <option value="فلتر هيدروليك">فلتر هيدروليك</option>
+                  </select>
+                </div>
+              </div>
+
               <div>
-                <label className="block font-bold text-slate-700 mb-1">اسم المادة *</label>
+                <label className="block font-bold text-slate-700 mb-1">اسم الفلتر / العنوان *</label>
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="مثال: فلتر 7 مراحل تايواني أصلي"
+                  placeholder="مثال: فلتر دهن زيت أصلي مطابق لمواصفات OEM"
                   className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs focus:bg-white transition"
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">النوع / التصنيف *</label>
-                <input
-                  type="text"
-                  required
-                  value={type}
-                  onChange={(e) => setType(e.target.value)}
-                  placeholder="مثال: منظومات R.O أو شمعات تبديل"
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs focus:bg-white transition"
-                />
-                <span className="text-[10px] text-slate-400 mt-1 block">
-                  أي تصنيف تكتبه هنا سيظهر تلقائياً كزر فلترة في واجهة المتجر.
-                </span>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block font-bold text-slate-700 mb-1">السعر بالدينار (IQD) *</label>
-                  <input
-                    type="number"
-                    required
-                    value={price}
-                    onChange={(e) => setPrice(Number(e.target.value))}
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs font-mono font-bold focus:bg-white transition"
-                  />
-                </div>
-                <div>
-                  <label className="block font-bold text-slate-700 mb-1">الكمية بالمخزن *</label>
-                  <input
-                    type="number"
-                    required
-                    value={stock}
-                    onChange={(e) => setStock(Number(e.target.value))}
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs font-mono font-bold focus:bg-white transition"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block font-bold text-slate-700 mb-1">وصف المادة</label>
+                <label className="block font-bold text-slate-700 mb-1">وصف الفلتر وملاحظات</label>
                 <textarea
                   rows={2}
                   value={desc}
                   onChange={(e) => setDesc(e.target.value)}
-                  placeholder="المواصفات، الكفالة، وأماكن التركيب..."
+                  placeholder="الآليات المتوافقة، كفاءة الترشيح..."
                   className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs focus:bg-white transition"
                 />
               </div>
 
+              {/* OTHER BRANDS SECTION */}
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <label className="font-bold text-slate-900 block text-xs">
+                    الماركات الأخرى (أرقام المطابقة البديلة)
+                  </label>
+                  <button
+                    type="button"
+                    onClick={addBrandRow}
+                    className="text-[#004bb5] hover:underline font-bold text-[11px]"
+                  >
+                    + إضافة ماركة أخرى
+                  </button>
+                </div>
+                <p className="text-[10px] text-slate-500">
+                  اكتب اسم الماركة في الحقل الأول والكود المطابق في الحقل الثاني لتظهر للزبون بالترتيب:
+                </p>
+
+                <div className="space-y-2">
+                  {otherBrands.map((b, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={b.brand}
+                        onChange={(e) => handleBrandChange(idx, "brand", e.target.value)}
+                        placeholder="الماركة (مثال: Perkins)"
+                        className="w-1/2 bg-white border border-slate-300 rounded-lg p-2 text-xs font-semibold"
+                      />
+                      <input
+                        type="text"
+                        value={b.code}
+                        onChange={(e) => handleBrandChange(idx, "code", e.target.value)}
+                        placeholder="كود القطعة (مثال: 2654403)"
+                        className="w-1/2 bg-white border border-slate-300 rounded-lg p-2 text-xs font-mono"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeBrandRow(idx)}
+                        className="w-7 h-7 text-rose-500 hover:bg-rose-100 rounded flex items-center justify-center font-bold shrink-0"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* IMAGE UPLOAD */}
               <div>
-                <label className="block font-bold text-slate-700 mb-1">صورة المادة</label>
+                <label className="block font-bold text-slate-700 mb-1">صورة الفلتر</label>
                 <div className="space-y-2">
                   <input
                     type="file"
@@ -348,18 +426,20 @@ export default function AdminItemsPage() {
                   />
                   
                   <div className="text-[11px] text-slate-400">
-                    أو اختر صورة جاهزة من المنتجات المرفوعة:
+                    أو اختر صورة نموذجية:
                   </div>
                   <select
                     value={imageUrl}
                     onChange={(e) => setImageUrl(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2 text-xs"
                   >
-                    <option value="/products/ro-system.jpg">منظومة R.O 7 مراحل</option>
-                    <option value="/products/cartridges.png">شمعات Filter Max</option>
-                    <option value="/products/membrane.png">غشاء ممبرين 75G</option>
-                    <option value="/products/pump.png">مضخة ماء 24V</option>
-                    <option value="/products/tds-meter.png">جهاز قياس TDS</option>
+                    <option value="/products/asas/sp_001.jpg">فلتر دهن أسطواني أسود (SP 001)</option>
+                    <option value="/products/asas/sp_002_ht.jpg">فلتر دهن أسطواني قصير (SP 002)</option>
+                    <option value="/products/asas/sp_004.jpg">فلتر دهن أسطواني كبير (SP 004)</option>
+                    <option value="/products/asas/hires/fuel_water_01.webp">فلتر ديزل وفاصل ماء مع صمام</option>
+                    <option value="/products/asas/hires/air_filter_radial.webp">فلتر هواء دائري Radial Seal</option>
+                    <option value="/products/asas/hires/air_dryer_cartridge.webp">فلتر مجفف هواء شاحنات</option>
+                    <option value="/products/asas/hires/cabin_filter_05.webp">فلتر كابينة وتكييف مستطيل</option>
                   </select>
                 </div>
               </div>
@@ -377,7 +457,7 @@ export default function AdminItemsPage() {
                   disabled={isUploading}
                   className="bg-[#004bb5] hover:bg-[#00388a] text-white px-5 py-2 rounded-xl font-bold shadow-xs transition"
                 >
-                  {isUploading ? "جاري الإضافة والرفع..." : "حفظ المادة"}
+                  {isUploading ? "جاري الإضافة والرفع..." : "حفظ الفلتر"}
                 </button>
               </div>
 
