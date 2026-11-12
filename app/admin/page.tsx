@@ -7,454 +7,372 @@ import { Order } from "@/lib/types";
 import { sampleOrders } from "@/lib/mock-data";
 import { createClient } from "@/lib/supabase/client";
 
-// Status config
-const STATUS_CONFIG: Record<
-  string,
-  { label: string; color: string; bg: string; dot: string }
-> = {
-  pending:    { label: "قيد التجهيز", color: "text-amber-400",  bg: "bg-amber-400/15 border-amber-400/30",  dot: "bg-amber-400"  },
-  confirmed:  { label: "مؤكد",        color: "text-blue-400",   bg: "bg-blue-400/15 border-blue-400/30",    dot: "bg-blue-400"   },
-  dispatched: { label: "مع المندوب",  color: "text-violet-400", bg: "bg-violet-400/15 border-violet-400/30", dot: "bg-violet-400" },
-  delivered:  { label: "تم التسليم", color: "text-emerald-400", bg: "bg-emerald-400/15 border-emerald-400/30", dot: "bg-emerald-400" },
-  cancelled:  { label: "ملغي",       color: "text-rose-400",   bg: "bg-rose-400/15 border-rose-400/30",   dot: "bg-rose-400"   },
+// ── Status pill config ────────────────────────────────────────────────────────
+type StatusKey = "pending" | "confirmed" | "dispatched" | "delivered" | "cancelled";
+
+const STATUS: Record<StatusKey, { label: string; cls: string }> = {
+  pending:    { label: "قيد التجهيز", cls: "bg-amber-500/20  text-amber-300  border-amber-500/30"  },
+  confirmed:  { label: "مؤكد",        cls: "bg-blue-500/20   text-blue-300   border-blue-500/30"   },
+  dispatched: { label: "مع المندوب",  cls: "bg-violet-500/20 text-violet-300 border-violet-500/30" },
+  delivered:  { label: "تم التسليم", cls: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30" },
+  cancelled:  { label: "ملغي",       cls: "bg-rose-500/20   text-rose-300   border-rose-500/30"   },
 };
 
-function StatusBadge({ status }: { status: string }) {
-  const cfg = STATUS_CONFIG[status] ?? STATUS_CONFIG.pending;
+function StatusPill({ status }: { status: string }) {
+  const s = STATUS[status as StatusKey] ?? STATUS.pending;
   return (
-    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold border ${cfg.bg} ${cfg.color}`}>
-      <span className={`w-1.5 h-1.5 rounded-full ${cfg.dot}`} />
-      {cfg.label}
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-semibold border ${s.cls}`}>
+      {s.label}
     </span>
   );
 }
 
-export default function AdminDashboardPage() {
-  const [orders, setOrders] = useState<Order[]>(sampleOrders);
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [timePeriod, setTimePeriod] = useState<"today" | "week" | "month" | "all">("month");
+// ── Avatar initials ───────────────────────────────────────────────────────────
+function Avatar({ name, size = 7 }: { name: string; size?: number }) {
+  const initials = name.trim().split(/\s+/).slice(0, 2).map(w => w[0]).join("").toUpperCase();
+  const colors = ["bg-blue-500","bg-violet-500","bg-emerald-500","bg-amber-500","bg-rose-500","bg-cyan-500","bg-pink-500","bg-indigo-500"];
+  const color = colors[name.charCodeAt(0) % colors.length];
+  return (
+    <div className={`w-${size} h-${size} rounded-full ${color} flex items-center justify-center text-white font-bold text-[11px] shrink-0`}>
+      {initials || "?"}
+    </div>
+  );
+}
+
+// ── Format date ───────────────────────────────────────────────────────────────
+function fmtDate(iso?: string) {
+  if (!iso) return "—";
+  const d = new Date(iso);
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false });
+}
+
+export default function AdminOrdersView() {
+  const [orders, setOrders]           = useState<Order[]>(sampleOrders);
+  const [selected, setSelected]       = useState<Order | null>(sampleOrders[0] ?? null);
   const [statusFilter, setStatusFilter] = useState<string>("all");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [search, setSearch]           = useState("");
+  const [checkedIds, setCheckedIds]   = useState<Set<string>>(new Set());
 
   const supabase = createClient();
 
   useEffect(() => {
-    async function loadOrders() {
+    (async () => {
       try {
-        const { data, error } = await supabase
-          .from("orders")
-          .select("*")
-          .order("created_at", { ascending: false });
-        if (!error && data && data.length > 0) setOrders(data);
-      } catch {
-        // fallback to sample data
-      }
-    }
-    loadOrders();
+        const { data, error } = await supabase.from("orders").select("*").order("created_at", { ascending: false });
+        if (!error && data && data.length > 0) {
+          setOrders(data);
+          setSelected(data[0]);
+        }
+      } catch { /* fallback */ }
+    })();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const now = new Date();
-
-  const filteredOrders = orders.filter((order) => {
-    // Time filter
-    if (timePeriod !== "all") {
-      const orderDate = new Date(order.created_at || Date.now());
-      if (timePeriod === "today") {
-        const isToday =
-          orderDate.getDate() === now.getDate() &&
-          orderDate.getMonth() === now.getMonth() &&
-          orderDate.getFullYear() === now.getFullYear();
-        if (!isToday) return false;
-      } else if (timePeriod === "week") {
-        const oneWeekAgo = new Date(now);
-        oneWeekAgo.setDate(now.getDate() - 7);
-        if (orderDate < oneWeekAgo) return false;
-      } else if (timePeriod === "month") {
-        if (
-          orderDate.getMonth() !== now.getMonth() ||
-          orderDate.getFullYear() !== now.getFullYear()
-        ) return false;
-      }
-    }
-    // Status filter
-    if (statusFilter !== "all" && order.status !== statusFilter) return false;
-    // Search
-    const q = searchQuery.trim().toLowerCase();
+  // ── Derived list ─────────────────────────────────────────────────────────
+  const visible = orders.filter(o => {
+    if (statusFilter !== "all" && o.status !== statusFilter) return false;
+    const q = search.trim().toLowerCase();
     if (q) {
-      const haystack = `${order.id} ${order.customer_name} ${order.governorate} ${order.phone}`.toLowerCase();
-      if (!haystack.includes(q)) return false;
+      const hay = `${o.id} ${o.customer_name} ${o.governorate} ${o.phone}`.toLowerCase();
+      if (!hay.includes(q)) return false;
     }
     return true;
   });
 
-  // KPIs
-  const thisMonthSales = orders
-    .filter((o) => {
-      const d = new Date(o.created_at || Date.now());
-      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-    })
-    .reduce((s, o) => s + o.total_amount, 0);
+  // ── KPIs (compact) ───────────────────────────────────────────────────────
+  const totalRevenue = orders.reduce((s, o) => s + o.total_amount, 0);
+  const pendingCount = orders.filter(o => o.status === "pending").length;
+  const deliveredCount = orders.filter(o => o.status === "delivered").length;
 
-  const periodSales = filteredOrders.reduce((s, o) => s + o.total_amount, 0);
-  const periodCount = filteredOrders.length;
-  const avgValue = periodCount > 0 ? Math.round(periodSales / periodCount) : 0;
-  const deliveredCount = filteredOrders.filter((o) => o.status === "delivered").length;
-
-  const kpis = [
-    {
-      label: "مبيعات الشهر الحالي",
-      value: formatIQD(thisMonthSales),
-      sub: "مجموع المبيعات المؤكدة",
-      icon: (
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      ),
-      accent: "text-blue-400",
-      ring: "border-blue-500/20",
-    },
-    {
-      label: "مجموع الفترة المختارة",
-      value: formatIQD(periodSales),
-      sub: `${periodCount} طلبية`,
-      icon: (
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-        </svg>
-      ),
-      accent: "text-violet-400",
-      ring: "border-violet-500/20",
-    },
-    {
-      label: "متوسط قيمة الطلب",
-      value: formatIQD(avgValue),
-      sub: "لكل طلبية",
-      icon: (
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-        </svg>
-      ),
-      accent: "text-emerald-400",
-      ring: "border-emerald-500/20",
-    },
-    {
-      label: "طلبيات مسلمة",
-      value: `${deliveredCount}`,
-      sub: `من ${periodCount} طلبية`,
-      icon: (
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      ),
-      accent: "text-amber-400",
-      ring: "border-amber-500/20",
-    },
-  ];
+  // ── Checkbox helpers ─────────────────────────────────────────────────────
+  const toggleCheck = (id: string) => setCheckedIds(prev => {
+    const next = new Set(prev);
+    next.has(id) ? next.delete(id) : next.add(id);
+    return next;
+  });
+  const allChecked = visible.length > 0 && visible.every(o => checkedIds.has(o.id));
+  const toggleAll = () => {
+    if (allChecked) setCheckedIds(new Set());
+    else setCheckedIds(new Set(visible.map(o => o.id)));
+  };
 
   return (
-    <div className="space-y-6 text-right" dir="rtl">
+    <div className="flex flex-col h-full gap-5" dir="ltr">
 
-      {/* ── Page Header ─────────────────────────────────────────────────── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-black text-white tracking-tight">لوحة الإحصائيات</h1>
-          <p className="text-xs text-zinc-500 mt-0.5">متابعة المبيعات والطلبيات</p>
-        </div>
-
-        {/* Time filter */}
-        <div className="flex items-center gap-1 bg-white/6 border border-white/10 rounded-xl p-1 text-xs font-semibold">
-          {([
-            { key: "today", label: "اليوم" },
-            { key: "week",  label: "الأسبوع" },
-            { key: "month", label: "الشهر" },
-            { key: "all",   label: "الكل" },
-          ] as const).map((p) => (
-            <button
-              key={p.key}
-              onClick={() => setTimePeriod(p.key)}
-              className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
-                timePeriod === p.key
-                  ? "bg-white/12 text-white"
-                  : "text-zinc-500 hover:text-zinc-300"
-              }`}
-            >
-              {p.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* ── KPI Cards ───────────────────────────────────────────────────── */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        {kpis.map((kpi, i) => (
-          <div
-            key={i}
-            className={`bg-[#1a1d27] border ${kpi.ring} rounded-2xl p-4 space-y-3`}
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-zinc-500 font-medium">{kpi.label}</span>
-              <span className={`${kpi.accent} opacity-80`}>{kpi.icon}</span>
-            </div>
+      {/* ── Top KPI strip ──────────────────────────────────────────────── */}
+      <div className="grid grid-cols-3 gap-3 shrink-0">
+        {[
+          { label: "Total Revenue",    value: formatIQD(totalRevenue), sub: `${orders.length} orders`, color: "text-blue-400" },
+          { label: "Pending Dispatch", value: String(pendingCount),    sub: "need action",             color: "text-amber-400" },
+          { label: "Delivered",        value: String(deliveredCount),  sub: "completed",               color: "text-emerald-400" },
+        ].map((k, i) => (
+          <div key={i} className="bg-[#1a1d27] border border-white/8 rounded-2xl px-5 py-3.5 flex items-center justify-between">
             <div>
-              <p className={`text-xl font-black tracking-tight ${kpi.accent}`}>{kpi.value}</p>
-              <p className="text-[11px] text-zinc-600 mt-0.5">{kpi.sub}</p>
+              <p className="text-[11px] text-zinc-500 font-medium">{k.label}</p>
+              <p className={`text-lg font-black mt-0.5 ${k.color}`}>{k.value}</p>
             </div>
+            <span className="text-[11px] text-zinc-600">{k.sub}</span>
           </div>
         ))}
       </div>
 
-      {/* ── Quick Nav ───────────────────────────────────────────────────── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <Link
-          href="/admin/items"
-          className="bg-[#1a1d27] hover:bg-[#1f2235] border border-white/8 hover:border-blue-500/30 rounded-2xl p-4 flex items-center justify-between group transition"
-        >
-          <div>
-            <h4 className="font-bold text-sm text-white group-hover:text-blue-400 transition">
-              إدارة المنتجات والكتالوج
-            </h4>
-            <p className="text-xs text-zinc-500 mt-0.5">إضافة وتعديل الفلاتر وأرقام OEM</p>
-          </div>
-          <span className="text-zinc-600 group-hover:text-blue-400 transition">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-            </svg>
-          </span>
-        </Link>
+      {/* ── Main 2-col: Table + Detail panel ───────────────────────────── */}
+      <div className="flex gap-4 flex-1 min-h-0">
 
-        <Link
-          href="/admin/orders"
-          className="bg-[#1a1d27] hover:bg-[#1f2235] border border-white/8 hover:border-violet-500/30 rounded-2xl p-4 flex items-center justify-between group transition"
-        >
-          <div>
-            <h4 className="font-bold text-sm text-white group-hover:text-violet-400 transition">
-              إدارة الطلبيات والشحن
-            </h4>
-            <p className="text-xs text-zinc-500 mt-0.5">طباعة AWB وإشعار السائق والزبون</p>
-          </div>
-          <span className="text-zinc-600 group-hover:text-violet-400 transition">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-            </svg>
-          </span>
-        </Link>
-      </div>
+        {/* ── Orders table ─────────────────────────────────────────────── */}
+        <div className="flex-1 min-w-0 bg-[#1a1d27] border border-white/8 rounded-2xl flex flex-col overflow-hidden">
 
-      {/* ── Orders Table + Detail Panel ─────────────────────────────────── */}
-      <div className="flex gap-4 items-start">
+          {/* Table header bar */}
+          <div className="px-5 py-3.5 border-b border-white/8 flex items-center justify-between gap-3 shrink-0">
+            <h2 className="font-black text-base text-white">Orders</h2>
 
-        {/* Orders Table */}
-        <div className={`bg-[#1a1d27] border border-white/8 rounded-2xl overflow-hidden transition-all duration-300 ${selectedOrder ? "flex-1 min-w-0" : "w-full"}`}>
-          
-          {/* Table toolbar */}
-          <div className="p-4 border-b border-white/8 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <h3 className="font-bold text-sm text-white">
-              سجل الطلبيات ({filteredOrders.length})
-            </h3>
-            <div className="flex items-center gap-2">
+            {/* Filters row */}
+            <div className="flex items-center gap-2 flex-wrap justify-end">
+              {/* Status chips */}
+              {(["all","pending","dispatched","delivered","cancelled"] as const).map(s => (
+                <button
+                  key={s}
+                  onClick={() => setStatusFilter(s)}
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition cursor-pointer border ${
+                    statusFilter === s
+                      ? "bg-blue-500/20 text-blue-300 border-blue-500/30"
+                      : "bg-white/5 text-zinc-500 border-white/8 hover:text-zinc-300"
+                  }`}
+                >
+                  {s === "all" ? "All" : s === "pending" ? "Pending" : s === "dispatched" ? "Dispatched" : s === "delivered" ? "Delivered" : "Cancelled"}
+                </button>
+              ))}
+
               {/* Search */}
               <div className="relative">
-                <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3 h-3 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
                 <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="بحث..."
-                  dir="rtl"
-                  className="bg-white/6 border border-white/10 rounded-lg pr-9 pl-3 py-1.5 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500/50 w-36 transition"
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  placeholder="Search"
+                  className="bg-white/5 border border-white/8 rounded-lg pl-7 pr-3 py-1.5 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500/40 w-28 transition"
                 />
               </div>
-
-              {/* Status filter */}
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="bg-white/6 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-zinc-300 focus:outline-none focus:border-blue-500/50 cursor-pointer"
-              >
-                <option value="all">كل الحالات</option>
-                <option value="pending">قيد التجهيز</option>
-                <option value="dispatched">مع المندوب</option>
-                <option value="delivered">مسلم</option>
-                <option value="cancelled">ملغي</option>
-              </select>
             </div>
           </div>
 
-          <div className="overflow-x-auto">
+          {/* Table */}
+          <div className="overflow-y-auto flex-1">
             <table className="w-full text-xs">
-              <thead>
-                <tr className="border-b border-white/8 text-zinc-500 font-semibold">
-                  <th className="p-3.5 text-right">رقم الطلب</th>
-                  <th className="p-3.5 text-right">الزبون</th>
-                  {!selectedOrder && <th className="p-3.5 text-right hidden sm:table-cell">المحافظة</th>}
-                  {!selectedOrder && <th className="p-3.5 text-right hidden md:table-cell">المواد</th>}
-                  <th className="p-3.5 text-right">المبلغ</th>
-                  <th className="p-3.5 text-right">الحالة</th>
+              <thead className="sticky top-0 bg-[#1a1d27] border-b border-white/8 z-10">
+                <tr className="text-zinc-500 font-semibold">
+                  <th className="pl-5 pr-3 py-3 text-left w-8">
+                    <input type="checkbox" checked={allChecked} onChange={toggleAll}
+                      className="rounded border-white/20 bg-white/5 cursor-pointer accent-blue-500 w-3.5 h-3.5" />
+                  </th>
+                  <th className="px-3 py-3 text-left">Order #</th>
+                  <th className="px-3 py-3 text-left">Customer</th>
+                  <th className="px-3 py-3 text-left hidden lg:table-cell">Governorate</th>
+                  <th className="px-3 py-3 text-left hidden xl:table-cell">Items</th>
+                  <th className="px-3 py-3 text-left">Total</th>
+                  <th className="px-3 py-3 text-left">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
-                {filteredOrders.length === 0 ? (
-                  <tr>
-                    <td colSpan={6} className="p-10 text-center text-zinc-600">
-                      لا توجد طلبيات في هذه الفترة
-                    </td>
-                  </tr>
-                ) : (
-                  filteredOrders.map((ord) => {
-                    const isSelected = selectedOrder?.id === ord.id;
-                    return (
-                      <tr
-                        key={ord.id}
-                        onClick={() => setSelectedOrder(isSelected ? null : ord)}
-                        className={`cursor-pointer transition-colors ${
-                          isSelected
-                            ? "bg-blue-500/10 border-r-2 border-r-blue-500"
-                            : "hover:bg-white/4"
-                        }`}
-                      >
-                        <td className="p-3.5">
-                          <span className="font-mono font-bold text-zinc-200 text-xs">#{ord.id}</span>
-                          <span className="block text-[10px] text-zinc-600 font-normal mt-0.5">
-                            {ord.created_at
-                              ? new Date(ord.created_at).toLocaleDateString("ar-IQ", { month: "short", day: "numeric" })
-                              : "—"}
-                          </span>
-                        </td>
-                        <td className="p-3.5 font-semibold text-zinc-200">{ord.customer_name}</td>
-                        {!selectedOrder && (
-                          <td className="p-3.5 hidden sm:table-cell">
-                            <span className="text-zinc-400 bg-white/6 px-2 py-0.5 rounded text-[11px]">
-                              {ord.governorate}
-                            </span>
-                          </td>
-                        )}
-                        {!selectedOrder && (
-                          <td className="p-3.5 text-zinc-500 max-w-[180px] truncate hidden md:table-cell">
-                            {ord.notes}
-                          </td>
-                        )}
-                        <td className="p-3.5 font-extrabold text-blue-400 font-mono">
-                          {formatIQD(ord.total_amount)}
-                        </td>
-                        <td className="p-3.5">
-                          <StatusBadge status={ord.status} />
-                        </td>
-                      </tr>
-                    );
-                  })
-                )}
+                {visible.length === 0 ? (
+                  <tr><td colSpan={7} className="py-16 text-center text-zinc-600">No orders found</td></tr>
+                ) : visible.map(ord => {
+                  const isActive = selected?.id === ord.id;
+                  return (
+                    <tr
+                      key={ord.id}
+                      onClick={() => setSelected(ord)}
+                      className={`cursor-pointer transition-colors ${isActive ? "bg-blue-600/12" : "hover:bg-white/4"}`}
+                    >
+                      {/* Checkbox */}
+                      <td className="pl-5 pr-3 py-3" onClick={e => e.stopPropagation()}>
+                        <input type="checkbox" checked={checkedIds.has(ord.id)} onChange={() => toggleCheck(ord.id)}
+                          className="rounded border-white/20 bg-white/5 cursor-pointer accent-blue-500 w-3.5 h-3.5" />
+                      </td>
+
+                      {/* Order # + date */}
+                      <td className="px-3 py-3">
+                        <span className="font-mono font-bold text-zinc-200">#{ord.id}</span>
+                        <span className="block text-[10px] text-zinc-600 mt-0.5">{fmtDate(ord.created_at)}</span>
+                      </td>
+
+                      {/* Customer */}
+                      <td className="px-3 py-3">
+                        <div className="flex items-center gap-2">
+                          <Avatar name={ord.customer_name} size={7} />
+                          <span className="font-semibold text-zinc-200 truncate max-w-[120px]">{ord.customer_name}</span>
+                        </div>
+                      </td>
+
+                      {/* Governorate */}
+                      <td className="px-3 py-3 hidden lg:table-cell">
+                        <span className="text-zinc-400 bg-white/6 border border-white/8 px-2 py-0.5 rounded text-[11px]">{ord.governorate}</span>
+                      </td>
+
+                      {/* Items/notes */}
+                      <td className="px-3 py-3 hidden xl:table-cell text-zinc-500 max-w-[160px] truncate">{ord.notes || "—"}</td>
+
+                      {/* Total */}
+                      <td className="px-3 py-3 font-mono font-extrabold text-zinc-100">{formatIQD(ord.total_amount)}</td>
+
+                      {/* Status */}
+                      <td className="px-3 py-3"><StatusPill status={ord.status} /></td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
 
-          <div className="px-4 py-3 border-t border-white/8 text-center">
-            <Link
-              href="/admin/orders"
-              className="text-xs font-semibold text-blue-400 hover:text-blue-300 transition"
-            >
-              عرض إدارة الطلبيات الكاملة ←
+          {/* Footer */}
+          <div className="px-5 py-3 border-t border-white/8 flex items-center justify-between shrink-0">
+            <span className="text-[11px] text-zinc-600">{visible.length} orders</span>
+            <Link href="/admin/orders" className="text-[11px] font-semibold text-blue-400 hover:text-blue-300 transition">
+              Full shipping management →
             </Link>
           </div>
         </div>
 
-        {/* Order Detail Panel */}
-        {selectedOrder && (
-          <div className="w-72 shrink-0 bg-[#1a1d27] border border-white/8 rounded-2xl overflow-hidden" dir="rtl">
-            {/* Panel Header */}
-            <div className="p-4 border-b border-white/8 flex items-center justify-between">
-              <div>
-                <h4 className="font-bold text-sm text-white">طلبية #{selectedOrder.id}</h4>
-                <p className="text-[11px] text-zinc-500 mt-0.5">
-                  {selectedOrder.created_at
-                    ? new Date(selectedOrder.created_at).toLocaleString("ar-IQ", {
-                        month: "short",
-                        day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })
-                    : "—"}
-                </p>
-              </div>
-              <button
-                onClick={() => setSelectedOrder(null)}
-                className="w-7 h-7 rounded-lg bg-white/8 hover:bg-white/14 flex items-center justify-center text-zinc-400 hover:text-white transition cursor-pointer"
-              >
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            <div className="p-4 space-y-4">
-              {/* Status */}
-              <div className="flex items-center justify-between">
-                <StatusBadge status={selectedOrder.status} />
-                <span className="text-[11px] text-zinc-500">الحالة الحالية</span>
-              </div>
-
-              {/* Customer */}
-              <div className="bg-white/4 rounded-xl p-3 space-y-2">
-                <span className="text-[10px] text-zinc-500 uppercase font-mono font-bold block">الزبون</span>
-                <p className="font-bold text-sm text-white">{selectedOrder.customer_name}</p>
-                <p className="text-xs text-zinc-400 font-mono" dir="ltr">{selectedOrder.phone}</p>
-                <div className="flex items-center gap-1.5 pt-1">
-                  <span className="bg-blue-500/15 text-blue-400 border border-blue-500/20 text-[10px] font-bold px-2 py-0.5 rounded">
-                    {selectedOrder.governorate}
-                  </span>
+        {/* ── Detail panel ─────────────────────────────────────────────── */}
+        <div className="w-72 shrink-0 bg-[#1a1d27] border border-white/8 rounded-2xl flex flex-col overflow-hidden">
+          {selected ? (
+            <>
+              {/* Panel header */}
+              <div className="px-4 py-3.5 border-b border-white/8 flex items-center justify-between shrink-0">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <StatusPill status={selected.status} />
+                  </div>
+                  <h3 className="font-black text-sm text-white mt-1.5">Order #{selected.id}</h3>
+                  <p className="text-[11px] text-zinc-500 mt-0.5">{fmtDate(selected.created_at)}</p>
                 </div>
-                {selectedOrder.detailed_address && (
-                  <p className="text-[11px] text-zinc-500 leading-relaxed">{selectedOrder.detailed_address}</p>
-                )}
+                <button
+                  onClick={() => setSelected(null)}
+                  className="w-6 h-6 rounded-lg bg-white/8 hover:bg-white/14 flex items-center justify-center text-zinc-500 hover:text-white transition cursor-pointer shrink-0"
+                >
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                </button>
               </div>
 
-              {/* Items */}
-              <div className="space-y-1.5">
-                <span className="text-[10px] text-zinc-500 uppercase font-mono font-bold block">المواد المطلوبة</span>
-                <div className="bg-white/4 rounded-xl p-3">
-                  <p className="text-xs text-zinc-300 leading-relaxed">
-                    {selectedOrder.notes || "—"}
-                  </p>
+              {/* Scrollable body */}
+              <div className="flex-1 overflow-y-auto p-4 space-y-4">
+
+                {/* Customer card */}
+                <div className="bg-white/4 border border-white/8 rounded-xl p-3 space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] text-zinc-500 uppercase font-semibold tracking-wider">Customer</span>
+                    <a
+                      href={`https://wa.me/${selected.phone.replace(/[^0-9]/g,"").replace(/^0/,"964")}`}
+                      target="_blank" rel="noreferrer"
+                      className="text-[10px] font-semibold text-emerald-400 hover:text-emerald-300 transition flex items-center gap-1"
+                    >
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771z"/>
+                      </svg>
+                      WhatsApp
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Avatar name={selected.customer_name} size={9} />
+                    <div>
+                      <p className="font-bold text-sm text-white leading-tight">{selected.customer_name}</p>
+                      <p className="text-[11px] text-zinc-400 font-mono" dir="ltr">{selected.phone}</p>
+                    </div>
+                  </div>
+                  <div className="pt-1 border-t border-white/8 space-y-1">
+                    <span className="inline-block bg-blue-500/15 text-blue-400 border border-blue-500/20 text-[10px] font-bold px-2 py-0.5 rounded">
+                      {selected.governorate}
+                    </span>
+                    {selected.detailed_address && (
+                      <p className="text-[11px] text-zinc-500 leading-relaxed">{selected.detailed_address}</p>
+                    )}
+                  </div>
                 </div>
+
+                {/* Order items */}
+                <div>
+                  <span className="text-[10px] text-zinc-500 uppercase font-semibold tracking-wider block mb-2">Order Items</span>
+                  <div className="bg-white/4 border border-white/8 rounded-xl p-3">
+                    {selected.items && selected.items.length > 0 ? (
+                      <div className="space-y-2.5">
+                        {selected.items.map((item, i) => (
+                          <div key={i} className="flex items-center gap-2.5">
+                            <div className="w-8 h-8 bg-white/8 rounded-lg flex items-center justify-center shrink-0">
+                              <svg className="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                              </svg>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs font-semibold text-zinc-200 truncate">
+                                {item.product?.title || `Product ${item.product_id}`}
+                              </p>
+                              <p className="text-[10px] text-zinc-500">{formatIQD(item.unit_price)} × {item.quantity}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-xs text-zinc-400 leading-relaxed">{selected.notes || "—"}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Totals */}
+                <div className="bg-white/4 border border-white/8 rounded-xl p-3 space-y-2 text-xs">
+                  <div className="flex justify-between text-zinc-500">
+                    <span>Subtotal</span>
+                    <span className="font-mono">{formatIQD(selected.subtotal || selected.total_amount)}</span>
+                  </div>
+                  {selected.shipping_fee > 0 && (
+                    <div className="flex justify-between text-zinc-500">
+                      <span>Shipping</span>
+                      <span className="font-mono">{formatIQD(selected.shipping_fee)}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between font-black text-white border-t border-white/8 pt-2">
+                    <span>Total</span>
+                    <span className="font-mono text-blue-400">{formatIQD(selected.total_amount)}</span>
+                  </div>
+                </div>
+
               </div>
 
-              {/* Total */}
-              <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-3 flex items-center justify-between">
-                <span className="text-xs text-zinc-400">المجموع الكلي</span>
-                <span className="font-black text-lg text-blue-400 font-mono">
-                  {formatIQD(selectedOrder.total_amount)}
-                </span>
-              </div>
-
-              {/* WhatsApp actions */}
-              <div className="grid grid-cols-2 gap-2">
+              {/* Action buttons */}
+              <div className="p-3 border-t border-white/8 grid grid-cols-2 gap-2 shrink-0">
                 <a
-                  href={`https://wa.me/${selectedOrder.phone
-                    .replace(/[^0-9]/g, "")
-                    .replace(/^0/, "964")}?text=${encodeURIComponent(
-                    `مرحباً ${selectedOrder.customer_name}، طردك #${selectedOrder.id} في الطريق إليك 🚗\nالمبلغ المطلوب: ${formatIQD(selectedOrder.total_amount)}`
+                  href={`https://wa.me/${selected.phone.replace(/[^0-9]/g,"").replace(/^0/,"964")}?text=${encodeURIComponent(
+                    `مرحباً ${selected.customer_name}، طردك #${selected.id} في الطريق إليك 🚗\nالمبلغ: ${formatIQD(selected.total_amount)}`
                   )}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center justify-center gap-1.5 py-2 bg-emerald-500/15 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/25 rounded-xl text-[11px] font-semibold transition"
+                  target="_blank" rel="noreferrer"
+                  className="flex items-center justify-center gap-1.5 py-2 bg-emerald-500/15 border border-emerald-500/20 text-emerald-300 hover:bg-emerald-500/25 rounded-xl text-[11px] font-semibold transition"
                 >
                   <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771z"/>
                   </svg>
-                  إشعار الزبون
+                  Notify
                 </a>
                 <Link
                   href="/admin/orders"
                   className="flex items-center justify-center gap-1.5 py-2 bg-white/6 border border-white/10 text-zinc-300 hover:bg-white/10 rounded-xl text-[11px] font-semibold transition"
                 >
-                  تفاصيل الشحن
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 17l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                  </svg>
+                  Dispatch
                 </Link>
               </div>
+            </>
+          ) : (
+            <div className="flex-1 flex items-center justify-center text-zinc-600 text-sm">
+              Select an order
             </div>
-          </div>
-        )}
+          )}
+        </div>
+
       </div>
     </div>
   );

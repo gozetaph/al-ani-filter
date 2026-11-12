@@ -340,7 +340,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   return (
-    <div className="min-h-screen bg-[#0f1117] text-white flex antialiased">
+    <div className="h-screen bg-[#0f1117] text-white flex antialiased overflow-hidden">
 
       {/* ── SIDEBAR ─────────────────────────────────────────────────────────── */}
       <aside
@@ -412,7 +412,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* ── MAIN CONTENT ────────────────────────────────────────────────────── */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 min-h-0 overflow-hidden">
 
         {/* Top Bar */}
         <header className="h-16 bg-[#13151f] border-b border-white/8 flex items-center justify-between px-5 shrink-0">
@@ -479,7 +479,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-5 md:p-7">
+        <main className="flex-1 overflow-hidden p-5 md:p-6 flex flex-col min-h-0">
           {children}
         </main>
 
