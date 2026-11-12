@@ -5,7 +5,7 @@ import { FAQItem } from "@/lib/types";
 import { initialFaqs } from "@/lib/mock-data";
 import { createClient } from "@/lib/supabase/client";
 
-export default function AdminFaqPage() {
+export default function TailAdminFaqPage() {
   const [faqs, setFaqs] = useState<FAQItem[]>(initialFaqs);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingFaq, setEditingFaq] = useState<FAQItem | null>(null);
@@ -19,17 +19,14 @@ export default function AdminFaqPage() {
 
   const supabase = createClient();
 
-  // Load FAQs from Supabase or localStorage
   useEffect(() => {
     async function loadFaqs() {
-      // 1. Try local storage first for instant response
+      // 1. Local storage check
       const cached = localStorage.getItem("al_ani_faqs");
       if (cached) {
         try {
           const parsed = JSON.parse(cached);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            setFaqs(parsed);
-          }
+          if (Array.isArray(parsed) && parsed.length > 0) setFaqs(parsed);
         } catch {
           // ignore
         }
@@ -53,7 +50,6 @@ export default function AdminFaqPage() {
     loadFaqs();
   }, [supabase]);
 
-  // Save to LocalStorage helper
   const syncStorage = (updated: FAQItem[]) => {
     setFaqs(updated);
     try {
@@ -63,7 +59,6 @@ export default function AdminFaqPage() {
     }
   };
 
-  // Open Add Modal
   const handleOpenAdd = () => {
     setEditingFaq(null);
     setQuestion("");
@@ -72,7 +67,6 @@ export default function AdminFaqPage() {
     setIsAddModalOpen(true);
   };
 
-  // Open Edit Modal
   const handleOpenEdit = (faq: FAQItem) => {
     setEditingFaq(faq);
     setQuestion(faq.question);
@@ -81,7 +75,6 @@ export default function AdminFaqPage() {
     setIsAddModalOpen(true);
   };
 
-  // Save FAQ (Create or Update)
   const handleSaveFaq = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!question.trim() || !answer.trim()) return;
@@ -89,7 +82,6 @@ export default function AdminFaqPage() {
     setIsSaving(true);
 
     if (editingFaq) {
-      // Updating existing FAQ
       const updatedItem: FAQItem = {
         ...editingFaq,
         question: question.trim(),
@@ -110,10 +102,9 @@ export default function AdminFaqPage() {
           })
           .eq("id", editingFaq.id);
       } catch (err) {
-        console.warn("DB update failed, kept in local state:", err);
+        console.warn("DB update fallback:", err);
       }
     } else {
-      // Adding new FAQ
       const newItem: FAQItem = {
         id: "faq-" + Date.now(),
         question: question.trim(),
@@ -137,7 +128,7 @@ export default function AdminFaqPage() {
           },
         ]);
       } catch (err) {
-        console.warn("DB insert failed, kept in local state:", err);
+        console.warn("DB insert fallback:", err);
       }
     }
 
@@ -145,7 +136,6 @@ export default function AdminFaqPage() {
     setIsAddModalOpen(false);
   };
 
-  // Toggle active/hidden
   const handleToggleActive = async (id: string) => {
     const target = faqs.find((f) => f.id === id);
     if (!target) return;
@@ -163,7 +153,6 @@ export default function AdminFaqPage() {
     }
   };
 
-  // Move up / down
   const handleMove = (index: number, direction: "up" | "down") => {
     const targetIndex = direction === "up" ? index - 1 : index + 1;
     if (targetIndex < 0 || targetIndex >= faqs.length) return;
@@ -172,7 +161,6 @@ export default function AdminFaqPage() {
     const [moved] = copy.splice(index, 1);
     copy.splice(targetIndex, 0, moved);
 
-    // Reassign order_index
     const reordered = copy.map((item, idx) => ({
       ...item,
       order_index: idx + 1,
@@ -181,7 +169,6 @@ export default function AdminFaqPage() {
     syncStorage(reordered);
   };
 
-  // Delete FAQ
   const handleDeleteFaq = async (id: string) => {
     if (!confirm("هل أنت متأكد من حذف هذا السؤال نهائياً؟")) return;
 
@@ -191,100 +178,102 @@ export default function AdminFaqPage() {
     try {
       await supabase.from("faqs").delete().eq("id", id);
     } catch (err) {
-      console.warn("DB delete failed:", err);
+      console.warn("DB delete fallback:", err);
     }
   };
 
   return (
     <div className="space-y-6 text-right" dir="rtl">
       
-      {/* Top Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      {/* ── TOP HEADER BAR ───────────────────────────────────────────── */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-gray-800">
         <div>
-          <h1 className="text-xl font-black text-white tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
             إدارة الأسئلة الشائعة (FAQ)
           </h1>
-          <p className="text-xs text-zinc-500 mt-0.5">
-            تحكم في أسئلة وأجوبة الموقع مع معاينة مباشرة
+          <p className="text-xs text-gray-400 mt-1 font-medium">
+            تحكم كامل في نصوص الأسئلة الشائعة وتحديثها مع معاينة حية لشكلها في الموقع
           </p>
         </div>
 
         <button
           onClick={handleOpenAdd}
-          className="bg-[#004bb5] hover:bg-[#1a5fc8] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer shrink-0"
+          className="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow-lg shadow-blue-600/20 cursor-pointer"
         >
-          + إضافة سؤال جديد
+          <span>+ إضافة سؤال جديد</span>
         </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
         
-        {/* FAQ List */}
+        {/* FAQ List Cards (7 cols) */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="bg-[#1a1d27] border border-white/8 rounded-2xl overflow-hidden">
-            <div className="p-4 border-b border-white/8 flex items-center justify-between">
+          <div className="rounded-2xl border border-gray-800 bg-gray-900/60 overflow-hidden shadow-sm">
+            <div className="p-4 sm:p-5 border-b border-gray-800 flex items-center justify-between">
               <h3 className="font-bold text-sm text-white">
                 قائمة الأسئلة ({faqs.length})
               </h3>
-              <span className="text-[11px] text-zinc-600 font-mono">
-                {faqs.filter((f) => f.is_active !== false).length} ظاهر
+              <span className="text-[11px] text-gray-500 font-mono">
+                {faqs.filter((f) => f.is_active !== false).length} ظاهر في الكتالوج
               </span>
             </div>
 
             {faqs.length === 0 ? (
-              <div className="p-10 text-center space-y-3">
-                <p className="text-xs text-zinc-600">لا توجد أسئلة حالياً.</p>
+              <div className="p-12 text-center space-y-3">
+                <p className="text-xs text-gray-500">لا توجد أسئلة حالياً.</p>
                 <button
                   onClick={handleOpenAdd}
-                  className="px-4 py-2 bg-[#004bb5] text-white text-xs font-bold rounded-lg cursor-pointer"
+                  className="px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded-xl cursor-pointer"
                 >
-                  إضافة سؤال
+                  إضافة أول سؤال
                 </button>
               </div>
             ) : (
-              <div className="divide-y divide-white/5">
+              <div className="divide-y divide-gray-800">
                 {faqs.map((faq, idx) => (
-                  <div key={faq.id} className="p-4 hover:bg-white/4 transition space-y-2">
+                  <div key={faq.id} className="p-4 sm:p-5 hover:bg-gray-800/40 transition space-y-3">
                     <div className="flex items-start justify-between gap-3">
-                      <div className="flex items-start gap-2.5">
-                        <span className="w-5 h-5 rounded-full bg-white/8 text-zinc-500 font-mono text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                      <div className="flex items-start gap-3">
+                        <span className="w-6 h-6 rounded-lg bg-gray-800 text-gray-400 font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5 border border-gray-700/60">
                           {idx + 1}
                         </span>
                         <div>
                           <h4 className="font-bold text-sm text-white leading-snug">
                             {faq.question}
                           </h4>
-                          <p className="text-xs text-zinc-500 mt-1 line-clamp-2 leading-relaxed">
+                          <p className="text-xs text-gray-400 mt-1.5 line-clamp-2 leading-relaxed">
                             {faq.answer}
                           </p>
                         </div>
                       </div>
 
+                      {/* Status toggle button */}
                       <button
                         onClick={() => handleToggleActive(faq.id)}
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 border transition cursor-pointer ${
+                        className={`text-[10px] font-bold px-2.5 py-1 rounded-full shrink-0 border transition cursor-pointer ${
                           faq.is_active !== false
-                            ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/20"
-                            : "bg-white/6 text-zinc-500 border-white/10"
+                            ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                            : "bg-gray-800 text-gray-500 border-gray-700"
                         }`}
                       >
                         {faq.is_active !== false ? "● مفعل" : "○ معطل"}
                       </button>
                     </div>
 
-                    <div className="pt-2 flex items-center justify-between border-t border-white/5 text-xs">
-                      <div className="flex items-center gap-1">
+                    {/* Actions bar */}
+                    <div className="pt-2.5 flex items-center justify-between border-t border-gray-800/70 text-xs">
+                      <div className="flex items-center gap-1.5">
                         <button
                           onClick={() => handleMove(idx, "up")}
                           disabled={idx === 0}
-                          className="px-2 py-1 bg-white/6 hover:bg-white/10 disabled:opacity-30 rounded text-[11px] font-bold text-zinc-400 cursor-pointer transition"
+                          className="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 disabled:opacity-30 rounded-lg text-[11px] font-bold text-gray-300 transition cursor-pointer"
                         >
                           ↑ أعلى
                         </button>
                         <button
                           onClick={() => handleMove(idx, "down")}
                           disabled={idx === faqs.length - 1}
-                          className="px-2 py-1 bg-white/6 hover:bg-white/10 disabled:opacity-30 rounded text-[11px] font-bold text-zinc-400 cursor-pointer transition"
+                          className="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 disabled:opacity-30 rounded-lg text-[11px] font-bold text-gray-300 transition cursor-pointer"
                         >
                           ↓ أسفل
                         </button>
@@ -293,13 +282,13 @@ export default function AdminFaqPage() {
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => handleOpenEdit(faq)}
-                          className="px-3 py-1 bg-blue-500/15 hover:bg-blue-500/25 text-blue-400 font-bold rounded-lg transition cursor-pointer border border-blue-500/20"
+                          className="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-blue-400 font-bold rounded-lg transition border border-gray-700 cursor-pointer"
                         >
                           تعديل
                         </button>
                         <button
                           onClick={() => handleDeleteFaq(faq.id)}
-                          className="px-3 py-1 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 font-bold rounded-lg transition cursor-pointer border border-rose-500/20"
+                          className="px-3 py-1 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 font-bold rounded-lg transition border border-rose-500/20 cursor-pointer"
                         >
                           حذف
                         </button>
@@ -312,39 +301,39 @@ export default function AdminFaqPage() {
           </div>
         </div>
 
-        {/* Live Preview */}
+        {/* Live Preview Sidebar (5 cols) */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="bg-[#1a1d27] border border-white/8 rounded-2xl p-5 sticky top-24">
-            <div className="flex items-center justify-between pb-3 border-b border-white/8 mb-4">
-              <span className="font-bold text-xs text-zinc-500 uppercase tracking-wider font-mono">
-                معاينة حية
+          <div className="rounded-2xl border border-gray-800 bg-gray-900/60 p-5 sticky top-24 shadow-sm">
+            <div className="flex items-center justify-between pb-3 border-b border-gray-800 mb-4">
+              <span className="font-bold text-xs text-gray-400 uppercase tracking-wider font-mono">
+                معاينة حية للمستخدمين في الموقع
               </span>
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             </div>
 
-            <div className="text-center space-y-1 mb-5">
+            <div className="text-center space-y-1 mb-6">
               <h2 className="text-base font-black text-white">الأسئلة الشائعة</h2>
-              <p className="text-[11px] text-zinc-600">كما تظهر للزوار في الموقع</p>
+              <p className="text-[11px] text-gray-400">إجابات استفسارات الزوار والورش</p>
             </div>
 
-            <div className="divide-y divide-white/8 border-y border-white/8">
+            <div className="divide-y divide-gray-800 border-y border-gray-800">
               {faqs
                 .filter((f) => f.is_active !== false)
                 .map((item, idx) => {
                   const isOpen = previewOpenIdx === idx;
                   return (
-                    <div key={item.id} className="py-3 px-2">
+                    <div key={item.id} className="py-3 px-1">
                       <button
                         onClick={() => setPreviewOpenIdx(isOpen ? null : idx)}
-                        className="w-full flex items-center justify-between text-right text-xs font-bold text-zinc-200 gap-2 cursor-pointer"
+                        className="w-full flex items-center justify-between text-right text-xs font-bold text-gray-200 gap-2 cursor-pointer"
                       >
                         <span>{item.question}</span>
-                        <span className="font-mono text-base text-zinc-500 shrink-0">
+                        <span className="font-mono text-base text-gray-500 shrink-0">
                           {isOpen ? "−" : "+"}
                         </span>
                       </button>
                       {isOpen && (
-                        <p className="mt-2 text-[11px] text-zinc-400 leading-relaxed">
+                        <p className="mt-2 text-[11px] text-gray-400 leading-relaxed text-right">
                           {item.answer}
                         </p>
                       )}
@@ -357,18 +346,18 @@ export default function AdminFaqPage() {
 
       </div>
 
-      {/* Add / Edit Modal */}
+      {/* ── TAILADMIN MODAL: ADD / EDIT FAQ ──────────────────────────── */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#1a1d27] border border-white/10 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5">
+          <div className="bg-gray-900 border border-gray-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 animate-scaleUp" dir="rtl">
             
-            <div className="flex items-center justify-between border-b border-white/8 pb-3">
-              <h3 className="font-black text-base text-white">
-                {editingFaq ? "تعديل السؤال" : "إضافة سؤال جديد"}
+            <div className="flex items-center justify-between border-b border-gray-800 pb-3">
+              <h3 className="font-bold text-base text-white">
+                {editingFaq ? "تعديل السؤال" : "إضافة سؤال جديد للأسئلة الشائعة"}
               </h3>
               <button
                 onClick={() => setIsAddModalOpen(false)}
-                className="w-7 h-7 rounded-full bg-white/8 hover:bg-white/14 flex items-center justify-center text-zinc-400 hover:text-white font-bold cursor-pointer"
+                className="w-8 h-8 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-center text-gray-400 hover:text-white font-bold cursor-pointer transition"
               >
                 ✕
               </button>
@@ -376,54 +365,58 @@ export default function AdminFaqPage() {
 
             <form onSubmit={handleSaveFaq} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-zinc-400 mb-1">نص السؤال</label>
+                <label className="block text-xs font-bold text-gray-300 mb-1">
+                  نص السؤال *
+                </label>
                 <input
                   type="text"
                   required
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
-                  placeholder="كيف أستعلم عن مطابقة الفلتر؟"
-                  className="w-full px-3 py-2.5 text-xs bg-white/6 border border-white/10 rounded-xl text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500/50 transition"
+                  placeholder="مثال: كيف أستعلم عن مطابقة الفلتر لسيارتي؟"
+                  className="w-full px-3 py-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 font-medium transition"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-zinc-400 mb-1">نص الجواب</label>
+                <label className="block text-xs font-bold text-gray-300 mb-1">
+                  نص الجواب والتوضيح *
+                </label>
                 <textarea
                   required
                   rows={4}
                   value={answer}
                   onChange={(e) => setAnswer(e.target.value)}
-                  placeholder="اكتب التوضيح المفصل..."
-                  className="w-full px-3 py-2.5 text-xs bg-white/6 border border-white/10 rounded-xl text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500/50 transition leading-relaxed"
+                  placeholder="اكتب التوضيح الكامل الذي يظهر للزبون عند فتح السؤال..."
+                  className="w-full px-3 py-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 font-medium leading-relaxed transition"
                 />
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 pt-1">
                 <input
                   type="checkbox"
                   id="faqActive"
                   checked={isActive}
                   onChange={(e) => setIsActive(e.target.checked)}
-                  className="rounded border-white/20 w-4 h-4 cursor-pointer accent-blue-500"
+                  className="rounded border-gray-700 bg-gray-800 text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer"
                 />
-                <label htmlFor="faqActive" className="text-xs font-bold text-zinc-400 cursor-pointer">
-                  تفعيل وعرضه في الموقع مباشرة
+                <label htmlFor="faqActive" className="text-xs font-bold text-gray-300 cursor-pointer">
+                  تفعيل السؤال وعرضه في الكتالوج مباشرة
                 </label>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-white/8">
+              <div className="flex items-center justify-end gap-2 pt-4 border-t border-gray-800">
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="px-4 py-2 text-xs font-bold text-zinc-500 hover:text-zinc-300 hover:bg-white/6 rounded-xl transition cursor-pointer"
+                  className="px-4 py-2 text-xs font-bold text-gray-400 hover:bg-gray-800 rounded-xl transition cursor-pointer"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
                   disabled={isSaving}
-                  className="px-5 py-2 bg-[#004bb5] hover:bg-[#1a5fc8] text-white text-xs font-bold rounded-xl transition disabled:opacity-50 cursor-pointer"
+                  className="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl shadow-md shadow-blue-600/20 transition disabled:opacity-50 cursor-pointer"
                 >
                   {isSaving ? "جاري الحفظ..." : editingFaq ? "حفظ التعديل" : "إضافة السؤال"}
                 </button>
@@ -437,4 +430,3 @@ export default function AdminFaqPage() {
     </div>
   );
 }
-
