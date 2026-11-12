@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Product, FAQItem } from "@/lib/types";
@@ -40,25 +40,6 @@ export default function HalcyonStorefrontPage() {
   // Dynamic FAQs from Admin / Supabase
   const [faqs, setFaqs] = useState<FAQItem[]>(initialFaqs);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-
-  // Background Audio Player
-  const [isPlayingMusic, setIsPlayingMusic] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  const toggleMusic = () => {
-    if (!audioRef.current) return;
-    if (isPlayingMusic) {
-      audioRef.current.pause();
-      setIsPlayingMusic(false);
-    } else {
-      audioRef.current
-        .play()
-        .then(() => setIsPlayingMusic(true))
-        .catch(() => {
-          setIsPlayingMusic(false);
-        });
-    }
-  };
 
   const supabase = createClient();
 
@@ -227,9 +208,6 @@ export default function HalcyonStorefrontPage() {
   return (
     <div className="min-h-screen bg-[#f8f8f8] text-[#111111] flex flex-col antialiased selection:bg-[#111111] selection:text-white">
       
-      {/* Background Audio Element */}
-      <audio ref={audioRef} loop src="/music.mp3" preload="none" />
-
       {/* ========================================================== */}
       {/* APPLE SPLASH SCREEN ANIMATION (A SLIDES -> TEXT)           */}
       {/* ========================================================== */}
@@ -802,15 +780,8 @@ export default function HalcyonStorefrontPage() {
 
           </div>
 
-          <div className="border-t border-neutral-200 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono-code text-[11px] text-neutral-400">
-            <div>
-              © 2026 العاني للفلاتر • AL ANI FILTERS • BAGHDAD, IRAQ
-            </div>
-            <div>
-              <Link href="/admin" className="hover:text-neutral-700 transition">
-                لوحة الإدارة
-              </Link>
-            </div>
+          <div className="border-t border-neutral-200 mt-12 pt-6 font-mono-code text-[11px] text-neutral-400 text-center">
+            AL ANI FILTERS • BAGHDAD, IRAQ
           </div>
         </div>
       </footer>
@@ -914,33 +885,6 @@ export default function HalcyonStorefrontPage() {
           </div>
         </div>
       )}
-
-      {/* Floating Audio Player Button */}
-      <div className="fixed bottom-5 left-5 z-40">
-        <button
-          onClick={toggleMusic}
-          className="bg-black/90 hover:bg-black text-white px-3.5 py-2 text-xs font-mono-code font-bold flex items-center gap-2 border border-neutral-700 shadow-xl backdrop-blur-md transition-all active:scale-95 cursor-pointer"
-          title={isPlayingMusic ? "كتم الصوت / إيقاف الموسيقى" : "تشغيل الموسيقى"}
-        >
-          {isPlayingMusic ? (
-            <>
-              <span className="flex items-end gap-0.5 h-3">
-                <span className="w-0.5 h-3 bg-emerald-400 animate-pulse" />
-                <span className="w-0.5 h-2 bg-emerald-400 animate-pulse delay-75" />
-                <span className="w-0.5 h-3 bg-emerald-400 animate-pulse delay-150" />
-              </span>
-              <span className="text-[11px]">موسيقى: تشغيل</span>
-            </>
-          ) : (
-            <>
-              <svg className="w-3.5 h-3.5 text-neutral-400" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
-              </svg>
-              <span className="text-[11px] text-neutral-300">تشغيل الموسيقى</span>
-            </>
-          )}
-        </button>
-      </div>
 
     </div>
   );

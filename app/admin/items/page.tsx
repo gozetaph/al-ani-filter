@@ -194,98 +194,98 @@ export default function AdminItemsPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-right" dir="rtl">
       
       {/* Top Action Bar */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-            إدارة الفلاتر والمنتجات (الكتالوج)
+          <h1 className="text-xl font-black text-white tracking-tight">
+            إدارة المنتجات والكتالوج
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
-            إضافة فلاتر جديدة، تحديد كود القطعة، وتعبئة أرقام الماركات البديلة (الماركات الأخرى)
+          <p className="text-xs text-zinc-500 mt-0.5">
+            إضافة فلاتر جديدة وتعبئة أرقام الماركات البديلة
           </p>
         </div>
 
         <button
           onClick={() => setIsAddModalOpen(true)}
-          className="bg-[#004bb5] hover:bg-[#00388a] text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl shadow-xs transition flex items-center gap-1.5"
+          className="bg-[#004bb5] hover:bg-[#1a5fc8] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer shrink-0"
         >
-          <span>+ إضافة فلتر جديد</span>
+          + إضافة فلتر جديد
         </button>
       </div>
 
       {/* Items Table */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
-        <div className="p-4 border-b border-slate-200 flex items-center justify-between">
-          <h3 className="font-bold text-sm text-slate-900">
+      <div className="bg-[#1a1d27] border border-white/8 rounded-2xl overflow-hidden">
+        <div className="p-4 border-b border-white/8 flex items-center justify-between">
+          <h3 className="font-bold text-sm text-white">
             قائمة الفلاتر في الكتالوج ({items.length} فلتر)
           </h3>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-right text-xs">
-            <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
+            <thead className="border-b border-white/8 text-zinc-500 font-semibold">
               <tr>
                 <th className="p-3.5">صورة الفلتر</th>
                 <th className="p-3.5">كود الفلتر</th>
                 <th className="p-3.5">الاسم والوصف</th>
-                <th className="p-3.5">النوع / التصنيف</th>
-                <th className="p-3.5">الماركات الأخرى</th>
+                <th className="p-3.5 hidden sm:table-cell">النوع</th>
+                <th className="p-3.5 hidden md:table-cell">الماركات الأخرى</th>
                 <th className="p-3.5 text-center">إجراءات</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 text-slate-700">
+            <tbody className="divide-y divide-white/5 text-zinc-300">
               {items.map((item) => {
                 const pNum = item.part_number || item.title.split(" ").pop() || "AL-ANI";
                 const brands = item.other_brands || [];
                 return (
-                  <tr key={item.id} className="hover:bg-slate-50 transition">
+                  <tr key={item.id} className="hover:bg-white/4 transition">
                     <td className="p-3.5">
-                      <div className="w-12 h-12 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-center p-1">
+                      <div className="w-11 h-11 bg-white/6 rounded-lg border border-white/8 flex items-center justify-center p-1">
                         <Image
                           src={item.image_url || "/products/oil-filter.svg"}
                           alt={item.title}
                           width={44}
                           height={44}
-                          className="max-h-10 w-auto object-contain"
+                          className="max-h-9 w-auto object-contain"
                         />
                       </div>
                     </td>
-                    <td className="p-3.5 font-black text-slate-900 text-sm font-mono">
+                    <td className="p-3.5 font-black text-white text-sm font-mono">
                       {pNum}
                     </td>
-                    <td className="p-3.5 font-bold text-slate-900 text-xs sm:text-sm">
+                    <td className="p-3.5 font-semibold text-zinc-200">
                       {item.title}
-                      <span className="block text-[11px] text-slate-400 font-normal line-clamp-1 mt-0.5">
+                      <span className="block text-[11px] text-zinc-600 font-normal line-clamp-1 mt-0.5">
                         {item.description}
                       </span>
                     </td>
-                    <td className="p-3.5">
-                      <span className="bg-blue-50 text-[#004bb5] font-bold text-[11px] px-2.5 py-1 rounded-md border border-blue-200/80">
+                    <td className="p-3.5 hidden sm:table-cell">
+                      <span className="bg-blue-500/15 text-blue-400 font-bold text-[11px] px-2.5 py-1 rounded-lg border border-blue-500/20">
                         {item.clean_type || item.type || item.category || "فلتر"}
                       </span>
                     </td>
-                    <td className="p-3.5 text-xs text-slate-600">
+                    <td className="p-3.5 text-xs text-zinc-500 hidden md:table-cell">
                       {brands.length > 0 ? (
                         <div className="space-y-0.5 font-mono text-[11px]">
                           {brands.slice(0, 3).map((b, i) => (
                             <div key={i}>
-                              <span className="font-bold text-slate-800">{b.brand}:</span> {b.code}
+                              <span className="font-bold text-zinc-300">{b.brand}:</span> {b.code}
                             </div>
                           ))}
                           {brands.length > 3 && (
-                            <span className="text-slate-400">+{brands.length - 3} ماركات أخرى...</span>
+                            <span className="text-zinc-600">+{brands.length - 3} أخرى</span>
                           )}
                         </div>
                       ) : (
-                        <span className="text-slate-400 font-sans text-[11px]">مطابقة حسب الطلب</span>
+                        <span className="text-zinc-600 text-[11px]">حسب الطلب</span>
                       )}
                     </td>
                     <td className="p-3.5 text-center">
                       <button
                         onClick={() => deleteItem(item.id)}
-                        className="text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-xs font-bold px-3 py-1.5 rounded-lg transition"
+                        className="text-rose-400 hover:text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-xs font-bold px-3 py-1.5 rounded-lg transition cursor-pointer"
                       >
                         حذف
                       </button>
@@ -300,91 +300,81 @@ export default function AdminItemsPage() {
 
       {/* ADD ITEM MODAL */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden my-8">
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-[#1a1d27] border border-white/10 rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden my-8">
             
-            <div className="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
-              <h3 className="font-bold text-base text-slate-900">إضافة فلتر جديد للكتالوج</h3>
+            <div className="p-4 border-b border-white/8 flex items-center justify-between">
+              <h3 className="font-bold text-base text-white">إضافة فلتر جديد للكتالوج</h3>
               <button
                 onClick={() => setIsAddModalOpen(false)}
-                className="w-8 h-8 rounded-lg bg-slate-200 hover:bg-slate-300 flex items-center justify-center text-slate-700 font-bold"
+                className="w-8 h-8 rounded-lg bg-white/8 hover:bg-white/14 flex items-center justify-center text-zinc-400 hover:text-white font-bold cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
-            <form onSubmit={handleAddItem} className="p-5 space-y-4 text-xs">
+            <form onSubmit={handleAddItem} className="p-5 space-y-4 text-xs" dir="rtl">
               
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">كود القطعة (Part Number) *</label>
+                  <label className="block font-bold text-zinc-400 mb-1">كود القطعة *</label>
                   <input
                     type="text"
                     required
                     value={partNumber}
                     onChange={(e) => setPartNumber(e.target.value)}
-                    placeholder="مثال: SP 002 HT أو W 67/1"
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs font-mono font-bold focus:bg-white transition"
+                    placeholder="SP 002 HT"
+                    className="w-full bg-white/6 border border-white/10 rounded-xl p-2.5 text-xs font-mono font-bold text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500/50 transition"
                   />
                 </div>
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">نوع الفلتر / القسم *</label>
+                  <label className="block font-bold text-zinc-400 mb-1">نوع الفلتر *</label>
                   <select
                     value={type}
                     onChange={(e) => setType(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs font-bold focus:bg-white transition"
+                    className="w-full bg-white/6 border border-white/10 rounded-xl p-2.5 text-xs font-bold text-zinc-200 focus:outline-none focus:border-blue-500/50 transition cursor-pointer"
                   >
                     <option value="فلتر دهن (زيت)">فلتر دهن (زيت)</option>
-                    <option value="فلتر هواء سيارات ومعدات">فلتر هواء سيارات ومعدات</option>
-                    <option value="فلتر وقود ديزل وسبيتر">فلتر وقود ديزل وسبيتر</option>
-                    <option value="فلتر مجفف هواء للشاحنات">فلتر مجفف هواء للشاحنات</option>
-                    <option value="فلتر كابينة ومكيف">فلتر كابينة ومكيف</option>
+                    <option value="فلتر هواء سيارات ومعدات">فلتر هواء</option>
+                    <option value="فلتر وقود ديزل وسبيتر">فلتر وقود</option>
+                    <option value="فلتر مجفف هواء للشاحنات">مجفف هواء</option>
+                    <option value="فلتر كابينة ومكيف">فلتر كابينة</option>
                     <option value="فلتر هيدروليك">فلتر هيدروليك</option>
                   </select>
                 </div>
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">اسم الفلتر / العنوان *</label>
+                <label className="block font-bold text-zinc-400 mb-1">اسم الفلتر *</label>
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="مثال: فلتر دهن زيت أصلي مطابق لمواصفات OEM"
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs focus:bg-white transition"
+                  placeholder="فلتر دهن زيت أصلي مطابق OEM"
+                  className="w-full bg-white/6 border border-white/10 rounded-xl p-2.5 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500/50 transition"
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">وصف الفلتر وملاحظات</label>
+                <label className="block font-bold text-zinc-400 mb-1">وصف وملاحظات</label>
                 <textarea
                   rows={2}
                   value={desc}
                   onChange={(e) => setDesc(e.target.value)}
                   placeholder="الآليات المتوافقة، كفاءة الترشيح..."
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs focus:bg-white transition"
+                  className="w-full bg-white/6 border border-white/10 rounded-xl p-2.5 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500/50 transition"
                 />
               </div>
 
-              {/* OTHER BRANDS SECTION */}
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2.5">
+              {/* Brands */}
+              <div className="p-3 bg-white/4 rounded-xl border border-white/8 space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <label className="font-bold text-slate-900 block text-xs">
-                    الماركات الأخرى (أرقام المطابقة البديلة)
-                  </label>
-                  <button
-                    type="button"
-                    onClick={addBrandRow}
-                    className="text-[#004bb5] hover:underline font-bold text-[11px]"
-                  >
-                    + إضافة ماركة أخرى
+                  <label className="font-bold text-zinc-300 text-xs">الماركات الأخرى (أرقام المطابقة)</label>
+                  <button type="button" onClick={addBrandRow} className="text-blue-400 hover:text-blue-300 font-bold text-[11px] cursor-pointer">
+                    + إضافة ماركة
                   </button>
                 </div>
-                <p className="text-[10px] text-slate-500">
-                  اكتب اسم الماركة في الحقل الأول والكود المطابق في الحقل الثاني لتظهر للزبون بالترتيب:
-                </p>
-
                 <div className="space-y-2">
                   {otherBrands.map((b, idx) => (
                     <div key={idx} className="flex items-center gap-2">
@@ -392,20 +382,20 @@ export default function AdminItemsPage() {
                         type="text"
                         value={b.brand}
                         onChange={(e) => handleBrandChange(idx, "brand", e.target.value)}
-                        placeholder="الماركة (مثال: Perkins)"
-                        className="w-1/2 bg-white border border-slate-300 rounded-lg p-2 text-xs font-semibold"
+                        placeholder="الماركة"
+                        className="w-1/2 bg-white/6 border border-white/10 rounded-lg p-2 text-xs font-semibold text-white placeholder-zinc-600 focus:outline-none"
                       />
                       <input
                         type="text"
                         value={b.code}
                         onChange={(e) => handleBrandChange(idx, "code", e.target.value)}
-                        placeholder="كود القطعة (مثال: 2654403)"
-                        className="w-1/2 bg-white border border-slate-300 rounded-lg p-2 text-xs font-mono"
+                        placeholder="الكود"
+                        className="w-1/2 bg-white/6 border border-white/10 rounded-lg p-2 text-xs font-mono text-white placeholder-zinc-600 focus:outline-none"
                       />
                       <button
                         type="button"
                         onClick={() => removeBrandRow(idx)}
-                        className="w-7 h-7 text-rose-500 hover:bg-rose-100 rounded flex items-center justify-center font-bold shrink-0"
+                        className="w-7 h-7 text-rose-400 hover:bg-rose-500/20 rounded flex items-center justify-center font-bold shrink-0 cursor-pointer"
                       >
                         ✕
                       </button>
@@ -414,55 +404,48 @@ export default function AdminItemsPage() {
                 </div>
               </div>
 
-              {/* IMAGE UPLOAD */}
+              {/* Image */}
               <div>
-                <label className="block font-bold text-slate-700 mb-1">صورة الفلتر</label>
-                <div className="space-y-2">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-                    className="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-[#004bb5] hover:file:bg-blue-100"
-                  />
-                  
-                  <div className="text-[11px] text-slate-400">
-                    أو اختر صورة نموذجية:
-                  </div>
-                  <select
-                    value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2 text-xs"
-                  >
-                    <option value="/products/asas/sp_001.jpg">فلتر دهن أسطواني أسود (SP 001)</option>
-                    <option value="/products/asas/sp_002_ht.jpg">فلتر دهن أسطواني قصير (SP 002)</option>
-                    <option value="/products/asas/sp_004.jpg">فلتر دهن أسطواني كبير (SP 004)</option>
-                    <option value="/products/asas/hires/fuel_water_01.webp">فلتر ديزل وفاصل ماء مع صمام</option>
-                    <option value="/products/asas/hires/air_filter_radial.webp">فلتر هواء دائري Radial Seal</option>
-                    <option value="/products/asas/hires/air_dryer_cartridge.webp">فلتر مجفف هواء شاحنات</option>
-                    <option value="/products/asas/hires/cabin_filter_05.webp">فلتر كابينة وتكييف مستطيل</option>
-                  </select>
-                </div>
+                <label className="block font-bold text-zinc-400 mb-1">صورة الفلتر</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+                  className="w-full text-xs text-zinc-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-500/15 file:text-blue-400 hover:file:bg-blue-500/25 cursor-pointer"
+                />
+                <select
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  className="mt-2 w-full bg-white/6 border border-white/10 rounded-xl p-2 text-xs text-zinc-300 focus:outline-none cursor-pointer"
+                >
+                  <option value="/products/asas/sp_001.jpg">فلتر دهن أسطواني (SP 001)</option>
+                  <option value="/products/asas/sp_002_ht.jpg">فلتر دهن قصير (SP 002)</option>
+                  <option value="/products/asas/sp_004.jpg">فلتر دهن كبير (SP 004)</option>
+                  <option value="/products/asas/hires/fuel_water_01.webp">فلتر ديزل وفاصل ماء</option>
+                  <option value="/products/asas/hires/air_filter_radial.webp">فلتر هواء Radial</option>
+                  <option value="/products/asas/hires/air_dryer_cartridge.webp">مجفف هواء شاحنات</option>
+                  <option value="/products/asas/hires/cabin_filter_05.webp">فلتر كابينة</option>
+                </select>
               </div>
 
-              <div className="pt-3 border-t border-slate-200 flex items-center justify-end gap-2">
+              <div className="pt-3 border-t border-white/8 flex items-center justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="px-4 py-2 rounded-xl text-slate-600 hover:bg-slate-100 font-semibold"
+                  className="px-4 py-2 rounded-xl text-zinc-500 hover:text-zinc-300 hover:bg-white/6 font-semibold cursor-pointer transition"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
                   disabled={isUploading}
-                  className="bg-[#004bb5] hover:bg-[#00388a] text-white px-5 py-2 rounded-xl font-bold shadow-xs transition"
+                  className="bg-[#004bb5] hover:bg-[#1a5fc8] text-white px-5 py-2 rounded-xl font-bold transition disabled:opacity-50 cursor-pointer"
                 >
-                  {isUploading ? "جاري الإضافة والرفع..." : "حفظ الفلتر"}
+                  {isUploading ? "جاري الإضافة..." : "حفظ الفلتر"}
                 </button>
               </div>
 
             </form>
-
           </div>
         </div>
       )}

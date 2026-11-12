@@ -196,116 +196,110 @@ export default function AdminFaqPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-right" dir="rtl">
       
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-            إدارة وتصميم الأسئلة الشائعة (FAQ)
+          <h1 className="text-xl font-black text-white tracking-tight">
+            إدارة الأسئلة الشائعة (FAQ)
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
-            تحكم كامل في نصوص وأسئلة وأجوبة الكتالوج مع معاينة مباشرة لشكلها في الموقع
+          <p className="text-xs text-zinc-500 mt-0.5">
+            تحكم في أسئلة وأجوبة الموقع مع معاينة مباشرة
           </p>
         </div>
 
         <button
           onClick={handleOpenAdd}
-          className="bg-[#004bb5] hover:bg-[#00388a] text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl shadow-xs transition flex items-center gap-1.5"
+          className="bg-[#004bb5] hover:bg-[#1a5fc8] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer shrink-0"
         >
-          <span>+ إضافة سؤال جديد</span>
+          + إضافة سؤال جديد
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
         
-        {/* Left/Main Column: Manage FAQs Table/Cards */}
+        {/* FAQ List */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
-            <div className="p-4 border-b border-slate-100 flex items-center justify-between">
-              <h3 className="font-bold text-sm text-slate-900">
-                قائمة الأسئلة الشائعة ({faqs.length})
+          <div className="bg-[#1a1d27] border border-white/8 rounded-2xl overflow-hidden">
+            <div className="p-4 border-b border-white/8 flex items-center justify-between">
+              <h3 className="font-bold text-sm text-white">
+                قائمة الأسئلة ({faqs.length})
               </h3>
-              <span className="text-[11px] text-slate-400 font-mono">
-                {faqs.filter((f) => f.is_active !== false).length} ظاهر في الموقع
+              <span className="text-[11px] text-zinc-600 font-mono">
+                {faqs.filter((f) => f.is_active !== false).length} ظاهر
               </span>
             </div>
 
             {faqs.length === 0 ? (
               <div className="p-10 text-center space-y-3">
-                <p className="text-xs text-slate-400">لا توجد أسئلة حالياً. اضغط على الزر لإضافة أول سؤال!</p>
+                <p className="text-xs text-zinc-600">لا توجد أسئلة حالياً.</p>
                 <button
                   onClick={handleOpenAdd}
-                  className="px-4 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg"
+                  className="px-4 py-2 bg-[#004bb5] text-white text-xs font-bold rounded-lg cursor-pointer"
                 >
                   إضافة سؤال
                 </button>
               </div>
             ) : (
-              <div className="divide-y divide-slate-100">
+              <div className="divide-y divide-white/5">
                 {faqs.map((faq, idx) => (
-                  <div key={faq.id} className="p-4 hover:bg-slate-50/70 transition space-y-2">
+                  <div key={faq.id} className="p-4 hover:bg-white/4 transition space-y-2">
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-start gap-2.5">
-                        <span className="w-5 h-5 rounded-full bg-slate-100 text-slate-600 font-mono text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                        <span className="w-5 h-5 rounded-full bg-white/8 text-zinc-500 font-mono text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">
                           {idx + 1}
                         </span>
                         <div>
-                          <h4 className="font-bold text-sm text-slate-900 leading-snug">
+                          <h4 className="font-bold text-sm text-white leading-snug">
                             {faq.question}
                           </h4>
-                          <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
+                          <p className="text-xs text-zinc-500 mt-1 line-clamp-2 leading-relaxed">
                             {faq.answer}
                           </p>
                         </div>
                       </div>
 
-                      {/* Status badge */}
                       <button
                         onClick={() => handleToggleActive(faq.id)}
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 border transition ${
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 border transition cursor-pointer ${
                           faq.is_active !== false
-                            ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                            : "bg-slate-100 text-slate-500 border-slate-200"
+                            ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/20"
+                            : "bg-white/6 text-zinc-500 border-white/10"
                         }`}
                       >
                         {faq.is_active !== false ? "● مفعل" : "○ معطل"}
                       </button>
                     </div>
 
-                    {/* Actions Row */}
-                    <div className="pt-2 flex items-center justify-between border-t border-slate-100 text-xs">
-                      {/* Order Controls */}
+                    <div className="pt-2 flex items-center justify-between border-t border-white/5 text-xs">
                       <div className="flex items-center gap-1">
                         <button
                           onClick={() => handleMove(idx, "up")}
                           disabled={idx === 0}
-                          className="px-2 py-1 bg-slate-100 hover:bg-slate-200 disabled:opacity-30 rounded text-[11px] font-bold"
-                          title="تحريك لأعلى"
+                          className="px-2 py-1 bg-white/6 hover:bg-white/10 disabled:opacity-30 rounded text-[11px] font-bold text-zinc-400 cursor-pointer transition"
                         >
                           ↑ أعلى
                         </button>
                         <button
                           onClick={() => handleMove(idx, "down")}
                           disabled={idx === faqs.length - 1}
-                          className="px-2 py-1 bg-slate-100 hover:bg-slate-200 disabled:opacity-30 rounded text-[11px] font-bold"
-                          title="تحريك لأسفل"
+                          className="px-2 py-1 bg-white/6 hover:bg-white/10 disabled:opacity-30 rounded text-[11px] font-bold text-zinc-400 cursor-pointer transition"
                         >
                           ↓ أسفل
                         </button>
                       </div>
 
-                      {/* Edit / Delete */}
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => handleOpenEdit(faq)}
-                          className="px-3 py-1 bg-blue-50 hover:bg-blue-100 text-[#004bb5] font-bold rounded-lg transition"
+                          className="px-3 py-1 bg-blue-500/15 hover:bg-blue-500/25 text-blue-400 font-bold rounded-lg transition cursor-pointer border border-blue-500/20"
                         >
                           تعديل
                         </button>
                         <button
                           onClick={() => handleDeleteFaq(faq.id)}
-                          className="px-3 py-1 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold rounded-lg transition"
+                          className="px-3 py-1 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 font-bold rounded-lg transition cursor-pointer border border-rose-500/20"
                         >
                           حذف
                         </button>
@@ -318,39 +312,39 @@ export default function AdminFaqPage() {
           </div>
         </div>
 
-        {/* Right Column: Live Website Preview Accordion */}
+        {/* Live Preview */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 sticky top-24">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
-              <span className="font-bold text-xs text-slate-400 uppercase tracking-wider font-mono">
-                معاينة حية كما تظهر للزوار في الموقع
+          <div className="bg-[#1a1d27] border border-white/8 rounded-2xl p-5 sticky top-24">
+            <div className="flex items-center justify-between pb-3 border-b border-white/8 mb-4">
+              <span className="font-bold text-xs text-zinc-500 uppercase tracking-wider font-mono">
+                معاينة حية
               </span>
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             </div>
 
-            <div className="text-center space-y-1 mb-6">
-              <h2 className="text-lg font-black text-black">الأسئلة الشائعة</h2>
-              <p className="text-[11px] text-neutral-500">إجابات استفسارات الزوار والورش</p>
+            <div className="text-center space-y-1 mb-5">
+              <h2 className="text-base font-black text-white">الأسئلة الشائعة</h2>
+              <p className="text-[11px] text-zinc-600">كما تظهر للزوار في الموقع</p>
             </div>
 
-            <div className="divide-y divide-neutral-200 border-y border-neutral-200 bg-white">
+            <div className="divide-y divide-white/8 border-y border-white/8">
               {faqs
                 .filter((f) => f.is_active !== false)
                 .map((item, idx) => {
                   const isOpen = previewOpenIdx === idx;
                   return (
-                    <div key={item.id} className="py-3 px-3">
+                    <div key={item.id} className="py-3 px-2">
                       <button
                         onClick={() => setPreviewOpenIdx(isOpen ? null : idx)}
-                        className="w-full flex items-center justify-between text-right text-xs font-bold text-neutral-900 gap-2 cursor-pointer"
+                        className="w-full flex items-center justify-between text-right text-xs font-bold text-zinc-200 gap-2 cursor-pointer"
                       >
                         <span>{item.question}</span>
-                        <span className="font-mono text-base text-neutral-400 shrink-0">
+                        <span className="font-mono text-base text-zinc-500 shrink-0">
                           {isOpen ? "−" : "+"}
                         </span>
                       </button>
                       {isOpen && (
-                        <p className="mt-2 text-[11px] text-neutral-600 leading-relaxed text-right">
+                        <p className="mt-2 text-[11px] text-zinc-400 leading-relaxed">
                           {item.answer}
                         </p>
                       )}
@@ -365,16 +359,16 @@ export default function AdminFaqPage() {
 
       {/* Add / Edit Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 animate-scaleUp">
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#1a1d27] border border-white/10 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5">
             
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h3 className="font-black text-base text-slate-900">
-                {editingFaq ? "تعديل السؤال" : "إضافة سؤال جديد للأسئلة الشائعة"}
+            <div className="flex items-center justify-between border-b border-white/8 pb-3">
+              <h3 className="font-black text-base text-white">
+                {editingFaq ? "تعديل السؤال" : "إضافة سؤال جديد"}
               </h3>
               <button
                 onClick={() => setIsAddModalOpen(false)}
-                className="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 font-bold"
+                className="w-7 h-7 rounded-full bg-white/8 hover:bg-white/14 flex items-center justify-center text-zinc-400 hover:text-white font-bold cursor-pointer"
               >
                 ✕
               </button>
@@ -382,58 +376,54 @@ export default function AdminFaqPage() {
 
             <form onSubmit={handleSaveFaq} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  نص السؤال (Question)
-                </label>
+                <label className="block text-xs font-bold text-zinc-400 mb-1">نص السؤال</label>
                 <input
                   type="text"
                   required
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
-                  placeholder="مثال: كيف أستعلم عن مطابقة الفلتر لسيارتي؟"
-                  className="w-full px-3 py-2.5 text-xs border border-slate-300 rounded-xl focus:outline-none focus:border-[#004bb5] font-medium"
+                  placeholder="كيف أستعلم عن مطابقة الفلتر؟"
+                  className="w-full px-3 py-2.5 text-xs bg-white/6 border border-white/10 rounded-xl text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500/50 transition"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  نص الجواب والتوضيح (Answer)
-                </label>
+                <label className="block text-xs font-bold text-zinc-400 mb-1">نص الجواب</label>
                 <textarea
                   required
                   rows={4}
                   value={answer}
                   onChange={(e) => setAnswer(e.target.value)}
-                  placeholder="اكتب التوضيح المفصل الذي يظهر للزائر عند الضغط على السؤال..."
-                  className="w-full px-3 py-2.5 text-xs border border-slate-300 rounded-xl focus:outline-none focus:border-[#004bb5] font-medium leading-relaxed"
+                  placeholder="اكتب التوضيح المفصل..."
+                  className="w-full px-3 py-2.5 text-xs bg-white/6 border border-white/10 rounded-xl text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500/50 transition leading-relaxed"
                 />
               </div>
 
-              <div className="flex items-center gap-2 pt-1">
+              <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   id="faqActive"
                   checked={isActive}
                   onChange={(e) => setIsActive(e.target.checked)}
-                  className="rounded border-slate-300 text-[#004bb5] focus:ring-[#004bb5] w-4 h-4 cursor-pointer"
+                  className="rounded border-white/20 w-4 h-4 cursor-pointer accent-blue-500"
                 />
-                <label htmlFor="faqActive" className="text-xs font-bold text-slate-700 cursor-pointer">
-                  تفعيل السؤال وعرضه في الموقع مباشرة
+                <label htmlFor="faqActive" className="text-xs font-bold text-zinc-400 cursor-pointer">
+                  تفعيل وعرضه في الموقع مباشرة
                 </label>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-4 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-white/8">
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl transition"
+                  className="px-4 py-2 text-xs font-bold text-zinc-500 hover:text-zinc-300 hover:bg-white/6 rounded-xl transition cursor-pointer"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
                   disabled={isSaving}
-                  className="px-5 py-2 bg-[#004bb5] hover:bg-[#00388a] text-white text-xs font-bold rounded-xl shadow-xs transition disabled:opacity-50"
+                  className="px-5 py-2 bg-[#004bb5] hover:bg-[#1a5fc8] text-white text-xs font-bold rounded-xl transition disabled:opacity-50 cursor-pointer"
                 >
                   {isSaving ? "جاري الحفظ..." : editingFaq ? "حفظ التعديل" : "إضافة السؤال"}
                 </button>

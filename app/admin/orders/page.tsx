@@ -43,68 +43,68 @@ export default function AdminOrdersPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-right" dir="rtl">
       
       {/* Header */}
-      <div className="pb-4 border-b border-slate-200">
-        <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-          إدارة طلبيات الشحن والتوصيل
+      <div>
+        <h1 className="text-xl font-black text-white tracking-tight">
+          إدارة الطلبيات والشحن
         </h1>
-        <p className="text-xs text-slate-500 mt-0.5">
-          طباعة بوليصة التوصيل (AWB) وإرسال تفاصيل الطرد مباشرة بالواتساب لسائق التوصيل
+        <p className="text-xs text-zinc-500 mt-0.5">
+          طباعة بوليصة التوصيل (AWB) وإشعار السائق والزبون عبر واتساب
         </p>
       </div>
 
       {/* Orders Table */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
-        <div className="p-4 border-b border-slate-200 flex items-center justify-between">
-          <h3 className="font-bold text-sm text-slate-900">
-            الطلبيات النشطة ({orders.length} طلبية)
+      <div className="bg-[#1a1d27] border border-white/8 rounded-2xl overflow-hidden">
+        <div className="p-4 border-b border-white/8 flex items-center justify-between">
+          <h3 className="font-bold text-sm text-white">
+            الطلبيات النشطة ({orders.length})
           </h3>
-          <span className="text-xs text-slate-400">الدفع نقداً عند الاستلام</span>
+          <span className="text-xs text-zinc-600">الدفع نقداً عند الاستلام</span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-right text-xs">
-            <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
+            <thead className="border-b border-white/8 text-zinc-500 font-semibold">
               <tr>
                 <th className="p-3.5">الكود</th>
                 <th className="p-3.5">الزبون والهاتف</th>
-                <th className="p-3.5">المحافظة والعنوان</th>
-                <th className="p-3.5">المواد المطلوبة</th>
+                <th className="p-3.5 hidden sm:table-cell">المحافظة والعنوان</th>
+                <th className="p-3.5 hidden md:table-cell">المواد المطلوبة</th>
                 <th className="p-3.5">المطلوب نقداً</th>
                 <th className="p-3.5">حالة الطلب</th>
-                <th className="p-3.5 text-center">إجراءات الشحن</th>
+                <th className="p-3.5 text-center">إجراءات</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 text-slate-700">
+            <tbody className="divide-y divide-white/5 text-zinc-300">
               {orders.map((ord) => (
-                <tr key={ord.id} className="hover:bg-slate-50 transition">
-                  <td className="p-3.5 font-bold font-mono text-slate-900">#{ord.id}</td>
+                <tr key={ord.id} className="hover:bg-white/4 transition">
+                  <td className="p-3.5 font-bold font-mono text-white">#{ord.id}</td>
                   
                   <td className="p-3.5">
-                    <span className="font-bold text-slate-900 block">{ord.customer_name}</span>
-                    <span className="text-[11px] text-slate-500 font-mono" dir="ltr">
+                    <span className="font-bold text-white block">{ord.customer_name}</span>
+                    <span className="text-[11px] text-zinc-500 font-mono" dir="ltr">
                       {ord.phone}
                     </span>
                   </td>
 
-                  <td className="p-3.5">
-                    <span className="bg-blue-50 text-[#004bb5] text-[10px] font-bold px-2 py-0.5 rounded">
+                  <td className="p-3.5 hidden sm:table-cell">
+                    <span className="bg-blue-500/15 text-blue-400 text-[10px] font-bold px-2 py-0.5 rounded border border-blue-500/20">
                       {ord.governorate}
                     </span>
-                    <p className="text-slate-500 text-[11px] mt-0.5 max-w-xs truncate">
+                    <p className="text-zinc-500 text-[11px] mt-0.5 max-w-xs truncate">
                       {ord.detailed_address}
                     </p>
                   </td>
 
-                  <td className="p-3.5 text-slate-600 max-w-xs">{ord.notes}</td>
+                  <td className="p-3.5 text-zinc-500 max-w-xs hidden md:table-cell">{ord.notes}</td>
 
                   <td className="p-3.5">
-                    <span className="font-extrabold text-[#004bb5] text-xs sm:text-sm">
+                    <span className="font-extrabold text-blue-400 text-xs sm:text-sm font-mono">
                       {formatIQD(ord.total_amount)}
                     </span>
-                    <span className="text-[10px] text-emerald-600 block font-semibold">
+                    <span className="text-[10px] text-emerald-500 block font-semibold">
                       نقد عند الباب
                     </span>
                   </td>
@@ -112,8 +112,8 @@ export default function AdminOrdersPage() {
                   <td className="p-3.5">
                     <select
                       value={ord.status}
-                      onChange={(e) => updateOrderStatus(ord.id, e.target.value as any)}
-                      className="bg-slate-50 border border-slate-300 rounded-lg p-1 text-[11px] font-semibold text-slate-800"
+                      onChange={(e) => updateOrderStatus(ord.id, e.target.value as Order["status"])}
+                      className="bg-white/6 border border-white/10 rounded-lg p-1.5 text-[11px] font-semibold text-zinc-200 focus:outline-none focus:border-blue-500/50 cursor-pointer"
                     >
                       <option value="pending">قيد التجهيز</option>
                       <option value="dispatched">مع المندوب</option>
@@ -126,46 +126,40 @@ export default function AdminOrdersPage() {
                     <div className="inline-flex items-center gap-1.5 flex-wrap justify-center">
                       <button
                         onClick={() => setSelectedWaybill(ord)}
-                        className="bg-slate-900 hover:bg-black text-white text-[11px] font-semibold px-2.5 py-1.5 rounded-lg shadow-xs transition"
+                        className="bg-white/10 hover:bg-white/16 text-zinc-200 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg transition cursor-pointer"
                       >
                         🖨️ AWB
                       </button>
 
-                      {/* 1. Notify Customer on WhatsApp */}
                       <a
                         href={`https://wa.me/${ord.phone.replace(/[^0-9]/g, "").replace(/^0/, "964")}?text=${encodeURIComponent(
                           `مرحباً ${ord.customer_name}،\n` +
-                          `طردك رقم [${ord.id}] من محل العاني للفلتر تم تسليمه للمندوب وهو في الطريق إليك 🚗\n` +
+                          `طردك رقم [${ord.id}] من محل العاني للفلتر تم تسليمه للمندوب 🚗\n` +
                           `📍 الوجهة: ${ord.governorate}\n` +
-                          `💵 المبلغ المطلوب نقداً عند الاستلام: ${formatIQD(ord.total_amount)}\n` +
-                          `شكراً لاختيارك محل العاني للفلتر!`
+                          `💵 المبلغ: ${formatIQD(ord.total_amount)}\n` +
+                          `شكراً لاختيارك العاني للفلتر!`
                         )}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-semibold px-2.5 py-1.5 rounded-lg shadow-xs transition"
+                        className="bg-blue-500/15 hover:bg-blue-500/25 text-blue-400 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg border border-blue-500/20 transition"
                       >
                         إشعار الزبون 💬
                       </a>
 
-                      {/* 2. Dispatch to Delivery Driver */}
                       <a
                         href={`https://wa.me/?text=${encodeURIComponent(
-                          `🚚 إرسال طرد جديد - محل العاني للفلتر\n` +
-                          `───────────────────────\n` +
-                          `📦 كود الطرد: ${ord.id}\n` +
+                          `🚚 إرسال طرد - العاني للفلتر\n` +
+                          `📦 كود: ${ord.id}\n` +
                           `👤 المستلم: ${ord.customer_name}\n` +
-                          `📱 هاتف الزبون: ${ord.phone}\n` +
+                          `📱 هاتف: ${ord.phone}\n` +
                           `📍 المحافظة: ${ord.governorate}\n` +
-                          `🏠 العنوان بالتفصيل: ${ord.detailed_address}\n` +
-                          `📋 محتويات الطرد: ${ord.notes}\n` +
-                          `───────────────────────\n` +
-                          `💵 المبلغ المطلوب تحصيله نقداً: ${formatIQD(ord.total_amount)}\n` +
-                          `───────────────────────\n` +
-                          `⚠️ ملاحظة للمندوب: يرجى فحص الطرد مع الزبون عند الباب قبل استلام المبلغ.`
+                          `🏠 العنوان: ${ord.detailed_address}\n` +
+                          `📋 المحتويات: ${ord.notes}\n` +
+                          `💵 المبلغ: ${formatIQD(ord.total_amount)}`
                         )}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-semibold px-2.5 py-1.5 rounded-lg shadow-xs transition"
+                        className="bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg border border-emerald-500/20 transition"
                       >
                         للسائق 🚗
                       </a>
@@ -178,80 +172,74 @@ export default function AdminOrdersPage() {
         </div>
       </div>
 
-      {/* PRINTABLE AIR WAYBILL MODAL */}
+      {/* PRINTABLE AWB MODAL */}
       {selectedWaybill && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden">
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#1a1d27] border border-white/10 rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden">
             
-            <div className="p-4 bg-slate-900 text-white flex items-center justify-between">
-              <span className="text-xs font-bold">بوليصة الشحن الرسمية للمندوب (AWB)</span>
+            <div className="p-4 border-b border-white/8 flex items-center justify-between">
+              <span className="text-sm font-bold text-white">بوليصة الشحن (AWB)</span>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => window.print()}
-                  className="bg-[#004bb5] hover:bg-[#00388a] text-white text-xs px-3.5 py-1.5 rounded-lg font-bold shadow-xs"
+                  className="bg-[#004bb5] hover:bg-[#1a5fc8] text-white text-xs px-3.5 py-1.5 rounded-lg font-bold transition cursor-pointer"
                 >
-                  طباعة البوليصة
+                  طباعة
                 </button>
                 <button
                   onClick={() => setSelectedWaybill(null)}
-                  className="text-slate-400 hover:text-white p-1"
+                  className="w-8 h-8 rounded-lg bg-white/8 hover:bg-white/14 flex items-center justify-center text-zinc-400 hover:text-white cursor-pointer"
                 >
                   ✕
                 </button>
               </div>
             </div>
 
-            {/* Printable Air Waybill Label */}
-            <div id="printArea" className="p-6 space-y-4 m-4 border-2 border-dashed border-slate-300 rounded-xl bg-white">
-              <div className="flex justify-between items-start border-b-2 border-slate-900 pb-3">
+            {/* Printable waybill — white card for print */}
+            <div id="printArea" className="m-4 p-5 border-2 border-dashed border-white/20 rounded-xl bg-white text-black print:border-black">
+              <div className="flex justify-between items-start border-b-2 border-black pb-3 mb-3">
                 <div>
-                  <h2 className="text-lg font-black text-slate-900">العاني للفلتر • AL ANI Filter</h2>
-                  <p className="text-[10px] text-slate-500 font-mono">BAGHDAD, IRAQ • SHIPMENT MANIFEST</p>
+                  <h2 className="text-base font-black text-black">العاني للفلتر • AL ANI Filter</h2>
+                  <p className="text-[10px] text-gray-500 font-mono">BAGHDAD, IRAQ</p>
                 </div>
                 <div className="text-left">
-                  <span className="text-[10px] text-slate-400 block font-mono">TRACKING CODE</span>
-                  <span className="text-base font-black font-mono text-slate-900">#{selectedWaybill.id}</span>
+                  <span className="text-[10px] text-gray-400 block font-mono">TRACKING</span>
+                  <span className="text-base font-black font-mono text-black">#{selectedWaybill.id}</span>
                 </div>
               </div>
 
-              {/* Barcode representation */}
-              <div className="bg-slate-100 py-1.5 px-3 rounded text-center">
-                <div className="font-mono text-xs text-slate-400 tracking-wider">||| | ||||| |||| || |||||| | |||| |||</div>
-                <span className="text-[10px] font-mono font-bold tracking-widest text-slate-700">
+              <div className="bg-gray-100 py-1.5 px-3 rounded text-center mb-3">
+                <div className="font-mono text-xs text-gray-400">||| | ||||| |||| || |||||| | |||| |||</div>
+                <span className="text-[10px] font-mono font-bold tracking-widest text-gray-700">
                   {selectedWaybill.id}-IRQ-COD
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 text-xs border border-slate-200 rounded-lg p-2.5">
+              <div className="grid grid-cols-2 gap-3 text-xs border border-gray-200 rounded-lg p-2.5 mb-3">
                 <div>
-                  <span className="text-slate-400 block text-[10px] mb-0.5">اسم المستلم:</span>
-                  <p className="font-bold text-slate-900">{selectedWaybill.customer_name}</p>
-                  <p className="text-slate-600 font-mono mt-0.5" dir="ltr">{selectedWaybill.phone}</p>
+                  <span className="text-gray-400 block text-[10px] mb-0.5">المستلم:</span>
+                  <p className="font-bold text-black">{selectedWaybill.customer_name}</p>
+                  <p className="text-gray-600 font-mono mt-0.5" dir="ltr">{selectedWaybill.phone}</p>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px] mb-0.5">المحافظة والعنوان:</span>
-                  <p className="font-bold text-slate-900">{selectedWaybill.governorate}</p>
-                  <p className="text-slate-600 mt-0.5 truncate">{selectedWaybill.detailed_address}</p>
+                  <span className="text-gray-400 block text-[10px] mb-0.5">المحافظة:</span>
+                  <p className="font-bold text-black">{selectedWaybill.governorate}</p>
+                  <p className="text-gray-600 mt-0.5 truncate">{selectedWaybill.detailed_address}</p>
                 </div>
               </div>
 
-              <div className="border border-slate-200 rounded-lg p-2.5 text-xs">
-                <span className="text-[10px] font-bold text-slate-400 block mb-1">المحتويات في الطرد:</span>
-                <p className="font-medium text-slate-800">{selectedWaybill.notes}</p>
+              <div className="border border-gray-200 rounded-lg p-2.5 text-xs mb-3">
+                <span className="text-[10px] font-bold text-gray-400 block mb-1">محتويات الطرد:</span>
+                <p className="font-medium text-black">{selectedWaybill.notes}</p>
               </div>
 
               <div className="bg-amber-50 border-2 border-amber-400 p-4 rounded-xl text-center">
                 <span className="text-[11px] font-bold text-amber-900 uppercase block">
-                  المبلغ المطلوب تحصيله نقداً من الزبون
+                  المبلغ المطلوب نقداً
                 </span>
-                <p className="text-2xl sm:text-3xl font-black text-amber-700 mt-0.5">
+                <p className="text-2xl font-black text-amber-700 mt-0.5">
                   {formatIQD(selectedWaybill.total_amount)}
                 </p>
-                <span className="text-[10px] text-amber-800 block mt-0.5">(شامل ثمن البضاعة + أجور التوصيل)</span>
-              </div>
-
-              <div className="text-[10px] text-slate-400 text-center border-t border-slate-200 pt-2">
-                شكراً لتعاملكم مع محل العاني للفلتر • يرجى عدم فتح الطرد إلا بحضور مندوب شركة التوصيل
               </div>
             </div>
 

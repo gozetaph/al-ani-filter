@@ -63,3 +63,38 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+.admin-card {
+  background-color: #1a1d27;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+}
+
+.admin-input {
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  color: #e4e4e7;
+  font-size: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  transition: border-color 0.15s;
+}
+.admin-input:focus {
+  outline: none;
+  border-color: rgba(77, 139, 255, 0.5);
+}
+.admin-input::placeholder {
+  color: #52525b;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
