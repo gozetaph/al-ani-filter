@@ -183,7 +183,7 @@ export default function AdminFaqPage() {
   };
 
   return (
-    <div className="space-y-6 text-right" dir="rtl" style={{ fontFamily: "'Cairo', sans-serif" }}>
+    <div className="space-y-6 text-right" dir="rtl" style={{ fontFamily: "'IBM Plex Sans Arabic', sans-serif" }}>
       
       {/* ── TOP HEADER BAR ───────────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-neutral-800">

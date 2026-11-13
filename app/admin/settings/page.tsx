@@ -4,17 +4,18 @@ import { useState } from "react";
 import { triggerHaptic } from "@/lib/haptics";
 
 export default function AdminSettingsPage() {
-  const [copied, setCopied] = useState(false);
   const [cleared, setCleared] = useState(false);
 
   const handleExportBackup = () => {
     triggerHaptic("medium");
     const items = localStorage.getItem("al_ani_custom_items") || "[]";
     const faqs = localStorage.getItem("al_ani_faqs") || "[]";
+    const leads = localStorage.getItem("al_ani_whatsapp_leads") || "[]";
     const exportData = {
       timestamp: new Date().toISOString(),
       custom_items: JSON.parse(items),
       faqs: JSON.parse(faqs),
+      whatsapp_leads: JSON.parse(leads),
     };
     const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -37,14 +38,8 @@ export default function AdminSettingsPage() {
     }, 1000);
   };
 
-  const copyPinGuide = () => {
-    navigator.clipboard.writeText("NEXT_PUBLIC_ADMIN_PIN");
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
-    <div className="space-y-6 text-right max-w-4xl" dir="rtl" style={{ fontFamily: "'Cairo', sans-serif" }}>
+    <div className="space-y-6 text-right max-w-4xl" dir="rtl" style={{ fontFamily: "'IBM Plex Sans Arabic', sans-serif" }}>
       
       {/* ── TOP HEADER BAR ───────────────────────────────────────────── */}
       <div className="pb-2 border-b border-neutral-800">
@@ -52,7 +47,7 @@ export default function AdminSettingsPage() {
           إعدادات النظام والكتالوج
         </h1>
         <p className="text-xs text-neutral-400 mt-1 font-semibold">
-          التحكم في النسخ الاحتياطي، أرقام التواصل، وأمان لوحة الإدارة
+          إدارة قنوات التواصل والنسخ الاحتياطي للكتالوج
         </p>
       </div>
 
@@ -106,33 +101,8 @@ export default function AdminSettingsPage() {
             </button>
           </div>
           <p className="text-[11px] text-neutral-500">
-            النسخة الاحتياطية تحتوي على كامل المواد المسجلة وقائمة الأسئلة الشائعة بصيغة JSON قابلة للاسترجاع.
+            النسخة الاحتياطية تحتوي على المواد والأسئلة الشائعة وسجل عملاء واتساب المحفوظ على هذا الجهاز بصيغة JSON.
           </p>
-        </div>
-
-        {/* Security & PIN Settings */}
-        <div className="rounded-2xl border border-neutral-800 bg-[#0a0a0a] p-5 sm:p-6 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-neutral-800">
-            <h3 className="font-bold text-sm text-white">أمان لوحة التحكم ورمز PIN</h3>
-            <span className="text-[10px] text-neutral-400 font-mono">Security</span>
-          </div>
-
-          <p className="text-xs text-neutral-400 leading-relaxed font-medium">
-            تتم حماية لوحة الإدارة برمز مرور PIN مكون من 8 أرقام، مع نظام قفل مؤقت تلقائي بعد 5 محاولات خاطئة لمنع التخمين.
-          </p>
-
-          <div className="p-3.5 bg-neutral-900 rounded-xl border border-neutral-800 flex items-center justify-between text-xs">
-            <div className="space-y-0.5">
-              <span className="font-bold text-white block">متغير بيئة رمز PIN في Vercel:</span>
-              <code className="text-neutral-400 font-mono text-[11px]">NEXT_PUBLIC_ADMIN_PIN</code>
-            </div>
-            <button
-              onClick={copyPinGuide}
-              className="px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-bold rounded-lg transition text-[11px] cursor-pointer"
-            >
-              {copied ? "تم النسخ!" : "نسخ اسم المتغير"}
-            </button>
-          </div>
         </div>
 
       </div>

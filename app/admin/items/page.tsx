@@ -17,14 +17,27 @@ export default function AdminStockItemsPage() {
   // Form State: Strictly Photo, Description, Manufacturer (Mann vs Other), plus Title/Code
   const [partNumber, setPartNumber] = useState("");
   const [desc, setDesc] = useState("");
-  const [manufacturer, setManufacturer] = useState<"Mann Filter" | "Other Producers">("Mann Filter");
+  const [manufacturer, setManufacturer] = useState("Mann Filter");
   const [category, setCategory] = useState("فلاتر دهن (زيت)");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState("/products/oil-filter.svg");
+  const [manufacturers, setManufacturers] = useState(["Mann Filter", "Other Producers"]);
+  const [categories, setCategories] = useState([
+    "فلاتر دهن (زيت)", "فلاتر هواء", "فلاتر وقود (ديزل)",
+    "فلاتر مجفف هواء للشاحنات", "فلاتر كابينة ومكيف", "فلاتر هيدروليك",
+  ]);
+  const [newManufacturer, setNewManufacturer] = useState("");
+  const [newCategory, setNewCategory] = useState("");
 
   const supabase = createClient();
 
   useEffect(() => {
+    try {
+      const savedManufacturers = JSON.parse(localStorage.getItem("al_ani_manufacturers") || "null");
+      const savedCategories = JSON.parse(localStorage.getItem("al_ani_filter_types") || "null");
+      if (Array.isArray(savedManufacturers) && savedManufacturers.length) setManufacturers(savedManufacturers);
+      if (Array.isArray(savedCategories) && savedCategories.length) setCategories(savedCategories);
+    } catch { /* use defaults */ }
     async function loadItems() {
       // 1. Try local storage
       const cached = localStorage.getItem("al_ani_custom_items");
@@ -59,8 +72,8 @@ export default function AdminStockItemsPage() {
     setEditingItem(null);
     setPartNumber("");
     setDesc("");
-    setManufacturer("Mann Filter");
-    setCategory("فلاتر دهن (زيت)");
+    setManufacturer(manufacturers[0] || "Mann Filter");
+    setCategory(categories[0] || "فلاتر دهن (زيت)");
     setImageFile(null);
     setImageUrl("/products/oil-filter.svg");
     setIsModalOpen(true);
@@ -71,8 +84,8 @@ export default function AdminStockItemsPage() {
     setEditingItem(item);
     setPartNumber(item.part_number || item.title || "");
     setDesc(item.description || "");
-    const isMann = (item.description || "").includes("Mann") || (item.title || "").includes("Mann");
-    setManufacturer(isMann ? "Mann Filter" : "Other Producers");
+    const matchedManufacturer = manufacturers.find((name) => (item.description || "").includes(name));
+    setManufacturer(matchedManufacturer || manufacturers[0] || "Mann Filter");
     setCategory(item.type || item.clean_type || "فلاتر دهن (زيت)");
     setImageUrl(item.image_url || "/products/oil-filter.svg");
     setImageFile(null);
@@ -111,8 +124,9 @@ export default function AdminStockItemsPage() {
       }
     }
 
-    const mfrLabel = manufacturer === "Mann Filter" ? "مان فلتـر (Mann Filter)" : "منتجون آخرون (Other Producers)";
-    const enrichedDesc = desc.trim() || `فلتر أصلي من إنتاج ${mfrLabel}`;
+    const descriptionBody = manufacturers.reduce((value, name) => value.split(name).join(""), desc.trim())
+      .replace(/[()•·\-–]+/g, " ").replace(/\s+/g, " ").trim();
+    const enrichedDesc = descriptionBody ? `${descriptionBody} · ${manufacturer}` : `فلتر أصلي من إنتاج ${manufacturer}`;
 
     if (editingItem) {
       // Update existing item
@@ -210,15 +224,43 @@ export default function AdminStockItemsPage() {
     }
   };
 
-  const categories = [
-    "الكل",
-    "فلاتر دهن (زيت)",
-    "فلاتر هواء",
-    "فلاتر وقود (ديزل)",
-    "فلاتر مجفف هواء للشاحنات",
-    "فلاتر كابينة ومكيف",
-    "فلاتر هيدروليك",
-  ];
+  const addManufacturer = () => {
+    const value = newManufacturer.trim();
+    if (!value || manufacturers.includes(value)) return;
+    const next = [...manufacturers, value]; setManufacturers(next); setManufacturer(value); setNewManufacturer("");
+    localStorage.setItem("al_ani_manufacturers", JSON.stringify(next));
+  };
+  const renameManufacturer = (oldName: string) => {
+    const value = window.prompt("اسم الشركة المصنعة الجديد", oldName)?.trim();
+    if (!value || value === oldName || manufacturers.includes(value)) return;
+    const next = manufacturers.map((name) => name === oldName ? value : name); setManufacturers(next);
+    localStorage.setItem("al_ani_manufacturers", JSON.stringify(next));
+    const updatedItems = items.map((item) => item.description?.includes(oldName)
+      ? { ...item, description: item.description.replaceAll(oldName, value) } : item);
+    setItems(updatedItems);
+    localStorage.setItem("al_ani_custom_items", JSON.stringify(updatedItems));
+    supabase.from("products").select("id, description").ilike("description", `%${oldName}%`).then(({ data }) => {
+      if (!data?.length) return;
+      Promise.all(data.map((row) => supabase.from("products").update({ description: (row.description || "").replaceAll(oldName, value) }).eq("id", row.id)));
+    });
+  };
+  const addCategory = () => {
+    const value = newCategory.trim();
+    if (!value || categories.includes(value)) return;
+    const next = [...categories, value]; setCategories(next); setNewCategory("");
+    localStorage.setItem("al_ani_filter_types", JSON.stringify(next));
+  };
+  const renameCategory = (oldName: string) => {
+    const value = window.prompt("اسم نوع الفلتر الجديد", oldName)?.trim();
+    if (!value || value === oldName || categories.includes(value)) return;
+    const next = categories.map((name) => name === oldName ? value : name); setCategories(next);
+    localStorage.setItem("al_ani_filter_types", JSON.stringify(next));
+    const updatedItems = items.map((item) => item.type === oldName || item.clean_type === oldName
+      ? { ...item, type: value, clean_type: value } : item);
+    setItems(updatedItems);
+    localStorage.setItem("al_ani_custom_items", JSON.stringify(updatedItems));
+    supabase.from("products").update({ type: value }).eq("type", oldName);
+  };
 
   // Filter items by category & search
   const filteredItems = items.filter((item) => {
@@ -237,7 +279,7 @@ export default function AdminStockItemsPage() {
   });
 
   return (
-    <div className="space-y-6 text-right" dir="rtl" style={{ fontFamily: "'Cairo', sans-serif" }}>
+    <div className="space-y-6 text-right" dir="rtl" style={{ fontFamily: "'IBM Plex Sans Arabic', sans-serif" }}>
       
       {/* ── TOP HEADER BAR ───────────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-neutral-800">
@@ -257,6 +299,19 @@ export default function AdminStockItemsPage() {
           <span>+ إضافة مادة جديدة</span>
         </button>
       </div>
+
+      <section className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+        <div className="rounded-2xl border border-neutral-800 bg-[#0a0a0a] p-4 sm:p-5">
+          <div className="mb-4"><h2 className="text-sm font-bold text-white">الشركات المصنعة</h2><p className="mt-1 text-[11px] text-neutral-500">أضف أسماء الشركات لتظهر عند تسجيل مادة جديدة.</p></div>
+          <div className="flex gap-2"><input value={newManufacturer} onChange={(e) => setNewManufacturer(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addManufacturer(); } }} placeholder="اسم الشركة المصنعة" className="min-w-0 flex-1 rounded-xl border border-neutral-800 bg-neutral-900 px-3 py-2.5 text-xs text-white outline-none focus:border-emerald-500/60"/><button type="button" onClick={addManufacturer} className="rounded-xl bg-neutral-100 px-3.5 text-xs font-bold text-black hover:bg-white">إضافة</button></div>
+          <div className="mt-3 flex flex-wrap gap-2">{manufacturers.map((name) => <button key={name} type="button" onClick={() => renameManufacturer(name)} title="اضغط لتعديل الاسم" className="rounded-lg border border-neutral-800 bg-neutral-900 px-3 py-1.5 text-xs text-neutral-300 hover:border-emerald-500/40 hover:text-white">{name} <span className="mr-1 text-neutral-600">✎</span></button>)}</div>
+        </div>
+        <div className="rounded-2xl border border-neutral-800 bg-[#0a0a0a] p-4 sm:p-5">
+          <div className="mb-4"><h2 className="text-sm font-bold text-white">أنواع الفلاتر</h2><p className="mt-1 text-[11px] text-neutral-500">أضف نوعاً جديداً أو اضغط على النوع لتعديل اسمه وتحديث المواد المرتبطة به.</p></div>
+          <div className="flex gap-2"><input value={newCategory} onChange={(e) => setNewCategory(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCategory(); } }} placeholder="اسم نوع الفلتر" className="min-w-0 flex-1 rounded-xl border border-neutral-800 bg-neutral-900 px-3 py-2.5 text-xs text-white outline-none focus:border-emerald-500/60"/><button type="button" onClick={addCategory} className="rounded-xl bg-neutral-100 px-3.5 text-xs font-bold text-black hover:bg-white">إضافة</button></div>
+          <div className="mt-3 flex flex-wrap gap-2">{categories.map((name) => <button key={name} type="button" onClick={() => renameCategory(name)} title="اضغط لتعديل الاسم" className="rounded-lg border border-neutral-800 bg-neutral-900 px-3 py-1.5 text-xs text-neutral-300 hover:border-emerald-500/40 hover:text-white">{name} <span className="mr-1 text-neutral-600">✎</span></button>)}</div>
+        </div>
+      </section>
 
       {/* ── SEARCH & CATEGORY DROPDOWN MENU ─────────────────────────── */}
       <div className="rounded-2xl border border-neutral-800 bg-[#0a0a0a] p-4 flex flex-col md:flex-row items-center justify-between gap-4">
@@ -429,31 +484,7 @@ export default function AdminStockItemsPage() {
               {/* Manufacturer Selector: Mann vs Other Producers */}
               <div>
                 <label className="block font-bold text-neutral-300 mb-1">الشركة المصنعة *</label>
-                <div className="grid grid-cols-2 gap-2.5">
-                  <button
-                    type="button"
-                    onClick={() => setManufacturer("Mann Filter")}
-                    className={`py-2.5 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
-                      manufacturer === "Mann Filter"
-                        ? "bg-amber-500/20 text-amber-300 border-amber-500"
-                        : "bg-neutral-900 text-neutral-400 border-neutral-800 hover:text-white"
-                    }`}
-                  >
-                    <span>مان فلتـر (Mann)</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setManufacturer("Other Producers")}
-                    className={`py-2.5 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
-                      manufacturer === "Other Producers"
-                        ? "bg-blue-500/20 text-blue-300 border-blue-500"
-                        : "bg-neutral-900 text-neutral-400 border-neutral-800 hover:text-white"
-                    }`}
-                  >
-                    <span>منتجون آخرون (Other)</span>
-                  </button>
-                </div>
+                <select value={manufacturer} onChange={(e) => setManufacturer(e.target.value)} className="w-full rounded-xl border border-neutral-800 bg-neutral-900 p-2.5 text-xs font-bold text-neutral-200 outline-none focus:border-blue-500">{manufacturers.map((name) => <option key={name}>{name}</option>)}</select>
               </div>
 
               {/* Category */}
@@ -464,12 +495,7 @@ export default function AdminStockItemsPage() {
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-2.5 text-xs font-bold text-neutral-200 focus:outline-none focus:border-blue-500 transition cursor-pointer"
                 >
-                  <option value="فلاتر دهن (زيت)">فلاتر دهن (زيت)</option>
-                  <option value="فلاتر هواء">فلاتر هواء</option>
-                  <option value="فلاتر وقود (ديزل)">فلاتر وقود (ديزل)</option>
-                  <option value="فلاتر مجفف هواء للشاحنات">فلاتر مجفف هواء للشاحنات</option>
-                  <option value="فلاتر كابينة ومكيف">فلاتر كابينة ومكيف</option>
-                  <option value="فلاتر هيدروليك">فلاتر هيدروليك</option>
+                  {categories.map((type) => <option key={type} value={type}>{type}</option>)}
                 </select>
               </div>
 

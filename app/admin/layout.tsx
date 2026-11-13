@@ -153,7 +153,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     setAttempts(0);
   };
 
-  if (!isClient) return <div className="min-h-screen bg-black" style={{ fontFamily: "'Cairo', sans-serif" }} />;
+  if (!isClient) return <div className="min-h-screen bg-black" style={{ fontFamily: "'IBM Plex Sans Arabic', sans-serif" }} />;
 
   // ── PIN AUTH SCREEN (Pure Black & Cairo Typography) ─────────────────────────
   if (!isAuthenticated) {
@@ -161,7 +161,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return (
       <div 
         className="min-h-screen bg-black flex items-center justify-center p-4 antialiased text-white" 
-        style={{ fontFamily: "'Cairo', sans-serif" }}
+        style={{ fontFamily: "'IBM Plex Sans Arabic', sans-serif" }}
       >
         <div className="w-full max-w-sm rounded-2xl border border-neutral-800 bg-[#0a0a0a] p-8 shadow-2xl flex flex-col items-center text-center">
           
@@ -321,7 +321,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div 
       className="min-h-screen bg-black text-neutral-100 flex antialiased"
-      style={{ fontFamily: "'Cairo', sans-serif" }}
+      style={{ fontFamily: "'IBM Plex Sans Arabic', sans-serif" }}
     >
       
       {/* ── MOBILE OVERLAY BACKDROP ──────────────────────────────────────── */}

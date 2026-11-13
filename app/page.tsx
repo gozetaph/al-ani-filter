@@ -158,7 +158,7 @@ export default function HalcyonStorefrontPage() {
     if (crossRow && crossRow.value) {
       const parts = crossRow.value.split(/[,،]/);
       const parsed: { brand: string; code: string }[] = [];
-      
+
       parts.forEach((p) => {
         const trimmed = p.trim();
         if (trimmed) {
@@ -187,15 +187,14 @@ export default function HalcyonStorefrontPage() {
 
   return (
     <div className="min-h-screen bg-[#f8f8f8] text-[#111111] flex flex-col antialiased selection:bg-[#111111] selection:text-white">
-      
+
       {/* ========================================================== */}
       {/* APPLE SPLASH SCREEN ANIMATION (A SLIDES -> TEXT)           */}
       {/* ========================================================== */}
       {showSplash && (
-        <div 
-          className={`fixed inset-0 z-[100] bg-[#004bb5] flex items-center justify-center p-6 transition-all duration-700 ease-in-out ${
-            splashFading ? "opacity-0 scale-105 blur-md pointer-events-none" : "opacity-100 scale-100"
-          }`}
+        <div
+          className={`fixed inset-0 z-[100] bg-[#004bb5] flex items-center justify-center p-6 transition-all duration-700 ease-in-out ${splashFading ? "opacity-0 scale-105 blur-md pointer-events-none" : "opacity-100 scale-100"
+            }`}
         >
           {/* Subtle Water Glow */}
           <div className="absolute w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-white/10 blur-3xl animate-pulse pointer-events-none" />
@@ -204,27 +203,26 @@ export default function HalcyonStorefrontPage() {
           <div className="relative z-10 flex items-center justify-center" dir="ltr">
             {/* Mark A */}
             <div className="transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center shrink-0">
-              <Image 
-                src="/logo_a_trans.png" 
-                alt="A" 
-                width={130} 
-                height={130} 
-                className="h-20 sm:h-28 md:h-32 w-auto object-contain drop-shadow-2xl" 
+              <Image
+                src="/logo_a_trans.png"
+                alt="A"
+                width={130}
+                height={130}
+                className="h-20 sm:h-28 md:h-32 w-auto object-contain drop-shadow-2xl"
                 priority
               />
             </div>
 
             {/* Arabic Calligraphy "العاني للفلاتر" */}
-            <div 
-              className={`overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center shrink-0 ${
-                splashRevealed ? "max-w-[500px] opacity-100" : "max-w-0 opacity-0"
-              }`}
+            <div
+              className={`overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center shrink-0 ${splashRevealed ? "max-w-[500px] opacity-100" : "max-w-0 opacity-0"
+                }`}
             >
-              <Image 
-                src="/logo_text_trans.png" 
-                alt="العاني للفلاتر" 
-                width={280} 
-                height={100} 
+              <Image
+                src="/logo_text_trans.png"
+                alt="العاني للفلاتر"
+                width={280}
+                height={100}
                 className="h-16 sm:h-24 md:h-28 w-auto max-w-none object-contain pl-3 sm:pl-5 drop-shadow-2xl"
                 priority
               />
@@ -237,10 +235,10 @@ export default function HalcyonStorefrontPage() {
       {/* 2. MAIN NAVBAR (Height: 48px desktop / 44px mobile)        */}
       {/* ========================================================== */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200 px-4 sm:px-8 h-12 flex items-center justify-between transition-all">
-        
+
         {/* Left: Brand Identity (العاني للفلاتر) */}
         <div className="flex items-center gap-3">
-          <button 
+          <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="md:hidden p-1.5 text-neutral-800 hover:text-black focus:outline-none"
             aria-label="القائمة"
@@ -251,12 +249,12 @@ export default function HalcyonStorefrontPage() {
           </button>
 
           <Link href="/" className="flex items-center gap-2.5 group">
-            <Image 
-              src="/logo_a_blue_trans.png" 
-              alt="العاني" 
-              width={28} 
-              height={28} 
-              className="h-6 sm:h-7 w-auto object-contain transition-transform group-hover:scale-105" 
+            <Image
+              src="/logo_a_blue_trans.png"
+              alt="العاني"
+              width={28}
+              height={28}
+              className="h-6 sm:h-7 w-auto object-contain transition-transform group-hover:scale-105"
             />
             <div className="flex flex-col">
               <span className="font-extrabold text-sm sm:text-base tracking-tight leading-none text-[#111111]">
@@ -291,14 +289,14 @@ export default function HalcyonStorefrontPage() {
             <span className="font-mono-code text-[11px]">بحث</span>
           </button>
 
-          <a 
+          <a
             href="https://wa.me/9647901526221?text=مرحباً العاني للفلاتر، أود الاستفسار عن توفر فلتر"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 bg-emerald-600 text-white px-3 sm:px-4 py-1.5 rounded-none text-xs font-semibold hover:bg-emerald-700 transition active:scale-95"
           >
             <svg className="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.698.077-1.116-.062-.26-.086-.594-.216-1.026-.406-1.808-.795-2.984-2.617-3.076-2.739-.088-.121-.734-.977-.734-1.86 0-.884.464-1.32.63-1.498.167-.179.365-.224.487-.224.122 0 .243.001.35.006.112.006.262-.043.41.312.152.365.518 1.265.564 1.357.045.091.076.197.015.318-.061.121-.091.197-.182.303-.091.107-.193.238-.276.321-.091.091-.186.19-.08.373.107.182.474.782 1.018 1.267.701.624 1.292.818 1.474.909.182.091.289.076.395-.046.107-.121.456-.532.578-.715.121-.182.243-.152.41-.091.167.061 1.062.502 1.244.593.182.091.304.137.35.213.045.076.045.441-.099.846z"/>
+              <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.698.077-1.116-.062-.26-.086-.594-.216-1.026-.406-1.808-.795-2.984-2.617-3.076-2.739-.088-.121-.734-.977-.734-1.86 0-.884.464-1.32.63-1.498.167-.179.365-.224.487-.224.122 0 .243.001.35.006.112.006.262-.043.41.312.152.365.518 1.265.564 1.357.045.091.076.197.015.318-.061.121-.091.197-.182.303-.091.107-.193.238-.276.321-.091.091-.186.19-.08.373.107.182.474.782 1.018 1.267.701.624 1.292.818 1.474.909.182.091.289.076.395-.046.107-.121.456-.532.578-.715.121-.182.243-.152.41-.091.167.061 1.062.502 1.244.593.182.091.304.137.35.213.045.076.045.441-.099.846z" />
             </svg>
             <span>استفسار واتساب</span>
           </a>
@@ -309,23 +307,23 @@ export default function HalcyonStorefrontPage() {
       {isMobileMenuOpen && (
         <div className="md:hidden fixed inset-x-0 top-[85px] z-30 bg-white border-b border-neutral-200 shadow-xl px-6 py-6 flex flex-col gap-4 animate-fadeIn">
           <div className="flex flex-col gap-3 font-semibold text-sm">
-            <a 
-              href="#catalog" 
+            <a
+              href="#catalog"
               onClick={() => setIsMobileMenuOpen(false)}
               className="py-2 border-b border-neutral-100 flex items-center justify-between"
             >
               <span>كتالوج الفلاتر الكامل</span>
               <span className="font-mono-code text-xs text-neutral-400">{products.length} قطعة</span>
             </a>
-            <a 
-              href="#oem-lookup" 
+            <a
+              href="#oem-lookup"
               onClick={() => setIsMobileMenuOpen(false)}
               className="py-2 border-b border-neutral-100"
             >
               مطابقة أرقام OEM والماركات
             </a>
-            <a 
-              href="#faq" 
+            <a
+              href="#faq"
               onClick={() => setIsMobileMenuOpen(false)}
               className="py-2 border-b border-neutral-100"
             >
@@ -333,9 +331,9 @@ export default function HalcyonStorefrontPage() {
             </a>
           </div>
           <div className="pt-2 flex flex-col gap-2">
-            <a 
-              href="https://wa.me/9647901526221?text=مرحباً العاني للفلاتر، أود الاستفسار عن توفر فلتر" 
-              target="_blank" 
+            <a
+              href="https://wa.me/9647901526221?text=مرحباً العاني للفلاتر، أود الاستفسار عن توفر فلتر"
+              target="_blank"
               rel="noopener noreferrer"
               className="w-full text-center py-2.5 bg-emerald-600 text-white text-xs font-bold rounded-none"
             >
@@ -382,8 +380,8 @@ export default function HalcyonStorefrontPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            <a 
-              href="#catalog" 
+            <a
+              href="#catalog"
               className="px-6 py-3 bg-white text-black hover:bg-neutral-200 text-xs sm:text-sm font-bold uppercase tracking-wider inline-flex items-center gap-2 transition"
             >
               <span>استعراض كتالوج الفلاتر</span>
@@ -391,9 +389,9 @@ export default function HalcyonStorefrontPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
             </a>
-            
-            <a 
-              href="#oem-lookup" 
+
+            <a
+              href="#oem-lookup"
               className="px-6 py-3 border border-white text-white hover:bg-white hover:text-black text-xs sm:text-sm font-mono-code font-bold uppercase tracking-wider transition"
             >
               مطابقة كود القطعة OEM
@@ -406,10 +404,10 @@ export default function HalcyonStorefrontPage() {
       {/* 4. CATALOG SEARCH & COLLECTION                             */}
       {/* ========================================================== */}
       <section id="catalog" className="max-w-7xl mx-auto px-4 sm:px-8 py-12 w-full flex-1">
-        
+
         {/* Controls Bar */}
         <div className="bg-white border border-neutral-200 p-4 sm:p-5 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          
+
           {/* Search Input */}
           <div className="relative flex-1">
             <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-neutral-400">
@@ -426,7 +424,7 @@ export default function HalcyonStorefrontPage() {
               className="w-full pr-10 pl-10 py-2.5 text-xs sm:text-sm bg-neutral-50 border border-neutral-200 focus:bg-white focus:border-black focus:outline-none transition rounded-none font-mono-code placeholder:font-sans placeholder:text-neutral-400"
             />
             {searchQuery && (
-              <button 
+              <button
                 onClick={() => setSearchQuery("")}
                 className="absolute inset-y-0 left-0 pl-3 flex items-center text-xs text-neutral-400 hover:text-black font-mono-code"
               >
@@ -455,8 +453,8 @@ export default function HalcyonStorefrontPage() {
 
             {isCategoryDropdownOpen && (
               <>
-                <div 
-                  className="fixed inset-0 z-20" 
+                <div
+                  className="fixed inset-0 z-20"
                   onClick={() => setIsCategoryDropdownOpen(false)}
                 />
                 <div className="absolute right-0 top-full mt-1.5 w-64 bg-white border border-neutral-300 shadow-xl z-30 py-1 text-right divide-y divide-neutral-100 animate-fadeIn">
@@ -473,9 +471,8 @@ export default function HalcyonStorefrontPage() {
                           setIsCategoryDropdownOpen(false);
                           triggerHaptic("light");
                         }}
-                        className={`w-full px-4 py-2.5 text-xs flex items-center justify-between font-mono-code transition text-right ${
-                          isSelected ? "bg-black text-white font-bold" : "text-neutral-700 hover:bg-neutral-50"
-                        }`}
+                        className={`w-full px-4 py-2.5 text-xs flex items-center justify-between font-mono-code transition text-right ${isSelected ? "bg-black text-white font-bold" : "text-neutral-700 hover:bg-neutral-50"
+                          }`}
                       >
                         <span className={`text-[10px] px-1.5 py-0.5 ${isSelected ? "bg-white text-black font-bold" : "bg-neutral-100 text-neutral-500"}`}>
                           {count}
@@ -520,7 +517,7 @@ export default function HalcyonStorefrontPage() {
             <p className="text-xs text-neutral-500 max-w-md mx-auto">
               جرب البحث برقم آخر، أو تواصل معنا مباشرة عبر واتساب وسيقوم الفني بالتحقق من رقم القطعة المطلوب وتوفيره لك فوراً.
             </p>
-            <button 
+            <button
               onClick={() => {
                 setSearchQuery("");
                 setActiveCategory("الكل");
@@ -535,14 +532,14 @@ export default function HalcyonStorefrontPage() {
             {filteredProducts.map((product) => {
               const partNumber = product.part_number || product.title.split(" ").pop() || "AL-ANI";
               const cleanType = product.clean_type || product.type?.replace(/^فلاتر\s+/, "فلتر ") || "فلتر أصلي";
-              
+
               return (
-                <div 
+                <div
                   key={product.id}
                   className="bg-white border border-neutral-200 group flex flex-col justify-between hover:border-black transition-all duration-300 relative"
                 >
                   {/* Top Image Container */}
-                  <div 
+                  <div
                     onClick={() => setSelectedProduct(product)}
                     className="aspect-square bg-white p-4 relative overflow-hidden flex items-center justify-center cursor-pointer border-b border-neutral-100"
                   >
@@ -562,9 +559,9 @@ export default function HalcyonStorefrontPage() {
                       <span className="text-[10px] sm:text-[11px] font-mono-code text-neutral-500 uppercase block">
                         {cleanType}
                       </span>
-                      
+
                       {/* Bold Part Number */}
-                      <h3 
+                      <h3
                         onClick={() => setSelectedProduct(product)}
                         className="font-black text-sm sm:text-base text-[#111111] font-mono-code cursor-pointer hover:underline tracking-tight"
                       >
@@ -610,15 +607,15 @@ export default function HalcyonStorefrontPage() {
           </p>
 
           <div className="pt-4">
-            <a 
-              href="https://wa.me/9647901526221?text=مرحباً العاني للفلاتر، أود الاستفسار عن مطابقة فلتر لرقم القطعة OEM التالي: " 
+            <a
+              href="https://wa.me/9647901526221?text=مرحباً العاني للفلاتر، أود الاستفسار عن مطابقة فلتر لرقم القطعة OEM التالي: "
               target="_blank"
               rel="noopener noreferrer"
               className="halcyon-btn-primary px-8 py-3.5 text-xs font-bold uppercase tracking-wider inline-flex items-center gap-2"
             >
               <span>استعلام برقم القطعة عبر واتساب</span>
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.698.077-1.116-.062-.26-.086-.594-.216-1.026-.406-1.808-.795-2.984-2.617-3.076-2.739-.088-.121-.734-.977-.734-1.86 0-.884.464-1.32.63-1.498.167-.179.365-.224.487-.224.122 0 .243.001.35.006.112.006.262-.043.41.312.152.365.518 1.265.564 1.357.045.091.076.197.015.318-.061.121-.091.197-.182.303-.091.107-.193.238-.276.321-.091.091-.186.19-.08.373.107.182.474.782 1.018 1.267.701.624 1.292.818 1.474.909.182.091.289.076.395-.046.107-.121.456-.532.578-.715.121-.182.243-.152.41-.091.167.061 1.062.502 1.244.593.182.091.304.137.35.213.045.076.045.441-.099.846z"/>
+                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.698.077-1.116-.062-.26-.086-.594-.216-1.026-.406-1.808-.795-2.984-2.617-3.076-2.739-.088-.121-.734-.977-.734-1.86 0-.884.464-1.32.63-1.498.167-.179.365-.224.487-.224.122 0 .243.001.35.006.112.006.262-.043.41.312.152.365.518 1.265.564 1.357.045.091.076.197.015.318-.061.121-.091.197-.182.303-.091.107-.193.238-.276.321-.091.091-.186.19-.08.373.107.182.474.782 1.018 1.267.701.624 1.292.818 1.474.909.182.091.289.076.395-.046.107-.121.456-.532.578-.715.121-.182.243-.152.41-.091.167.061 1.062.502 1.244.593.182.091.304.137.35.213.045.076.045.441-.099.846z" />
               </svg>
             </a>
           </div>
@@ -665,7 +662,7 @@ export default function HalcyonStorefrontPage() {
       <footer className="bg-white border-t border-neutral-200 mt-auto text-neutral-700 text-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 py-14">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 text-right">
-            
+
             {/* Col 1 */}
             <div className="space-y-3">
               <div className="flex items-center gap-2">
@@ -734,17 +731,17 @@ export default function HalcyonStorefrontPage() {
       {/* 9. PRODUCT DETAIL MODAL (Dismiss by clicking outside)      */}
       {/* ========================================================== */}
       {selectedProduct && (
-        <div 
+        <div
           onClick={() => setSelectedProduct(null)}
           className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm overflow-y-auto flex items-center justify-center p-4 sm:p-6 cursor-pointer"
         >
-          <div 
+          <div
             onClick={(e) => e.stopPropagation()}
             className="bg-white border-0 sm:border border-neutral-300 max-w-2xl w-full max-h-[92vh] overflow-y-auto text-right p-5 sm:p-8 relative space-y-6 shadow-2xl cursor-default"
           >
             {/* Product Header & Hero Image */}
             <div className="space-y-6">
-              
+
               {/* Product Gallery Container */}
               <div className="aspect-square bg-[#fbfbfb] border border-neutral-200 p-6 sm:p-8 flex items-center justify-center relative">
                 <Image
@@ -770,7 +767,7 @@ export default function HalcyonStorefrontPage() {
 
               {/* DIRECT WHATSAPP ACTION BUTTON (Replaces Price and Add to Cart) */}
               <div className="pt-2 border-t border-neutral-200">
-                <a 
+                <a
                   href={`https://wa.me/9647901526221?text=${encodeURIComponent(`مرحباً العاني للفلاتر، أود الاستفسار عن توفر فلتر كود ${selectedProduct.part_number || selectedProduct.title.split(" ").pop()}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -778,7 +775,7 @@ export default function HalcyonStorefrontPage() {
                 >
                   <span>استفسار مباشر عبر واتساب لهذا الفلتر</span>
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.698.077-1.116-.062-.26-.086-.594-.216-1.026-.406-1.808-.795-2.984-2.617-3.076-2.739-.088-.121-.734-.977-.734-1.86 0-.884.464-1.32.63-1.498.167-.179.365-.224.487-.224.122 0 .243.001.35.006.112.006.262-.043.41.312.152.365.518 1.265.564 1.357.045.091.076.197.015.318-.061.121-.091.197-.182.303-.091.107-.193.238-.276.321-.091.091-.186.19-.08.373.107.182.474.782 1.018 1.267.701.624 1.292.818 1.474.909.182.091.289.076.395-.046.107-.121.456-.532.578-.715.121-.182.243-.152.41-.091.167.061 1.062.502 1.244.593.182.091.304.137.35.213.045.076.045.441-.099.846z"/>
+                    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.698.077-1.116-.062-.26-.086-.594-.216-1.026-.406-1.808-.795-2.984-2.617-3.076-2.739-.088-.121-.734-.977-.734-1.86 0-.884.464-1.32.63-1.498.167-.179.365-.224.487-.224.122 0 .243.001.35.006.112.006.262-.043.41.312.152.365.518 1.265.564 1.357.045.091.076.197.015.318-.061.121-.091.197-.182.303-.091.107-.193.238-.276.321-.091.091-.186.19-.08.373.107.182.474.782 1.018 1.267.701.624 1.292.818 1.474.909.182.091.289.076.395-.046.107-.121.456-.532.578-.715.121-.182.243-.152.41-.091.167.061 1.062.502 1.244.593.182.091.304.137.35.213.045.076.045.441-.099.846z" />
                   </svg>
                 </a>
               </div>
