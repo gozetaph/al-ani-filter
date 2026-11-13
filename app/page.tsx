@@ -34,31 +34,11 @@ export default function HalcyonStorefrontPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  // Live Baghdad Clock
-  const [baghdadTime, setBaghdadTime] = useState("");
-
   // Dynamic FAQs from Admin / Supabase
   const [faqs, setFaqs] = useState<FAQItem[]>(initialFaqs);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   const supabase = createClient();
-
-  useEffect(() => {
-    // Update live Baghdad time
-    const updateTime = () => {
-      const now = new Date();
-      const options: Intl.DateTimeFormatOptions = {
-        timeZone: "Asia/Baghdad",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      };
-      setBaghdadTime(new Intl.DateTimeFormat("en-US", options).format(now));
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 30000);
-    return () => clearInterval(interval);
-  }, []);
 
   // Load Products (Supabase + Local fallback)
   useEffect(() => {
@@ -254,22 +234,6 @@ export default function HalcyonStorefrontPage() {
       )}
 
       {/* ========================================================== */}
-      {/* 1. TOP ANNOUNCEMENT BAR (Height ~37px)                     */}
-      {/* ========================================================== */}
-      <div className="bg-[#111111] text-white text-[11px] sm:text-xs font-mono-code px-4 sm:px-8 py-2 flex items-center justify-between border-b border-neutral-800">
-        <div className="flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span>بغداد {baghdadTime || "04:55 AM"} • كتالوج الفلاتر الأصلي</span>
-          <span className="hidden md:inline text-neutral-400">| مطابقة هندسية دقيقة واستفسار فوري عبر واتساب</span>
-        </div>
-        <div className="flex items-center gap-4 text-neutral-300">
-          <a href="tel:+9647901526221" className="hover:text-white transition">0790 152 6221</a>
-          <span className="hidden sm:inline text-neutral-600">/</span>
-          <a href="tel:+9647710077880" className="hidden sm:inline hover:text-white transition">0771 007 7880</a>
-        </div>
-      </div>
-
-      {/* ========================================================== */}
       {/* 2. MAIN NAVBAR (Height: 48px desktop / 44px mobile)        */}
       {/* ========================================================== */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200 px-4 sm:px-8 h-12 flex items-center justify-between transition-all">
@@ -310,9 +274,6 @@ export default function HalcyonStorefrontPage() {
           <a href="#catalog" className="hover:text-black transition">كتالوج الفلاتر</a>
           <a href="#oem-lookup" className="hover:text-black transition">الماركات وأرقام OEM</a>
           <a href="#faq" className="hover:text-black transition">الأسئلة الشائعة</a>
-          <Link href="/admin" className="hover:text-[#004bb5] font-mono-code text-[11px] transition">
-            [لوحة الإدارة]
-          </Link>
         </nav>
 
         {/* Right: Actions (Direct WhatsApp CTA instead of Cart) */}
@@ -370,13 +331,6 @@ export default function HalcyonStorefrontPage() {
             >
               الأسئلة الشائعة
             </a>
-            <Link 
-              href="/admin" 
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="py-2 text-[#004bb5] font-bold"
-            >
-              لوحة الإدارة (Admin)
-            </Link>
           </div>
           <div className="pt-2 flex flex-col gap-2">
             <a 
@@ -394,7 +348,7 @@ export default function HalcyonStorefrontPage() {
       {/* ========================================================== */}
       {/* 3. HERO SECTION (العاني للفلاتر)                           */}
       {/* ========================================================== */}
-      <section className="relative w-full h-[85vh] md:h-[calc(100vh-37px)] overflow-hidden bg-neutral-950 flex flex-col justify-between">
+      <section className="relative w-full h-[85vh] md:h-screen overflow-hidden bg-neutral-950 flex flex-col justify-between">
         <div className="absolute inset-0 z-0 overflow-hidden">
           <video
             autoPlay
@@ -600,16 +554,6 @@ export default function HalcyonStorefrontPage() {
                       className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
                     />
-
-                    {product.badge && (
-                      <span className="absolute top-2.5 right-2.5 bg-neutral-900 text-white text-[9px] sm:text-[10px] font-mono-code px-2 py-0.5 tracking-wider uppercase">
-                        {product.badge}
-                      </span>
-                    )}
-
-                    <span className="absolute bottom-2 left-2 text-[10px] font-mono-code text-neutral-400 group-hover:text-black transition">
-                      [الماركات +]
-                    </span>
                   </div>
 
                   {/* Body Content */}
@@ -787,29 +731,17 @@ export default function HalcyonStorefrontPage() {
       </footer>
 
       {/* ========================================================== */}
-      {/* 9. PRODUCT DETAIL MODAL (No Prices, "الماركات الأخرى")     */}
+      {/* 9. PRODUCT DETAIL MODAL (Dismiss by clicking outside)      */}
       {/* ========================================================== */}
       {selectedProduct && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm overflow-y-auto flex items-start justify-center p-0 sm:p-6">
-          <div className="bg-white border-0 sm:border border-neutral-300 max-w-2xl w-full min-h-screen sm:min-h-0 sm:max-h-[92vh] overflow-y-auto text-right p-5 sm:p-8 relative space-y-6 shadow-2xl">
-            
-            {/* Top Bar with Back Button */}
-            <div className="flex items-center justify-between border-b border-neutral-200 pb-3">
-              <button 
-                onClick={() => setSelectedProduct(null)}
-                className="inline-flex items-center gap-1.5 text-xs font-mono-code font-bold text-neutral-700 hover:text-black px-2.5 py-1 bg-neutral-100 hover:bg-neutral-200 transition"
-              >
-                <span>&lt; BACK</span>
-                <span className="font-sans text-[11px] text-neutral-500">(العودة للكتالوج)</span>
-              </button>
-              <button 
-                onClick={() => setSelectedProduct(null)}
-                className="text-neutral-400 hover:text-black font-mono-code text-xs"
-              >
-                [✕ إغلاق]
-              </button>
-            </div>
-
+        <div 
+          onClick={() => setSelectedProduct(null)}
+          className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm overflow-y-auto flex items-center justify-center p-4 sm:p-6 cursor-pointer"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white border-0 sm:border border-neutral-300 max-w-2xl w-full max-h-[92vh] overflow-y-auto text-right p-5 sm:p-8 relative space-y-6 shadow-2xl cursor-default"
+          >
             {/* Product Header & Hero Image */}
             <div className="space-y-6">
               

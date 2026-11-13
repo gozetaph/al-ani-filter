@@ -5,7 +5,7 @@ import { FAQItem } from "@/lib/types";
 import { initialFaqs } from "@/lib/mock-data";
 import { createClient } from "@/lib/supabase/client";
 
-export default function TailAdminFaqPage() {
+export default function AdminFaqPage() {
   const [faqs, setFaqs] = useState<FAQItem[]>(initialFaqs);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingFaq, setEditingFaq] = useState<FAQItem | null>(null);
@@ -183,16 +183,16 @@ export default function TailAdminFaqPage() {
   };
 
   return (
-    <div className="space-y-6 text-right" dir="rtl">
+    <div className="space-y-6 text-right" dir="rtl" style={{ fontFamily: "'Cairo', sans-serif" }}>
       
       {/* ── TOP HEADER BAR ───────────────────────────────────────────── */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-gray-800">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-neutral-800">
         <div>
           <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
             إدارة الأسئلة الشائعة (FAQ)
           </h1>
-          <p className="text-xs text-gray-400 mt-1 font-medium">
-            تحكم كامل في نصوص الأسئلة الشائعة وتحديثها مع معاينة حية لشكلها في الموقع
+          <p className="text-xs text-neutral-400 mt-1 font-semibold">
+            تعديل النصوص، إضافة أسئلة جديدة، وحذف الأسئلة بشكل ديناميكي ومباشر
           </p>
         </div>
 
@@ -208,19 +208,19 @@ export default function TailAdminFaqPage() {
         
         {/* FAQ List Cards (7 cols) */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="rounded-2xl border border-gray-800 bg-gray-900/60 overflow-hidden shadow-sm">
-            <div className="p-4 sm:p-5 border-b border-gray-800 flex items-center justify-between">
+          <div className="rounded-2xl border border-neutral-800 bg-[#0a0a0a] overflow-hidden shadow-sm">
+            <div className="p-4 sm:p-5 border-b border-neutral-800 flex items-center justify-between">
               <h3 className="font-bold text-sm text-white">
                 قائمة الأسئلة ({faqs.length})
               </h3>
-              <span className="text-[11px] text-gray-500 font-mono">
+              <span className="text-[11px] text-neutral-400 font-mono">
                 {faqs.filter((f) => f.is_active !== false).length} ظاهر في الكتالوج
               </span>
             </div>
 
             {faqs.length === 0 ? (
               <div className="p-12 text-center space-y-3">
-                <p className="text-xs text-gray-500">لا توجد أسئلة حالياً.</p>
+                <p className="text-xs text-neutral-500">لا توجد أسئلة حالياً.</p>
                 <button
                   onClick={handleOpenAdd}
                   className="px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded-xl cursor-pointer"
@@ -229,19 +229,19 @@ export default function TailAdminFaqPage() {
                 </button>
               </div>
             ) : (
-              <div className="divide-y divide-gray-800">
+              <div className="divide-y divide-neutral-800/80">
                 {faqs.map((faq, idx) => (
-                  <div key={faq.id} className="p-4 sm:p-5 hover:bg-gray-800/40 transition space-y-3">
+                  <div key={faq.id} className="p-4 sm:p-5 hover:bg-neutral-900/40 transition space-y-3">
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-start gap-3">
-                        <span className="w-6 h-6 rounded-lg bg-gray-800 text-gray-400 font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5 border border-gray-700/60">
+                        <span className="w-6 h-6 rounded-lg bg-neutral-900 text-neutral-400 font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5 border border-neutral-800">
                           {idx + 1}
                         </span>
                         <div>
                           <h4 className="font-bold text-sm text-white leading-snug">
                             {faq.question}
                           </h4>
-                          <p className="text-xs text-gray-400 mt-1.5 line-clamp-2 leading-relaxed">
+                          <p className="text-xs text-neutral-400 mt-1.5 line-clamp-2 leading-relaxed font-medium">
                             {faq.answer}
                           </p>
                         </div>
@@ -253,7 +253,7 @@ export default function TailAdminFaqPage() {
                         className={`text-[10px] font-bold px-2.5 py-1 rounded-full shrink-0 border transition cursor-pointer ${
                           faq.is_active !== false
                             ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
-                            : "bg-gray-800 text-gray-500 border-gray-700"
+                            : "bg-neutral-900 text-neutral-500 border-neutral-800"
                         }`}
                       >
                         {faq.is_active !== false ? "● مفعل" : "○ معطل"}
@@ -261,19 +261,19 @@ export default function TailAdminFaqPage() {
                     </div>
 
                     {/* Actions bar */}
-                    <div className="pt-2.5 flex items-center justify-between border-t border-gray-800/70 text-xs">
+                    <div className="pt-2.5 flex items-center justify-between border-t border-neutral-800/80 text-xs">
                       <div className="flex items-center gap-1.5">
                         <button
                           onClick={() => handleMove(idx, "up")}
                           disabled={idx === 0}
-                          className="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 disabled:opacity-30 rounded-lg text-[11px] font-bold text-gray-300 transition cursor-pointer"
+                          className="px-2.5 py-1 bg-neutral-900 hover:bg-neutral-800 disabled:opacity-30 rounded-lg text-[11px] font-bold text-neutral-300 transition cursor-pointer border border-neutral-800"
                         >
                           ↑ أعلى
                         </button>
                         <button
                           onClick={() => handleMove(idx, "down")}
                           disabled={idx === faqs.length - 1}
-                          className="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 disabled:opacity-30 rounded-lg text-[11px] font-bold text-gray-300 transition cursor-pointer"
+                          className="px-2.5 py-1 bg-neutral-900 hover:bg-neutral-800 disabled:opacity-30 rounded-lg text-[11px] font-bold text-neutral-300 transition cursor-pointer border border-neutral-800"
                         >
                           ↓ أسفل
                         </button>
@@ -282,13 +282,13 @@ export default function TailAdminFaqPage() {
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => handleOpenEdit(faq)}
-                          className="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-blue-400 font-bold rounded-lg transition border border-gray-700 cursor-pointer"
+                          className="px-3 py-1 bg-neutral-900 hover:bg-neutral-800 text-blue-400 font-bold rounded-lg transition border border-neutral-800 cursor-pointer text-xs"
                         >
-                          تعديل
+                          تعديل النص
                         </button>
                         <button
                           onClick={() => handleDeleteFaq(faq.id)}
-                          className="px-3 py-1 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 font-bold rounded-lg transition border border-rose-500/20 cursor-pointer"
+                          className="px-3 py-1 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 font-bold rounded-lg transition border border-rose-500/20 cursor-pointer text-xs"
                         >
                           حذف
                         </button>
@@ -301,94 +301,86 @@ export default function TailAdminFaqPage() {
           </div>
         </div>
 
-        {/* Live Preview Sidebar (5 cols) */}
-        <div className="lg:col-span-5 space-y-4">
-          <div className="rounded-2xl border border-gray-800 bg-gray-900/60 p-5 sticky top-24 shadow-sm">
-            <div className="flex items-center justify-between pb-3 border-b border-gray-800 mb-4">
-              <span className="font-bold text-xs text-gray-400 uppercase tracking-wider font-mono">
-                معاينة حية للمستخدمين في الموقع
-              </span>
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+        {/* Live Preview Panel (5 cols) */}
+        <div className="lg:col-span-5 sticky top-20">
+          <div className="rounded-2xl border border-neutral-800 bg-[#0a0a0a] p-5 shadow-sm space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-neutral-800">
+              <span className="font-bold text-xs text-white">معاينة شكل الأسئلة في الموقع</span>
+              <span className="text-[10px] text-neutral-400 font-mono">Live Preview</span>
             </div>
 
-            <div className="text-center space-y-1 mb-6">
-              <h2 className="text-base font-black text-white">الأسئلة الشائعة</h2>
-              <p className="text-[11px] text-gray-400">إجابات استفسارات الزوار والورش</p>
-            </div>
-
-            <div className="divide-y divide-gray-800 border-y border-gray-800">
-              {faqs
-                .filter((f) => f.is_active !== false)
-                .map((item, idx) => {
-                  const isOpen = previewOpenIdx === idx;
-                  return (
-                    <div key={item.id} className="py-3 px-1">
-                      <button
-                        onClick={() => setPreviewOpenIdx(isOpen ? null : idx)}
-                        className="w-full flex items-center justify-between text-right text-xs font-bold text-gray-200 gap-2 cursor-pointer"
-                      >
-                        <span>{item.question}</span>
-                        <span className="font-mono text-base text-gray-500 shrink-0">
-                          {isOpen ? "−" : "+"}
-                        </span>
-                      </button>
-                      {isOpen && (
-                        <p className="mt-2 text-[11px] text-gray-400 leading-relaxed text-right">
-                          {item.answer}
-                        </p>
-                      )}
-                    </div>
-                  );
-                })}
+            <div className="bg-white text-neutral-900 p-4 rounded-xl space-y-2 border border-neutral-300 shadow-inner">
+              <h4 className="font-extrabold text-xs text-center text-black mb-3">الأسئلة الشائعة</h4>
+              <div className="divide-y divide-neutral-200">
+                {faqs
+                  .filter((f) => f.is_active !== false)
+                  .map((f, i) => {
+                    const isOpen = previewOpenIdx === i;
+                    return (
+                      <div key={f.id} className="py-2.5">
+                        <button
+                          type="button"
+                          onClick={() => setPreviewOpenIdx(isOpen ? null : i)}
+                          className="w-full flex items-center justify-between text-right text-xs font-bold text-black gap-2 cursor-pointer"
+                        >
+                          <span>{f.question}</span>
+                          <span className="font-mono text-sm text-neutral-500">{isOpen ? "−" : "+"}</span>
+                        </button>
+                        {isOpen && (
+                          <p className="mt-1.5 text-[11px] text-neutral-600 leading-relaxed pr-2 font-medium">
+                            {f.answer}
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })}
+              </div>
             </div>
           </div>
         </div>
 
       </div>
 
-      {/* ── TAILADMIN MODAL: ADD / EDIT FAQ ──────────────────────────── */}
+      {/* ── ADD / EDIT FAQ MODAL ─────────────────────────────────────── */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 animate-scaleUp" dir="rtl">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-[#0a0a0a] border border-neutral-800 rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden my-8 animate-scaleUp">
             
-            <div className="flex items-center justify-between border-b border-gray-800 pb-3">
+            <div className="p-4 sm:p-5 border-b border-neutral-800 flex items-center justify-between">
               <h3 className="font-bold text-base text-white">
-                {editingFaq ? "تعديل السؤال" : "إضافة سؤال جديد للأسئلة الشائعة"}
+                {editingFaq ? "تعديل نص السؤال" : "إضافة سؤال جديد"}
               </h3>
               <button
                 onClick={() => setIsAddModalOpen(false)}
-                className="w-8 h-8 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-center text-gray-400 hover:text-white font-bold cursor-pointer transition"
+                className="w-8 h-8 rounded-lg bg-neutral-900 hover:bg-neutral-800 flex items-center justify-center text-neutral-400 hover:text-white font-bold cursor-pointer transition"
               >
                 ✕
               </button>
             </div>
 
-            <form onSubmit={handleSaveFaq} className="space-y-4">
+            <form onSubmit={handleSaveFaq} className="p-5 space-y-4 text-xs" dir="rtl">
+              
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1">
-                  نص السؤال *
-                </label>
+                <label className="block font-bold text-neutral-300 mb-1">نص السؤال *</label>
                 <input
                   type="text"
                   required
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
-                  placeholder="مثال: كيف أستعلم عن مطابقة الفلتر لسيارتي؟"
-                  className="w-full px-3 py-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 font-medium transition"
+                  placeholder="مثال: كيف أتأكد من مطابقة كود الفلتر لمحرك سيارتي؟"
+                  className="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-blue-500 transition font-bold"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1">
-                  نص الجواب والتوضيح *
-                </label>
+                <label className="block font-bold text-neutral-300 mb-1">نص الإجابة *</label>
                 <textarea
-                  required
                   rows={4}
+                  required
                   value={answer}
                   onChange={(e) => setAnswer(e.target.value)}
-                  placeholder="اكتب التوضيح الكامل الذي يظهر للزبون عند فتح السؤال..."
-                  className="w-full px-3 py-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 font-medium leading-relaxed transition"
+                  placeholder="اكتب الإجابة المفصلة..."
+                  className="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-blue-500 transition leading-relaxed font-medium"
                 />
               </div>
 
@@ -398,29 +390,30 @@ export default function TailAdminFaqPage() {
                   id="faqActive"
                   checked={isActive}
                   onChange={(e) => setIsActive(e.target.checked)}
-                  className="rounded border-gray-700 bg-gray-800 text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer"
+                  className="rounded bg-neutral-900 border-neutral-700 text-blue-600 focus:ring-0 w-4 h-4 cursor-pointer"
                 />
-                <label htmlFor="faqActive" className="text-xs font-bold text-gray-300 cursor-pointer">
-                  تفعيل السؤال وعرضه في الكتالوج مباشرة
+                <label htmlFor="faqActive" className="font-semibold text-neutral-300 cursor-pointer">
+                  تفعيل السؤال وعرضه فوراً في الكتالوج الرئيسي
                 </label>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-4 border-t border-gray-800">
+              <div className="pt-3 border-t border-neutral-800 flex items-center justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="px-4 py-2 text-xs font-bold text-gray-400 hover:bg-gray-800 rounded-xl transition cursor-pointer"
+                  className="px-4 py-2 rounded-xl text-neutral-400 hover:bg-neutral-900 font-semibold cursor-pointer transition"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
                   disabled={isSaving}
-                  className="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl shadow-md shadow-blue-600/20 transition disabled:opacity-50 cursor-pointer"
+                  className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-xl font-bold shadow-md shadow-blue-600/20 transition disabled:opacity-50 cursor-pointer"
                 >
                   {isSaving ? "جاري الحفظ..." : editingFaq ? "حفظ التعديل" : "إضافة السؤال"}
                 </button>
               </div>
+
             </form>
 
           </div>

@@ -153,14 +153,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     setAttempts(0);
   };
 
-  if (!isClient) return <div className="min-h-screen bg-gray-900" />;
+  if (!isClient) return <div className="min-h-screen bg-black" style={{ fontFamily: "'Cairo', sans-serif" }} />;
 
-  // ── PIN AUTH SCREEN (TailAdmin styled card) ──────────────────────────────
+  // ── PIN AUTH SCREEN (Pure Black & Cairo Typography) ─────────────────────────
   if (!isAuthenticated) {
     const isLocked = lockedUntil !== null && lockedUntil > Date.now();
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4 antialiased">
-        <div className="w-full max-w-sm rounded-2xl border border-gray-800 bg-gray-900/90 p-8 shadow-2xl backdrop-blur-xl flex flex-col items-center text-center">
+      <div 
+        className="min-h-screen bg-black flex items-center justify-center p-4 antialiased text-white" 
+        style={{ fontFamily: "'Cairo', sans-serif" }}
+      >
+        <div className="w-full max-w-sm rounded-2xl border border-neutral-800 bg-[#0a0a0a] p-8 shadow-2xl flex flex-col items-center text-center">
           
           {/* Brand header */}
           <div className="flex items-center gap-3 mb-6" dir="ltr">
@@ -169,11 +172,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
             <div className="text-left">
               <h1 className="text-base font-bold text-white tracking-tight">AL ANI FILTERS</h1>
-              <p className="text-[10px] text-gray-400 font-mono uppercase tracking-wider">Control Panel</p>
+              <p className="text-[10px] text-neutral-400 font-mono uppercase tracking-wider">Control Panel</p>
             </div>
           </div>
 
-          <p className="text-xs text-gray-400 mb-6 font-medium">
+          <p className="text-xs text-neutral-300 mb-6 font-semibold">
             {isLocked
               ? `محاولات خاطئة كثيرة. انتظر ${lockCountdown} ثانية`
               : "أدخل رمز المرور المكون من 8 أرقام"}
@@ -193,7 +196,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                       ? "bg-rose-500 scale-110"
                       : isFilled
                       ? "bg-blue-500 scale-110 shadow-[0_0_10px_rgba(59,130,246,0.6)]"
-                      : "bg-gray-800 border border-gray-700"
+                      : "bg-neutral-800 border border-neutral-700"
                   }`}
                 />
               );
@@ -222,7 +225,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 type="button"
                 onClick={() => handleDigit(num)}
                 disabled={isLocked}
-                className="h-13 rounded-xl bg-gray-800/80 hover:bg-gray-700/80 active:scale-95 disabled:opacity-30 text-white text-lg font-bold transition border border-gray-700/50 cursor-pointer font-mono"
+                className="h-13 rounded-xl bg-neutral-900 hover:bg-neutral-800 active:scale-95 disabled:opacity-30 text-white text-lg font-bold transition border border-neutral-800 cursor-pointer font-mono"
               >
                 {num}
               </button>
@@ -231,7 +234,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               type="button"
               onClick={handleClear}
               disabled={isLocked}
-              className="h-13 rounded-xl text-xs font-bold text-gray-400 hover:text-white active:scale-95 disabled:opacity-30 transition cursor-pointer"
+              className="h-13 rounded-xl text-xs font-bold text-neutral-400 hover:text-white active:scale-95 disabled:opacity-30 transition cursor-pointer"
             >
               مسح
             </button>
@@ -239,7 +242,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               type="button"
               onClick={() => handleDigit("0")}
               disabled={isLocked}
-              className="h-13 rounded-xl bg-gray-800/80 hover:bg-gray-700/80 active:scale-95 disabled:opacity-30 text-white text-lg font-bold transition border border-gray-700/50 cursor-pointer font-mono"
+              className="h-13 rounded-xl bg-neutral-900 hover:bg-neutral-800 active:scale-95 disabled:opacity-30 text-white text-lg font-bold transition border border-neutral-800 cursor-pointer font-mono"
             >
               0
             </button>
@@ -247,13 +250,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               type="button"
               onClick={handleBackspace}
               disabled={isLocked}
-              className="h-13 rounded-xl text-sm font-bold text-gray-400 hover:text-white active:scale-95 disabled:opacity-30 transition cursor-pointer"
+              className="h-13 rounded-xl text-sm font-bold text-neutral-400 hover:text-white active:scale-95 disabled:opacity-30 transition cursor-pointer"
             >
               ⌫
             </button>
           </div>
 
-          <Link href="/" className="text-xs text-gray-500 hover:text-gray-300 transition mt-2">
+          <Link href="/" className="text-xs text-neutral-400 hover:text-white transition mt-2">
             ← العودة لكتالوج الموقع
           </Link>
         </div>
@@ -261,12 +264,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
   }
 
-  // ── TAILADMIN DASHBOARD LAYOUT ───────────────────────────────────────────
+  // ── 4 TABS NAVIGATION ────────────────────────────────────────────────────
   const navItems = [
     {
       href: "/admin",
-      label: "نظرة عامة والكتالوج",
-      labelEn: "Overview",
+      label: "لوحة التحكم",
+      labelEn: "Dashboard",
       badge: "الرئيسية",
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -276,9 +279,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     },
     {
       href: "/admin/items",
-      label: "إدارة الفلاتر والمواد",
-      labelEn: "Filters & Products",
-      badge: "80+ مادة",
+      label: "مخزون المواد والفلاتر",
+      labelEn: "Stock of Items",
+      badge: "المخزون",
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
@@ -296,6 +299,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </svg>
       ),
     },
+    {
+      href: "/admin/settings",
+      label: "إعدادات النظام",
+      labelEn: "Settings",
+      badge: "النظام",
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      ),
+    },
   ];
 
   const isActive = (href: string) => {
@@ -304,19 +319,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-100 flex antialiased">
+    <div 
+      className="min-h-screen bg-black text-neutral-100 flex antialiased"
+      style={{ fontFamily: "'Cairo', sans-serif" }}
+    >
       
       {/* ── MOBILE OVERLAY BACKDROP ──────────────────────────────────────── */}
       {isMobileSidebarOpen && (
         <div
           onClick={() => setIsMobileSidebarOpen(false)}
-          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-xs lg:hidden"
+          className="fixed inset-0 z-40 bg-black/80 backdrop-blur-xs lg:hidden"
         />
       )}
 
-      {/* ── TAILADMIN SIDEBAR ────────────────────────────────────────────── */}
+      {/* ── 4-TAB ADMIN SIDEBAR (Pure Black) ────────────────────────────── */}
       <aside
-        className={`fixed inset-y-0 right-0 z-50 flex flex-col bg-gray-900 border-l border-gray-800 transition-all duration-300 ease-in-out lg:static ${
+        className={`fixed inset-y-0 right-0 z-50 flex flex-col bg-[#0a0a0a] border-l border-neutral-800 transition-all duration-300 ease-in-out lg:static ${
           isSidebarOpen ? "w-64" : "w-20"
         } ${
           isMobileSidebarOpen ? "translate-x-0 w-64" : "translate-x-full lg:translate-x-0"
@@ -324,7 +342,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         dir="rtl"
       >
         {/* Sidebar Brand Header */}
-        <div className="h-16 flex items-center justify-between px-5 border-b border-gray-800 shrink-0">
+        <div className="h-16 flex items-center justify-between px-5 border-b border-neutral-800 shrink-0">
           <Link href="/admin" className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/20 shrink-0">
               <Image src="/logo_a_trans.png" alt="العاني" width={20} height={20} className="h-5 w-auto object-contain" />
@@ -334,8 +352,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <span className="font-extrabold text-sm text-white block leading-tight tracking-tight">
                   العاني للفلاتر
                 </span>
-                <span className="text-[10px] text-gray-400 font-mono block">
-                  TailAdmin Dashboard
+                <span className="text-[10px] text-neutral-400 font-mono block">
+                  لوحة الإدارة
                 </span>
               </div>
             )}
@@ -343,16 +361,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           
           <button
             onClick={() => setIsMobileSidebarOpen(false)}
-            className="lg:hidden text-gray-400 hover:text-white p-1 rounded-lg"
+            className="lg:hidden text-neutral-400 hover:text-white p-1 rounded-lg"
           >
             ✕
           </button>
         </div>
 
-        {/* Navigation Menu */}
+        {/* Navigation Menu (4 Tabs) */}
         <div className="flex-1 py-5 px-3 space-y-1.5 overflow-y-auto">
           {(isSidebarOpen || isMobileSidebarOpen) && (
-            <p className="px-3 text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-mono">
+            <p className="px-3 text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-2 font-mono">
               القائمة الرئيسية
             </p>
           )}
@@ -367,12 +385,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all group ${
                   active
                     ? "bg-blue-600 text-white shadow-md shadow-blue-600/25"
-                    : "text-gray-400 hover:text-white hover:bg-gray-800/60"
+                    : "text-neutral-400 hover:text-white hover:bg-neutral-900"
                 }`}
                 title={!isSidebarOpen ? item.label : undefined}
               >
                 <div className="flex items-center gap-3">
-                  <span className={`${active ? "text-white" : "text-gray-400 group-hover:text-blue-400"}`}>
+                  <span className={`${active ? "text-white" : "text-neutral-400 group-hover:text-blue-400"}`}>
                     {item.icon}
                   </span>
                   {(isSidebarOpen || isMobileSidebarOpen) && (
@@ -383,7 +401,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 {(isSidebarOpen || isMobileSidebarOpen) && (
                   <span
                     className={`text-[10px] px-2 py-0.5 rounded-md font-mono ${
-                      active ? "bg-white/20 text-white" : "bg-gray-800 text-gray-500"
+                      active ? "bg-white/20 text-white" : "bg-neutral-900 text-neutral-500"
                     }`}
                   >
                     {item.badge}
@@ -394,14 +412,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           })}
         </div>
 
-        {/* Sidebar Footer Widget (TailAdmin Style) */}
-        <div className="p-3 border-t border-gray-800 space-y-2 shrink-0">
+        {/* Sidebar Footer Widget */}
+        <div className="p-3 border-t border-neutral-800 space-y-2 shrink-0">
           <Link
             href="/"
             target="_blank"
-            className="flex items-center gap-3 px-3 py-2 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/70 text-xs font-semibold transition"
+            className="flex items-center gap-3 px-3 py-2 rounded-xl text-neutral-400 hover:text-white hover:bg-neutral-900 text-xs font-semibold transition"
           >
-            <svg className="w-4 h-4 shrink-0 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 shrink-0 text-neutral-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
             {(isSidebarOpen || isMobileSidebarOpen) && (
@@ -424,16 +442,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* ── MAIN CONTENT SHELL ────────────────────────────────────────────── */}
-      <div className="flex-1 flex flex-col min-w-0 min-h-0">
+      <div className="flex-1 flex flex-col min-w-0 min-h-0 bg-black">
         
-        {/* TailAdmin Top Header */}
-        <header className="h-16 bg-gray-900 border-b border-gray-800 px-4 sm:px-6 flex items-center justify-between shrink-0 sticky top-0 z-30">
+        {/* Top Header */}
+        <header className="h-16 bg-[#0a0a0a] border-b border-neutral-800 px-4 sm:px-6 flex items-center justify-between shrink-0 sticky top-0 z-30">
           
           <div className="flex items-center gap-3">
             {/* Mobile hamburger */}
             <button
               onClick={() => setIsMobileSidebarOpen(true)}
-              className="lg:hidden p-2 rounded-lg bg-gray-800 text-gray-300 hover:text-white"
+              className="lg:hidden p-2 rounded-lg bg-neutral-900 text-neutral-300 hover:text-white"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
@@ -443,7 +461,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {/* Desktop collapse toggle */}
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="hidden lg:flex p-2 rounded-lg hover:bg-gray-800 text-gray-400 hover:text-white transition"
+              className="hidden lg:flex p-2 rounded-lg hover:bg-neutral-900 text-neutral-400 hover:text-white transition"
               title="طي / توسيع القائمة"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -452,8 +470,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </button>
 
             {/* Breadcrumb path */}
-            <div className="hidden sm:flex items-center gap-2 text-xs font-medium text-gray-400" dir="rtl">
-              <span className="text-gray-500">لوحة الإدارة</span>
+            <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-neutral-400" dir="rtl">
+              <span className="text-neutral-500">لوحة الإدارة</span>
               <span>/</span>
               <span className="text-white font-bold">
                 {navItems.find((n) => isActive(n.href))?.label || "الرئيسية"}
@@ -461,17 +479,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
           </div>
 
-          {/* Right Header Status & Shortcut */}
+          {/* Right Header: Shortcut to Site */}
           <div className="flex items-center gap-3" dir="rtl">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>الكتالوج نشط</span>
-            </span>
-
             <Link
               href="/"
               target="_blank"
-              className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition"
+              className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 bg-neutral-900 hover:bg-neutral-800 text-white rounded-lg transition border border-neutral-800"
             >
               <span>الموقع ↗</span>
             </Link>
@@ -479,7 +492,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </header>
 
         {/* Page Content Body */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto bg-black">
           {children}
         </main>
 

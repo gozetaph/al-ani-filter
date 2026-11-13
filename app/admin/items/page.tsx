@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Product, BrandCrossReference } from "@/lib/types";
+import { Product } from "@/lib/types";
 import { initialProducts } from "@/lib/mock-data";
 import { createClient } from "@/lib/supabase/client";
 
-export default function TailAdminItemsPage() {
+export default function AdminStockItemsPage() {
   const [items, setItems] = useState<Product[]>(initialProducts);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Product | null>(null);
@@ -14,21 +14,13 @@ export default function TailAdminItemsPage() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("الكل");
 
-  // Form State
-  const [name, setName] = useState("");
+  // Form State: Strictly Photo, Description, Manufacturer (Mann vs Other), plus Title/Code
   const [partNumber, setPartNumber] = useState("");
-  const [type, setType] = useState("فلتر دهن (زيت)");
   const [desc, setDesc] = useState("");
+  const [manufacturer, setManufacturer] = useState<"Mann Filter" | "Other Producers">("Mann Filter");
+  const [category, setCategory] = useState("فلاتر دهن (زيت)");
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imageUrl, setImageUrl] = useState("/products/asas/sp_001.jpg");
-
-  const [otherBrands, setOtherBrands] = useState<BrandCrossReference[]>([
-    { brand: "Mann • Hummel", code: "" },
-    { brand: "AL ANI", code: "" },
-    { brand: "MAK", code: "" },
-    { brand: "PERKINS", code: "" },
-    { brand: "Fleetguard", code: "" },
-  ]);
+  const [imageUrl, setImageUrl] = useState("/products/oil-filter.svg");
 
   const supabase = createClient();
 
@@ -62,62 +54,28 @@ export default function TailAdminItemsPage() {
     loadItems();
   }, [supabase]);
 
-  // Brand Row Handlers
-  const handleBrandChange = (index: number, field: "brand" | "code", val: string) => {
-    setOtherBrands((prev) => {
-      const copy = [...prev];
-      copy[index] = { ...copy[index], [field]: val };
-      return copy;
-    });
-  };
-
-  const addBrandRow = () => {
-    setOtherBrands((prev) => [...prev, { brand: "", code: "" }]);
-  };
-
-  const removeBrandRow = (index: number) => {
-    setOtherBrands((prev) => prev.filter((_, idx) => idx !== index));
-  };
-
   // Open Modal for Add
   const handleOpenAdd = () => {
     setEditingItem(null);
-    setName("");
     setPartNumber("");
-    setType("فلتر دهن (زيت)");
     setDesc("");
+    setManufacturer("Mann Filter");
+    setCategory("فلاتر دهن (زيت)");
     setImageFile(null);
-    setImageUrl("/products/asas/sp_001.jpg");
-    setOtherBrands([
-      { brand: "Mann • Hummel", code: "" },
-      { brand: "AL ANI", code: "" },
-      { brand: "MAK", code: "" },
-      { brand: "PERKINS", code: "" },
-      { brand: "Fleetguard", code: "" },
-    ]);
+    setImageUrl("/products/oil-filter.svg");
     setIsModalOpen(true);
   };
 
   // Open Modal for Edit
   const handleOpenEdit = (item: Product) => {
     setEditingItem(item);
-    setName(item.title);
-    setPartNumber(item.part_number || item.title.split(" ").pop() || "");
-    setType(item.clean_type || item.type || "فلتر دهن (زيت)");
+    setPartNumber(item.part_number || item.title || "");
     setDesc(item.description || "");
-    setImageUrl(item.image_url || "/products/asas/sp_001.jpg");
+    const isMann = (item.description || "").includes("Mann") || (item.title || "").includes("Mann");
+    setManufacturer(isMann ? "Mann Filter" : "Other Producers");
+    setCategory(item.type || item.clean_type || "فلاتر دهن (زيت)");
+    setImageUrl(item.image_url || "/products/oil-filter.svg");
     setImageFile(null);
-
-    const brands = item.other_brands && item.other_brands.length > 0
-      ? item.other_brands
-      : [
-          { brand: "Mann • Hummel", code: "" },
-          { brand: "AL ANI", code: "" },
-          { brand: "MAK", code: "" },
-          { brand: "PERKINS", code: "" },
-          { brand: "Fleetguard", code: "" },
-        ];
-    setOtherBrands(brands);
     setIsModalOpen(true);
   };
 
@@ -149,28 +107,26 @@ export default function TailAdminItemsPage() {
           }
         }
       } catch (err) {
-        console.error("Storage upload failed, using fallback:", err);
+        console.warn("Storage upload error fallback:", err);
       }
     }
 
-    const filteredBrands = otherBrands.filter(
-      (b) => b.brand.trim() !== "" || b.code.trim() !== ""
-    );
+    const mfrLabel = manufacturer === "Mann Filter" ? "مان فلتـر (Mann Filter)" : "منتجون آخرون (Other Producers)";
+    const enrichedDesc = desc.trim() || `فلتر أصلي من إنتاج ${mfrLabel}`;
 
     if (editingItem) {
       // Update existing item
-      const updatedItem: Product = {
+      const updated: Product = {
         ...editingItem,
-        title: name || `فلتر ${partNumber}`,
+        title: partNumber ? `فلتر ${partNumber}` : editingItem.title,
         part_number: partNumber,
-        description: desc,
-        type: type,
-        clean_type: type,
+        description: enrichedDesc,
+        type: category,
+        clean_type: category,
         image_url: finalImageUrl,
-        other_brands: filteredBrands,
       };
 
-      const updatedList = items.map((i) => (i.id === editingItem.id ? updatedItem : i));
+      const updatedList = items.map((i) => (i.id === editingItem.id ? updated : i));
       setItems(updatedList);
       try {
         localStorage.setItem("al_ani_custom_items", JSON.stringify(updatedList));
@@ -182,30 +138,27 @@ export default function TailAdminItemsPage() {
         await supabase
           .from("products")
           .update({
-            title: updatedItem.title,
-            description: updatedItem.description,
-            type: updatedItem.type,
-            image_url: updatedItem.image_url,
-            part_number: updatedItem.part_number,
-            specs: { other_brands: updatedItem.other_brands },
+            title: updated.title,
+            part_number: updated.part_number,
+            description: updated.description,
+            type: updated.type,
+            image_url: updated.image_url,
           })
           .eq("id", editingItem.id);
       } catch {
         // Handled
       }
     } else {
-      // Add new item
+      // Create new item
       const newItem: Product = {
-        id: "prod-" + Date.now(),
-        title: name || `فلتر ${partNumber}`,
+        id: "item-" + Date.now(),
+        title: partNumber ? `فلتر ${partNumber}` : "فلتر أصلي جديد",
         part_number: partNumber,
         slug: "item-" + Date.now(),
-        description: desc,
-        type: type,
-        category: type.includes("دهن") ? "oil" : type.includes("هواء") ? "air" : type.includes("وقود") ? "fuel" : "other",
-        clean_type: type,
+        description: enrichedDesc,
+        type: category,
+        clean_type: category,
         image_url: finalImageUrl,
-        other_brands: filteredBrands,
         is_active: true,
         created_at: new Date().toISOString(),
       };
@@ -227,7 +180,6 @@ export default function TailAdminItemsPage() {
             type: newItem.type,
             image_url: newItem.image_url,
             part_number: newItem.part_number,
-            specs: { other_brands: newItem.other_brands },
             is_active: true,
           },
         ]);
@@ -241,7 +193,7 @@ export default function TailAdminItemsPage() {
   };
 
   const deleteItem = async (id: string) => {
-    if (!confirm("هل أنت متأكد من حذف هذا الفلتر نهائياً من الكتالوج؟")) return;
+    if (!confirm("هل أنت متأكد من حذف هذه المادة نهائياً من المخزون؟")) return;
 
     try {
       await supabase.from("products").delete().eq("id", id);
@@ -257,6 +209,16 @@ export default function TailAdminItemsPage() {
       // ignore
     }
   };
+
+  const categories = [
+    "الكل",
+    "فلاتر دهن (زيت)",
+    "فلاتر هواء",
+    "فلاتر وقود (ديزل)",
+    "فلاتر مجفف هواء للشاحنات",
+    "فلاتر كابينة ومكيف",
+    "فلاتر هيدروليك",
+  ];
 
   // Filter items by category & search
   const filteredItems = items.filter((item) => {
@@ -274,19 +236,17 @@ export default function TailAdminItemsPage() {
     return matchesCategory && matchesSearch;
   });
 
-  const categories = ["الكل", "دهن", "هواء", "وقود", "مجفف", "كابينة"];
-
   return (
-    <div className="space-y-6 text-right" dir="rtl">
+    <div className="space-y-6 text-right" dir="rtl" style={{ fontFamily: "'Cairo', sans-serif" }}>
       
       {/* ── TOP HEADER BAR ───────────────────────────────────────────── */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-gray-800">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-neutral-800">
         <div>
           <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-            إدارة الفلاتر والمنتجات
+            مخزون المواد والفلاتر
           </h1>
-          <p className="text-xs text-gray-400 mt-1 font-medium">
-            عرض، إضافة، وتعديل بيانات الفلاتر وأرقام الماركات البديلة
+          <p className="text-xs text-neutral-400 mt-1 font-semibold">
+            عرض وإدارة مواد الكتالوج والمخزون مباشرة كما هي
           </p>
         </div>
 
@@ -294,87 +254,85 @@ export default function TailAdminItemsPage() {
           onClick={handleOpenAdd}
           className="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow-lg shadow-blue-600/20 cursor-pointer"
         >
-          <span>+ إضافة فلتر جديد</span>
+          <span>+ إضافة مادة جديدة</span>
         </button>
       </div>
 
-      {/* ── SEARCH & FILTER CONTROLS BAR (TailAdmin style) ──────────── */}
-      <div className="rounded-2xl border border-gray-800 bg-gray-900/60 p-4 flex flex-col md:flex-row items-center justify-between gap-4">
+      {/* ── SEARCH & CATEGORY DROPDOWN MENU ─────────────────────────── */}
+      <div className="rounded-2xl border border-neutral-800 bg-[#0a0a0a] p-4 flex flex-col md:flex-row items-center justify-between gap-4">
         
-        {/* Search */}
+        {/* Search Input */}
         <div className="relative w-full md:w-80">
-          <svg className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-neutral-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="ابحث بكود القطعة أو الاسم..."
-            className="w-full pr-10 pl-4 py-2 bg-gray-800/80 border border-gray-700/60 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition font-mono"
+            placeholder="ابحث برقم القطعة أو الوصف..."
+            className="w-full pr-10 pl-4 py-2.5 bg-neutral-900 border border-neutral-800 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500 transition font-mono"
           />
         </div>
 
-        {/* Category Filter Chips */}
-        <div className="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 md:pb-0">
-          {categories.map((cat) => {
-            const isSelected = selectedCategory === cat;
-            return (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
-                  isSelected
-                    ? "bg-blue-600 text-white shadow-sm"
-                    : "bg-gray-800/80 text-gray-400 hover:text-white hover:bg-gray-800"
-                }`}
-              >
-                {cat === "الكل" ? "جميع الفئات" : `فلاتر ${cat}`}
-              </button>
-            );
-          })}
+        {/* Category Dropdown Menu (Replaces horizontal tabs) */}
+        <div className="flex items-center gap-2.5 w-full md:w-auto">
+          <label className="text-xs font-bold text-neutral-400 shrink-0">
+            تصنيف الفئة:
+          </label>
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="w-full md:w-64 bg-neutral-900 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-blue-500 transition cursor-pointer"
+          >
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat === "الكل" ? "جميع الفئات (الكل)" : cat}
+              </option>
+            ))}
+          </select>
         </div>
 
       </div>
 
-      {/* ── TAILADMIN TABLE ──────────────────────────────────────────── */}
-      <div className="rounded-2xl border border-gray-800 bg-gray-900/60 overflow-hidden shadow-sm">
-        <div className="p-4 sm:p-5 border-b border-gray-800 flex items-center justify-between">
+      {/* ── STOCK OF ITEMS TABLE (As-is, no stock amount numbers) ───── */}
+      <div className="rounded-2xl border border-neutral-800 bg-[#0a0a0a] overflow-hidden shadow-sm">
+        <div className="p-4 sm:p-5 border-b border-neutral-800 flex items-center justify-between">
           <h3 className="font-bold text-sm text-white">
-            قائمة الفلاتر ({filteredItems.length} من أصل {items.length})
+            قائمة المواد ({filteredItems.length} مادة)
           </h3>
-          <span className="text-[11px] text-gray-500 font-mono">
-            {filteredItems.length} فلتر معروض
+          <span className="text-[11px] text-neutral-400 font-mono">
+            {filteredItems.length} مادة معروضة
           </span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-right text-xs">
-            <thead className="bg-gray-950/60 border-b border-gray-800 text-gray-400 font-semibold">
+            <thead className="bg-neutral-950 border-b border-neutral-800 text-neutral-400 font-semibold">
               <tr>
                 <th className="p-4">الصورة</th>
-                <th className="p-4">كود الفلتر</th>
-                <th className="p-4">اسم الفلتر</th>
-                <th className="p-4 hidden sm:table-cell">القسم</th>
-                <th className="p-4 hidden md:table-cell">الماركات الأخرى</th>
+                <th className="p-4">كود أو اسم المادة</th>
+                <th className="p-4">الشركة المصنعة</th>
+                <th className="p-4 hidden sm:table-cell">الفئة</th>
+                <th className="p-4 hidden md:table-cell">الوصف</th>
                 <th className="p-4 text-center">إجراءات</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-800 text-gray-300">
+            <tbody className="divide-y divide-neutral-800/80 text-neutral-300">
               {filteredItems.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-16 text-center text-gray-500">
-                    لا توجد فلاتر مطابقة لبحثك
+                  <td colSpan={6} className="py-16 text-center text-neutral-500 font-medium">
+                    لا توجد مواد مطابقة للبحث
                   </td>
                 </tr>
               ) : (
                 filteredItems.map((item) => {
-                  const pNum = item.part_number || item.title.split(" ").pop() || "AL-ANI";
-                  const brands = item.other_brands || [];
+                  const pNum = item.part_number || item.title || "AL-ANI";
+                  const isMann = (item.description || "").includes("Mann") || (item.title || "").includes("Mann");
                   return (
-                    <tr key={item.id} className="hover:bg-gray-800/40 transition">
+                    <tr key={item.id} className="hover:bg-neutral-900/50 transition">
                       <td className="p-4">
-                        <div className="w-12 h-12 bg-gray-800 rounded-xl border border-gray-700/60 flex items-center justify-center p-1">
+                        <div className="w-12 h-12 bg-neutral-900 rounded-xl border border-neutral-800 flex items-center justify-center p-1">
                           <Image
                             src={item.image_url || "/products/oil-filter.svg"}
                             alt={item.title}
@@ -389,41 +347,33 @@ export default function TailAdminItemsPage() {
                         {pNum}
                       </td>
 
-                      <td className="p-4 font-bold text-gray-200">
-                        {item.title}
-                        <span className="block text-[11px] text-gray-500 font-normal line-clamp-1 mt-0.5">
-                          {item.description}
+                      <td className="p-4">
+                        <span className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border ${
+                          isMann
+                            ? "bg-amber-500/10 text-amber-400 border-amber-500/20"
+                            : "bg-blue-500/10 text-blue-400 border-blue-500/20"
+                        }`}>
+                          {isMann ? "مان فلتـر (Mann)" : "منتجون آخرون"}
                         </span>
                       </td>
 
                       <td className="p-4 hidden sm:table-cell">
-                        <span className="bg-blue-500/10 text-blue-400 border border-blue-500/20 font-bold text-[11px] px-2.5 py-1 rounded-lg">
+                        <span className="bg-neutral-900 text-neutral-300 border border-neutral-800 font-bold text-[11px] px-2.5 py-1 rounded-lg">
                           {item.clean_type || item.type || "فلتر أصلي"}
                         </span>
                       </td>
 
-                      <td className="p-4 text-gray-400 font-mono text-[11px] hidden md:table-cell">
-                        {brands.length > 0 ? (
-                          <div className="space-y-0.5">
-                            {brands.slice(0, 3).map((b, i) => (
-                              <div key={i}>
-                                <span className="font-bold text-gray-200">{b.brand}:</span> {b.code}
-                              </div>
-                            ))}
-                            {brands.length > 3 && (
-                              <span className="text-gray-500">+{brands.length - 3} ماركات أخرى...</span>
-                            )}
-                          </div>
-                        ) : (
-                          <span className="text-gray-500 font-sans">مطابقة حسب الطلب</span>
-                        )}
+                      <td className="p-4 text-neutral-400 text-xs hidden md:table-cell max-w-xs">
+                        <span className="line-clamp-2">
+                          {item.description || "مطابقة هندسية دقيقة"}
+                        </span>
                       </td>
 
                       <td className="p-4 text-center">
                         <div className="inline-flex items-center gap-2">
                           <button
                             onClick={() => handleOpenEdit(item)}
-                            className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-blue-400 font-bold rounded-lg transition border border-gray-700 cursor-pointer"
+                            className="px-3 py-1.5 bg-neutral-900 hover:bg-neutral-800 text-blue-400 font-bold rounded-lg transition border border-neutral-800 cursor-pointer"
                           >
                             تعديل
                           </button>
@@ -444,18 +394,18 @@ export default function TailAdminItemsPage() {
         </div>
       </div>
 
-      {/* ── TAILADMIN FORM MODAL: ADD / EDIT FILTER ──────────────────── */}
+      {/* ── ADD / EDIT ITEM MODAL ─────────────────────────────────────── */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden my-8 animate-scaleUp">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-[#0a0a0a] border border-neutral-800 rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden my-8 animate-scaleUp">
             
-            <div className="p-4 sm:p-5 border-b border-gray-800 flex items-center justify-between">
+            <div className="p-4 sm:p-5 border-b border-neutral-800 flex items-center justify-between">
               <h3 className="font-bold text-base text-white">
-                {editingItem ? "تعديل بيانات الفلتر" : "إضافة فلتر جديد للكتالوج"}
+                {editingItem ? "تعديل المادة" : "إضافة مادة جديدة للمخزون"}
               </h3>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="w-8 h-8 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-center text-gray-400 hover:text-white font-bold cursor-pointer transition"
+                className="w-8 h-8 rounded-lg bg-neutral-900 hover:bg-neutral-800 flex items-center justify-center text-neutral-400 hover:text-white font-bold cursor-pointer transition"
               >
                 ✕
               </button>
@@ -463,136 +413,111 @@ export default function TailAdminItemsPage() {
 
             <form onSubmit={handleSaveItem} className="p-5 space-y-4 text-xs" dir="rtl">
               
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block font-bold text-gray-300 mb-1">كود القطعة (Part Number) *</label>
-                  <input
-                    type="text"
-                    required
-                    value={partNumber}
-                    onChange={(e) => setPartNumber(e.target.value)}
-                    placeholder="مثال: SP 002 HT"
-                    className="w-full bg-gray-800 border border-gray-700 rounded-xl p-2.5 text-xs font-mono font-bold text-white focus:outline-none focus:border-blue-500 transition"
-                  />
-                </div>
-                <div>
-                  <label className="block font-bold text-gray-300 mb-1">نوع الفلتر / القسم *</label>
-                  <select
-                    value={type}
-                    onChange={(e) => setType(e.target.value)}
-                    className="w-full bg-gray-800 border border-gray-700 rounded-xl p-2.5 text-xs font-bold text-gray-200 focus:outline-none focus:border-blue-500 transition cursor-pointer"
-                  >
-                    <option value="فلتر دهن (زيت)">فلتر دهن (زيت)</option>
-                    <option value="فلتر هواء سيارات ومعدات">فلتر هواء سيارات ومعدات</option>
-                    <option value="فلتر وقود ديزل وسبيتر">فلتر وقود ديزل وسبيتر</option>
-                    <option value="فلتر مجفف هواء للشاحنات">فلتر مجفف هواء للشاحنات</option>
-                    <option value="فلتر كابينة ومكيف">فلتر كابينة ومكيف</option>
-                    <option value="فلتر هيدروليك">فلتر هيدروليك</option>
-                  </select>
-                </div>
-              </div>
-
+              {/* Part Code / Identifier */}
               <div>
-                <label className="block font-bold text-gray-300 mb-1">اسم الفلتر / العنوان *</label>
+                <label className="block font-bold text-neutral-300 mb-1">كود أو اسم المادة *</label>
                 <input
                   type="text"
                   required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="فلتر دهن أصلي مطابق لمواصفات OEM"
-                  className="w-full bg-gray-800 border border-gray-700 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-blue-500 transition font-medium"
+                  value={partNumber}
+                  onChange={(e) => setPartNumber(e.target.value)}
+                  placeholder="مثال: W 950 / W 712 / SP 001"
+                  className="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-2.5 text-xs font-mono font-bold text-white focus:outline-none focus:border-blue-500 transition"
                 />
               </div>
 
+              {/* Manufacturer Selector: Mann vs Other Producers */}
               <div>
-                <label className="block font-bold text-gray-300 mb-1">الوصف وملاحظات المطابقة</label>
-                <textarea
-                  rows={2}
-                  value={desc}
-                  onChange={(e) => setDesc(e.target.value)}
-                  placeholder="الآليات المتوافقة، كفاءة الترشيح، بلد المنشأ..."
-                  className="w-full bg-gray-800 border border-gray-700 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-blue-500 transition leading-relaxed font-medium"
-                />
-              </div>
-
-              {/* DYNAMIC BRANDS LIST */}
-              <div className="p-3.5 bg-gray-800/60 rounded-xl border border-gray-700/60 space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <label className="font-bold text-white text-xs">
-                    الماركات الأخرى (أرقام المطابقة البديلة)
-                  </label>
+                <label className="block font-bold text-neutral-300 mb-1">الشركة المصنعة *</label>
+                <div className="grid grid-cols-2 gap-2.5">
                   <button
                     type="button"
-                    onClick={addBrandRow}
-                    className="text-blue-400 hover:text-blue-300 font-bold text-[11px] cursor-pointer"
+                    onClick={() => setManufacturer("Mann Filter")}
+                    className={`py-2.5 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
+                      manufacturer === "Mann Filter"
+                        ? "bg-amber-500/20 text-amber-300 border-amber-500"
+                        : "bg-neutral-900 text-neutral-400 border-neutral-800 hover:text-white"
+                    }`}
                   >
-                    + إضافة ماركة
+                    <span>مان فلتـر (Mann)</span>
                   </button>
-                </div>
-                <p className="text-[10px] text-gray-400">
-                  اكتب اسم الماركة في الحقل الأول والكود في الحقل الثاني لتظهر مرتبة للزبائن:
-                </p>
 
-                <div className="space-y-2">
-                  {otherBrands.map((b, idx) => (
-                    <div key={idx} className="flex items-center gap-2">
-                      <input
-                        type="text"
-                        value={b.brand}
-                        onChange={(e) => handleBrandChange(idx, "brand", e.target.value)}
-                        placeholder="الماركة (مثل Perkins)"
-                        className="w-1/2 bg-gray-800 border border-gray-700 rounded-lg p-2 text-xs font-semibold text-white focus:outline-none focus:border-blue-500"
-                      />
-                      <input
-                        type="text"
-                        value={b.code}
-                        onChange={(e) => handleBrandChange(idx, "code", e.target.value)}
-                        placeholder="الكود (مثل 2654403)"
-                        className="w-1/2 bg-gray-800 border border-gray-700 rounded-lg p-2 text-xs font-mono text-white focus:outline-none focus:border-blue-500"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeBrandRow(idx)}
-                        className="w-7 h-7 text-rose-400 hover:bg-rose-500/20 rounded flex items-center justify-center font-bold shrink-0 cursor-pointer"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  ))}
+                  <button
+                    type="button"
+                    onClick={() => setManufacturer("Other Producers")}
+                    className={`py-2.5 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
+                      manufacturer === "Other Producers"
+                        ? "bg-blue-500/20 text-blue-300 border-blue-500"
+                        : "bg-neutral-900 text-neutral-400 border-neutral-800 hover:text-white"
+                    }`}
+                  >
+                    <span>منتجون آخرون (Other)</span>
+                  </button>
                 </div>
               </div>
 
-              {/* IMAGE UPLOADER / PRESET */}
+              {/* Category */}
               <div>
-                <label className="block font-bold text-gray-300 mb-1">صورة الفلتر</label>
+                <label className="block font-bold text-neutral-300 mb-1">القسم / التصنيف</label>
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-2.5 text-xs font-bold text-neutral-200 focus:outline-none focus:border-blue-500 transition cursor-pointer"
+                >
+                  <option value="فلاتر دهن (زيت)">فلاتر دهن (زيت)</option>
+                  <option value="فلاتر هواء">فلاتر هواء</option>
+                  <option value="فلاتر وقود (ديزل)">فلاتر وقود (ديزل)</option>
+                  <option value="فلاتر مجفف هواء للشاحنات">فلاتر مجفف هواء للشاحنات</option>
+                  <option value="فلاتر كابينة ومكيف">فلاتر كابينة ومكيف</option>
+                  <option value="فلاتر هيدروليك">فلاتر هيدروليك</option>
+                </select>
+              </div>
+
+              {/* Description */}
+              <div>
+                <label className="block font-bold text-neutral-300 mb-1">الوصف وملاحظات المادة</label>
+                <textarea
+                  rows={3}
+                  value={desc}
+                  onChange={(e) => setDesc(e.target.value)}
+                  placeholder="الوصف، الاستخدام، التوافق، بلد المنشأ..."
+                  className="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-blue-500 transition leading-relaxed font-medium"
+                />
+              </div>
+
+              {/* Picture / Photo: File upload + Preset/URL fallback */}
+              <div>
+                <label className="block font-bold text-neutral-300 mb-1">صورة المادة (Photo / Picture)</label>
                 <div className="space-y-2">
                   <input
                     type="file"
                     accept="image/*"
                     onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-                    className="w-full text-xs text-gray-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-600/20 file:text-blue-400 hover:file:bg-blue-600/30 cursor-pointer"
+                    className="w-full text-xs text-neutral-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-600/20 file:text-blue-400 hover:file:bg-blue-600/30 cursor-pointer"
                   />
                   <select
                     value={imageUrl}
                     onChange={(e) => setImageUrl(e.target.value)}
-                    className="w-full bg-gray-800 border border-gray-700 rounded-xl p-2 text-xs text-gray-300 focus:outline-none cursor-pointer"
+                    className="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-2 text-xs text-neutral-300 focus:outline-none cursor-pointer"
                   >
-                    <option value="/products/asas/sp_001.jpg">فلتر دهن أسطواني أسود (SP 001)</option>
-                    <option value="/products/asas/sp_002_ht.jpg">فلتر دهن قصير (SP 002)</option>
-                    <option value="/products/asas/sp_004.jpg">فلتر دهن كبير (SP 004)</option>
-                    <option value="/products/asas/hires/fuel_water_01.webp">فلتر ديزل وفاصل ماء مع صمام</option>
-                    <option value="/products/asas/hires/air_filter_radial.webp">فلتر هواء دائري Radial Seal</option>
-                    <option value="/products/asas/hires/air_dryer_cartridge.webp">فلتر مجفف هواء شاحنات</option>
-                    <option value="/products/asas/hires/cabin_filter_05.webp">فلتر كابينة وتكييف مستطيل</option>
+                    <option value="/products/oil-filter.svg">صورة افتراضية (فلتر دهن)</option>
+                    <option value="/products/asas/sp_001.jpg">فلتر أسطواني أسود (SP 001)</option>
+                    <option value="/products/asas/sp_002_ht.jpg">فلتر قصير (SP 002)</option>
+                    <option value="/products/asas/sp_004.jpg">فلتر كبير (SP 004)</option>
+                    <option value="/products/asas/hires/fuel_water_01.webp">فلتر ديزل وفاصل ماء</option>
+                    <option value="/products/asas/hires/air_filter_radial.webp">فلتر هواء دائري</option>
+                    <option value="/products/asas/hires/air_dryer_cartridge.webp">مجفف هواء شاحنات</option>
+                    <option value="/products/asas/hires/cabin_filter_05.webp">فلتر كابينة ومكيف</option>
                   </select>
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-gray-800 flex items-center justify-end gap-2">
+              {/* Action Buttons */}
+              <div className="pt-3 border-t border-neutral-800 flex items-center justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-xl text-gray-400 hover:bg-gray-800 font-semibold cursor-pointer transition"
+                  className="px-4 py-2 rounded-xl text-neutral-400 hover:bg-neutral-900 font-semibold cursor-pointer transition"
                 >
                   إلغاء
                 </button>
@@ -601,7 +526,7 @@ export default function TailAdminItemsPage() {
                   disabled={isUploading}
                   className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-xl font-bold shadow-md shadow-blue-600/20 transition disabled:opacity-50 cursor-pointer"
                 >
-                  {isUploading ? "جاري الحفظ..." : editingItem ? "حفظ التعديلات" : "إضافة الفلتر"}
+                  {isUploading ? "جاري الحفظ..." : editingItem ? "حفظ التعديلات" : "إضافة المادة"}
                 </button>
               </div>
 
