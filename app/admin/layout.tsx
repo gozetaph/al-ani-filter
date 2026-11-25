@@ -1,170 +1,141 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { triggerHaptic } from "@/lib/haptics";
-
-const EXPECTED_PIN = process.env.NEXT_PUBLIC_ADMIN_PIN || "12345678";
-const MAX_ATTEMPTS = 5;
-const LOCKOUT_SECONDS = 30;
-const SESSION_KEY = "al_ani_admin_v2";
+import { createClient } from "@/lib/supabase/client";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const supabase = useMemo(() => createClient(), []);
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [pin, setPin] = useState("");
-  const [hasError, setHasError] = useState(false);
-  const [isClient, setIsClient] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+
+  // Login form state
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
-  // Brute-force state
-  const [attempts, setAttempts] = useState(0);
-  const [lockedUntil, setLockedUntil] = useState<number | null>(null);
-  const [lockCountdown, setLockCountdown] = useState(0);
-  const lockTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
   useEffect(() => {
-    setIsClient(true);
-    try {
-      const stored = sessionStorage.getItem(SESSION_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (parsed.auth === true && parsed.exp > Date.now()) {
-          setIsAuthenticated(true);
-        } else {
-          sessionStorage.removeItem(SESSION_KEY);
-        }
+    let active = true;
+
+    const verifyAdminUser = async (user: { id: string; email?: string } | null) => {
+      if (!user) {
+        if (!active) return;
+        setIsAuthenticated(false);
+        setUserEmail(null);
+        setAuthLoading(false);
+        return;
       }
-    } catch {
-      sessionStorage.removeItem(SESSION_KEY);
-    }
 
-    try {
-      const lockData = sessionStorage.getItem("al_ani_lockout");
-      if (lockData) {
-        const { until, count } = JSON.parse(lockData);
-        if (until > Date.now()) {
-          setLockedUntil(until);
-          setAttempts(count);
-        } else {
-          sessionStorage.removeItem("al_ani_lockout");
-        }
-      }
-    } catch {
-      // ignore
-    }
-  }, []);
+      const { data: adminRow, error: adminErr } = await supabase
+        .from("admin_users")
+        .select("id")
+        .eq("id", user.id)
+        .maybeSingle();
 
-  // Lockout countdown
-  useEffect(() => {
-    if (lockedUntil) {
-      const updateCountdown = () => {
-        const remaining = Math.ceil((lockedUntil - Date.now()) / 1000);
-        if (remaining <= 0) {
-          setLockedUntil(null);
-          setAttempts(0);
-          setLockCountdown(0);
-          sessionStorage.removeItem("al_ani_lockout");
-          if (lockTimerRef.current) clearInterval(lockTimerRef.current);
-        } else {
-          setLockCountdown(remaining);
-        }
-      };
-      updateCountdown();
-      lockTimerRef.current = setInterval(updateCountdown, 1000);
-      return () => {
-        if (lockTimerRef.current) clearInterval(lockTimerRef.current);
-      };
-    }
-  }, [lockedUntil]);
+      if (!active) return;
 
-  // Keyboard typing
-  useEffect(() => {
-    if (isAuthenticated) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (lockedUntil && lockedUntil > Date.now()) return;
-      if (e.key >= "0" && e.key <= "9") handleDigit(e.key);
-      else if (e.key === "Backspace") handleBackspace();
-      else if (e.key === "Escape") handleClear();
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pin, isAuthenticated, lockedUntil]);
-
-  const handleDigit = (d: string) => {
-    if (lockedUntil && lockedUntil > Date.now()) return;
-    if (pin.length >= 8) return;
-    triggerHaptic("light");
-    setHasError(false);
-    const nextPin = pin + d;
-    setPin(nextPin);
-
-    if (nextPin.length === 8) {
-      const isCorrect = nextPin === EXPECTED_PIN;
-      if (isCorrect) {
-        triggerHaptic("medium");
-        const expiry = Date.now() + 8 * 60 * 60 * 1000;
-        sessionStorage.setItem(SESSION_KEY, JSON.stringify({ auth: true, exp: expiry }));
-        setAttempts(0);
-        sessionStorage.removeItem("al_ani_lockout");
-        setTimeout(() => setIsAuthenticated(true), 150);
+      if (adminErr || !adminRow) {
+        await supabase.auth.signOut();
+        setIsAuthenticated(false);
+        setUserEmail(null);
+        setAuthError("هذا الحساب غير مخول للوصول إلى لوحة الإدارة (غير مضاف في admin_users)");
       } else {
-        triggerHaptic("medium");
-        setHasError(true);
-        const newAttempts = attempts + 1;
-        setAttempts(newAttempts);
-
-        if (newAttempts >= MAX_ATTEMPTS) {
-          const until = Date.now() + LOCKOUT_SECONDS * 1000;
-          setLockedUntil(until);
-          sessionStorage.setItem("al_ani_lockout", JSON.stringify({ until, count: newAttempts }));
-        }
-
-        setTimeout(() => {
-          setPin("");
-          setHasError(false);
-        }, 800);
+        setIsAuthenticated(true);
+        setUserEmail(user.email ?? null);
       }
+      setAuthLoading(false);
+    };
+
+    supabase.auth.getUser().then(({ data }) => {
+      verifyAdminUser(data.user);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      verifyAdminUser(session?.user ?? null);
+    });
+
+    return () => {
+      active = false;
+      subscription.unsubscribe();
+    };
+  }, [supabase]);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError(null);
+    setSubmitting(true);
+
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      });
+
+      if (error || !data.user) {
+        setAuthError("البريد الإلكتروني أو كلمة المرور غير صحيحة");
+        return;
+      }
+
+      const { data: adminRow, error: adminErr } = await supabase
+        .from("admin_users")
+        .select("id")
+        .eq("id", data.user.id)
+        .maybeSingle();
+
+      if (adminErr || !adminRow) {
+        await supabase.auth.signOut();
+        setAuthError("هذا الحساب غير مخول للوصول إلى لوحة الإدارة");
+        return;
+      }
+
+      setIsAuthenticated(true);
+      setUserEmail(data.user.email ?? null);
+      setPassword("");
+    } catch {
+      setAuthError("تعذر الاتصال بخدمة التحقق، حاول مجدداً");
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  const handleBackspace = () => {
-    if (lockedUntil && lockedUntil > Date.now()) return;
-    triggerHaptic("light");
-    setPin((p) => p.slice(0, -1));
-    setHasError(false);
-  };
-
-  const handleClear = () => {
-    if (lockedUntil && lockedUntil > Date.now()) return;
-    triggerHaptic("light");
-    setPin("");
-    setHasError(false);
-  };
-
-  const handleLogout = () => {
-    sessionStorage.removeItem(SESSION_KEY);
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     setIsAuthenticated(false);
-    setPin("");
-    setAttempts(0);
+    setUserEmail(null);
+    setPassword("");
   };
 
-  if (!isClient) return <div className="min-h-screen bg-black" style={{ fontFamily: "'IBM Plex Sans Arabic', sans-serif" }} />;
-
-  // ── PIN AUTH SCREEN (Pure Black & Cairo Typography) ─────────────────────────
-  if (!isAuthenticated) {
-    const isLocked = lockedUntil !== null && lockedUntil > Date.now();
+  if (authLoading) {
     return (
-      <div 
-        className="min-h-screen bg-black flex items-center justify-center p-4 antialiased text-white" 
+      <div
+        className="min-h-screen bg-black flex items-center justify-center text-neutral-400 text-xs"
         style={{ fontFamily: "'IBM Plex Sans Arabic', sans-serif" }}
       >
+        جاري التحقق من الجلسة...
+      </div>
+    );
+  }
+
+  // ── SUPABASE AUTH LOGIN SCREEN ─────────────────────────────────────────────
+  if (!isAuthenticated) {
+    return (
+      <div
+        className="min-h-screen bg-black flex items-center justify-center p-4 antialiased text-white"
+        style={{ fontFamily: "'IBM Plex Sans Arabic', sans-serif" }}
+        dir="rtl"
+      >
         <div className="w-full max-w-sm rounded-2xl border border-neutral-800 bg-[#0a0a0a] p-8 shadow-2xl flex flex-col items-center text-center">
-          
           {/* Brand header */}
           <div className="flex items-center gap-3 mb-6" dir="ltr">
             <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
@@ -177,86 +148,58 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
 
           <p className="text-xs text-neutral-300 mb-6 font-semibold">
-            {isLocked
-              ? `محاولات خاطئة كثيرة. انتظر ${lockCountdown} ثانية`
-              : "أدخل رمز المرور المكون من 8 أرقام"}
+            تسجيل دخول المسؤول عبر حساب الإدارة المعتمد
           </p>
 
-          {/* Dots Indicator */}
-          <div className={`flex items-center justify-center gap-3 mb-6 ${hasError ? "animate-shake" : ""}`}>
-            {Array.from({ length: 8 }).map((_, idx) => {
-              const isFilled = idx < pin.length;
-              return (
-                <div
-                  key={idx}
-                  className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                    isLocked
-                      ? "bg-amber-500/50"
-                      : hasError
-                      ? "bg-rose-500 scale-110"
-                      : isFilled
-                      ? "bg-blue-500 scale-110 shadow-[0_0_10px_rgba(59,130,246,0.6)]"
-                      : "bg-neutral-800 border border-neutral-700"
-                  }`}
-                />
-              );
-            })}
-          </div>
-
-          {hasError && !isLocked && (
-            <p className="text-xs font-bold text-rose-400 mb-4 animate-pulse">
-              {attempts >= MAX_ATTEMPTS - 1 ? "تحذير: محاولة أخيرة قبل القفل" : "رمز غير صحيح، حاول مجدداً"}
-            </p>
-          )}
-
-          {isLocked && (
-            <div className="mb-4 px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-xl text-center">
-              <p className="text-xs font-bold text-amber-400">
-                🔒 تم قفل اللوحة مؤقتاً ({lockCountdown}s)
-              </p>
+          <form onSubmit={handleLogin} className="w-full space-y-4 text-right">
+            <div>
+              <label className="block text-[11px] font-bold text-neutral-400 mb-1.5">
+                البريد الإلكتروني
+              </label>
+              <input
+                type="email"
+                required
+                dir="ltr"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="admin@alanifilters.com"
+                className="w-full rounded-xl border border-neutral-800 bg-neutral-900 px-3.5 py-2.5 text-xs text-white placeholder:text-neutral-600 outline-none focus:border-blue-500 transition text-left"
+              />
             </div>
-          )}
 
-          {/* Keypad */}
-          <div className="grid grid-cols-3 gap-2.5 w-full max-w-[270px] mb-5" dir="ltr">
-            {["1","2","3","4","5","6","7","8","9"].map((num) => (
-              <button
-                key={num}
-                type="button"
-                onClick={() => handleDigit(num)}
-                disabled={isLocked}
-                className="h-13 rounded-xl bg-neutral-900 hover:bg-neutral-800 active:scale-95 disabled:opacity-30 text-white text-lg font-bold transition border border-neutral-800 cursor-pointer font-mono"
-              >
-                {num}
-              </button>
-            ))}
-            <button
-              type="button"
-              onClick={handleClear}
-              disabled={isLocked}
-              className="h-13 rounded-xl text-xs font-bold text-neutral-400 hover:text-white active:scale-95 disabled:opacity-30 transition cursor-pointer"
-            >
-              مسح
-            </button>
-            <button
-              type="button"
-              onClick={() => handleDigit("0")}
-              disabled={isLocked}
-              className="h-13 rounded-xl bg-neutral-900 hover:bg-neutral-800 active:scale-95 disabled:opacity-30 text-white text-lg font-bold transition border border-neutral-800 cursor-pointer font-mono"
-            >
-              0
-            </button>
-            <button
-              type="button"
-              onClick={handleBackspace}
-              disabled={isLocked}
-              className="h-13 rounded-xl text-sm font-bold text-neutral-400 hover:text-white active:scale-95 disabled:opacity-30 transition cursor-pointer"
-            >
-              ⌫
-            </button>
-          </div>
+            <div>
+              <label className="block text-[11px] font-bold text-neutral-400 mb-1.5">
+                كلمة المرور
+              </label>
+              <input
+                type="password"
+                required
+                dir="ltr"
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full rounded-xl border border-neutral-800 bg-neutral-900 px-3.5 py-2.5 text-xs text-white placeholder:text-neutral-600 outline-none focus:border-blue-500 transition text-left"
+              />
+            </div>
 
-          <Link href="/" className="text-xs text-neutral-400 hover:text-white transition mt-2">
+            {authError && (
+              <div className="px-3 py-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-xs font-bold text-rose-400 text-center">
+                {authError}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={submitting}
+              className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white text-xs font-bold transition shadow-lg shadow-blue-600/20 cursor-pointer"
+            >
+              {submitting ? "جاري تسجيل الدخول..." : "دخول إلى لوحة الإدارة"}
+            </button>
+          </form>
+
+          <Link href="/" className="text-xs text-neutral-400 hover:text-white transition mt-5">
             ← العودة لكتالوج الموقع
           </Link>
         </div>
@@ -414,6 +357,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         {/* Sidebar Footer Widget */}
         <div className="p-3 border-t border-neutral-800 space-y-2 shrink-0">
+          {(isSidebarOpen || isMobileSidebarOpen) && userEmail && (
+            <div className="px-3 py-1.5 rounded-lg bg-neutral-900/60 border border-neutral-800/80 text-[10px] text-neutral-400 font-mono truncate" dir="ltr" title={userEmail}>
+              {userEmail}
+            </div>
+          )}
           <Link
             href="/"
             target="_blank"

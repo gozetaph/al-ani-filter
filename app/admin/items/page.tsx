@@ -99,28 +99,55 @@ export default function AdminStockItemsPage() {
 
     let finalImageUrl = imageUrl;
 
-    // Handle Image Upload if file selected
+    // Handle Image Upload if file selected (allow only safe raster images up to 5MB)
     if (imageFile) {
+      const allowedMimeToExt: Record<string, string> = {
+        "image/jpeg": "jpg",
+        "image/png": "png",
+        "image/webp": "webp",
+        "image/avif": "avif",
+      };
+      const safeExt = allowedMimeToExt[imageFile.type];
+      if (!safeExt) {
+        alert("يرجى رفع صورة بصيغة JPG أو PNG أو WebP أو AVIF فقط.");
+        setIsUploading(false);
+        return;
+      }
+      if (imageFile.size > 5 * 1024 * 1024) {
+        alert("حجم الصورة يجب ألا يتجاوز 5 ميجابايت.");
+        setIsUploading(false);
+        return;
+      }
+
       try {
-        const fileExt = imageFile.name.split(".").pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${safeExt}`;
         const filePath = `items/${fileName}`;
 
         const { error: uploadError } = await supabase.storage
           .from("product-images")
-          .upload(filePath, imageFile);
+          .upload(filePath, imageFile, {
+            contentType: imageFile.type,
+            upsert: false,
+          });
 
-        if (!uploadError) {
-          const { data: publicUrlData } = supabase.storage
-            .from("product-images")
-            .getPublicUrl(filePath);
+        if (uploadError) {
+          alert("تعذر رفع الصورة. تأكد من صلاحيات التخزين وتسجيل الدخول.");
+          setIsUploading(false);
+          return;
+        }
 
-          if (publicUrlData?.publicUrl) {
-            finalImageUrl = publicUrlData.publicUrl;
-          }
+        const { data: publicUrlData } = supabase.storage
+          .from("product-images")
+          .getPublicUrl(filePath);
+
+        if (publicUrlData?.publicUrl) {
+          finalImageUrl = publicUrlData.publicUrl;
         }
       } catch (err) {
-        console.warn("Storage upload error fallback:", err);
+        console.warn("Storage upload error:", err);
+        alert("حدث خطأ أثناء رفع الصورة.");
+        setIsUploading(false);
+        return;
       }
     }
 
@@ -517,7 +544,7 @@ export default function AdminStockItemsPage() {
                 <div className="space-y-2">
                   <input
                     type="file"
-                    accept="image/*"
+                    accept="image/jpeg,image/png,image/webp,image/avif"
                     onChange={(e) => setImageFile(e.target.files?.[0] || null)}
                     className="w-full text-xs text-neutral-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-600/20 file:text-blue-400 hover:file:bg-blue-600/30 cursor-pointer"
                   />
